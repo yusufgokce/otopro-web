@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { articles, categoryLabels, type Article } from '@/lib/articles'
+import { Nav } from '../components/nav'
+import { Footer } from '../components/footer'
 
 export const metadata: Metadata = {
   title: 'Car Detailing Guides & Tips | OtoPro',
@@ -26,18 +28,7 @@ export default function GuidesPage() {
 
   return (
     <main className="min-h-screen bg-[#0A0A0F] text-white">
-      {/* Nav */}
-      <nav className="flex items-center justify-between px-6 py-5 max-w-6xl mx-auto">
-        <Link href="/" className="text-xl font-bold tracking-tight">
-          Oto<span className="text-[#6B4EFF]">Pro</span>
-        </Link>
-        <Link
-          href="/"
-          className="text-sm text-white/50 hover:text-white transition-colors"
-        >
-          ← Back to Home
-        </Link>
-      </nav>
+      <Nav />
 
       <div className="max-w-6xl mx-auto px-6 pt-12 pb-24">
         {/* Header */}
@@ -102,6 +93,7 @@ export default function GuidesPage() {
           ))}
         </div>
       </div>
+      <Footer />
     </main>
   )
 }

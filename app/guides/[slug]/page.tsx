@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getArticle, articles, categoryLabels } from '@/lib/articles'
+import { Nav } from '../../components/nav'
+import { Footer } from '../../components/footer'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -44,18 +46,7 @@ export default async function ArticlePage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-[#0A0A0F] text-white">
-      {/* Nav */}
-      <nav className="flex items-center justify-between px-6 py-5 max-w-6xl mx-auto">
-        <Link href="/" className="text-xl font-bold tracking-tight">
-          Oto<span className="text-[#6B4EFF]">Pro</span>
-        </Link>
-        <Link
-          href="/guides"
-          className="text-sm text-white/50 hover:text-white transition-colors"
-        >
-          ← All Guides
-        </Link>
-      </nav>
+      <Nav />
 
       <article className="max-w-3xl mx-auto px-6 pt-10 pb-24">
         {/* Meta */}
@@ -112,7 +103,7 @@ export default async function ArticlePage({ params }: Props) {
             Book a professional detail or ceramic coating with OtoPro — at your location.
           </p>
           <Link
-            href="/"
+            href="/book"
             className="inline-block bg-[#6B4EFF] hover:bg-[#5A3EEE] text-white font-semibold px-8 py-3 rounded-xl transition-colors"
           >
             Book a Detail
@@ -140,6 +131,8 @@ export default async function ArticlePage({ params }: Props) {
           </div>
         )}
       </article>
+
+      <Footer />
     </main>
   )
 }
