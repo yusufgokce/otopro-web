@@ -21,8 +21,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 # Non-root user — mirrors innera's appuser pattern
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 appuser
+RUN addgroup --system --gid 1001 appuser && \
+    adduser --system --uid 1001 --ingroup appuser appuser
 
 # Standalone output only — no node_modules in final image
 COPY --from=builder /app/.next/standalone ./
