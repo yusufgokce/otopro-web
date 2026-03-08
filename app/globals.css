@@ -1,26 +1,61 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* ── Core Neutrals ── */
+  --color-black: #181716;
+  --color-dune: #32302f;
+  --color-dark-grey: #615e5c;
+  --color-grey: #94908d;
+  --color-dark-silver: #a9a6a4;
+  --color-silver: #bfbebe;
+  --color-platinum: #e4e2e1;
+  --color-white-smoke: #fcfcfc;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* ── Red ── */
+  --color-red-800: #411E1A;
+  --color-red-700: #60241C;
+  --color-red-600: #8F2E1F;
+  --color-red-500: #BF3722;
+  --color-red-400: #F76B5A;
+  --color-red-300: #F89789;
+  --color-red-200: #F9B4A9;
+  --color-red-100: #FBE4DE;
+
+  /* ── Green ── */
+  --color-green-800: #243519;
+  --color-green-700: #364D27;
+  --color-green-600: #486635;
+  --color-green-500: #5C8145;
+  --color-green-400: #7B9B54;
+  --color-green-300: #99B56E;
+  --color-green-200: #B3D088;
+  --color-green-100: #D5EAB8;
+
+  /* ── Blue ── */
+  --color-blue-800: #24333D;
+  --color-blue-700: #104B71;
+  --color-blue-600: #196EA4;
+  --color-blue-500: #1E94DC;
+  --color-blue-400: #4BA9E3;
+  --color-blue-300: #78BFEA;
+  --color-blue-200: #A5D4F1;
+  --color-blue-100: #DDE9F1;
+
+  /* ── Gold ── */
+  --color-gold-800: #463B33;
+  --color-gold-700: #763D16;
+  --color-gold-600: #BB6E3D;
+  --color-gold-500: #E29C57;
+  --color-gold-400: #F9A471;
+  --color-gold-300: #FCEEE5;
+  --color-gold-200: #E9E3DE;
+  --color-gold-100: #F7F6F2;
+
+  /* ── Font ── */
+  --font-sans: var(--font-jost);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-black);
+  color: #ffffff;
 }

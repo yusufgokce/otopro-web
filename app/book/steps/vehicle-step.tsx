@@ -11,9 +11,9 @@ interface Props {
 }
 
 const inputClass =
-  'w-full bg-white/[0.06] border border-white/[0.1] rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:border-[#6B4EFF] focus:outline-none focus:ring-1 focus:ring-[#6B4EFF]/50 transition-colors'
+  'w-full bg-dune border border-dark-grey rounded-xl px-4 py-3 text-white placeholder:text-grey focus:border-gold-400 focus:outline-none focus:ring-1 focus:ring-gold-400/50 transition-colors'
 
-const labelClass = 'block text-sm text-white/60 mb-1.5'
+const labelClass = 'block text-sm text-dark-silver mb-1.5'
 
 export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -51,12 +51,12 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
   return (
     <div>
       <h1 className="text-3xl font-bold text-center mb-2">Your vehicle & location</h1>
-      <p className="text-white/50 text-center mb-10">
+      <p className="text-dark-silver text-center mb-10">
         Tell us about your car and where to come
       </p>
 
       {/* Vehicle info */}
-      <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-6 mb-6">
+      <div className="bg-dune border border-dark-grey rounded-2xl p-6 mb-6">
         <h2 className="font-semibold text-lg mb-4">Vehicle</h2>
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
@@ -129,13 +129,13 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
                   }
                   className={`py-2.5 px-3 rounded-xl text-sm border transition-colors ${
                     selected
-                      ? 'bg-[#6B4EFF]/10 border-[#6B4EFF] text-white'
-                      : 'bg-white/[0.04] border-white/[0.08] text-white/60 hover:border-[#6B4EFF]/40'
+                      ? 'bg-gold-400/10 border-gold-400 text-white'
+                      : 'bg-dune border-dark-grey text-dark-silver hover:border-gold-400/40'
                   }`}
                 >
                   {bs}
                   {extra > 0 && (
-                    <span className="text-[#A48FFF] text-xs ml-1">+${extra}</span>
+                    <span className="text-gold-300 text-xs ml-1">+${extra}</span>
                   )}
                 </button>
               )
@@ -148,9 +148,9 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
       </div>
 
       {/* Address */}
-      <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-6 mb-6">
+      <div className="bg-dune border border-dark-grey rounded-2xl p-6 mb-6">
         <h2 className="font-semibold text-lg mb-1">Service Location</h2>
-        <p className="text-white/40 text-sm mb-4">
+        <p className="text-grey text-sm mb-4">
           Where should we come to detail your vehicle?
         </p>
 
@@ -189,9 +189,9 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
                   dispatch({ type: 'SET_ADDRESS', payload: { province: e.target.value } })
                 }
               >
-                <option value="" className="bg-[#0A0A0F]">Select</option>
+                <option value="" className="bg-black">Select</option>
                 {PROVINCES.map((p) => (
-                  <option key={p} value={p} className="bg-[#0A0A0F]">{p}</option>
+                  <option key={p} value={p} className="bg-black">{p}</option>
                 ))}
               </select>
               {errors.province && (
@@ -231,13 +231,13 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
       <div className="flex gap-3">
         <button
           onClick={() => dispatch({ type: 'PREV_STEP' })}
-          className="px-6 py-3 rounded-xl text-sm font-medium bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+          className="px-6 py-3 rounded-xl text-sm font-medium bg-dune border border-dark-grey hover:bg-dark-grey transition-colors"
         >
           Back
         </button>
         <button
           onClick={handleContinue}
-          className="flex-1 py-3 rounded-xl text-sm font-semibold bg-[#6B4EFF] hover:bg-[#5A3EEE] transition-colors"
+          className="flex-1 py-3 rounded-xl text-sm font-semibold bg-gold-400 hover:bg-gold-500 text-black transition-colors"
         >
           Continue
         </button>

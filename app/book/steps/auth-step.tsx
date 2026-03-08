@@ -15,9 +15,9 @@ interface Props {
 }
 
 const inputClass =
-  'w-full bg-white/[0.06] border border-white/[0.1] rounded-xl px-4 py-3 text-white placeholder:text-white/30 focus:border-[#6B4EFF] focus:outline-none focus:ring-1 focus:ring-[#6B4EFF]/50 transition-colors'
+  'w-full bg-dune border border-dark-grey rounded-xl px-4 py-3 text-white placeholder:text-grey focus:border-gold-400 focus:outline-none focus:ring-1 focus:ring-gold-400/50 transition-colors'
 
-const labelClass = 'block text-sm text-white/60 mb-1.5'
+const labelClass = 'block text-sm text-dark-silver mb-1.5'
 
 export function AuthStep({
   state,
@@ -31,7 +31,6 @@ export function AuthStep({
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState('')
 
-  // Sign up fields
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
@@ -102,18 +101,18 @@ export function AuthStep({
   return (
     <div>
       <h1 className="text-3xl font-bold text-center mb-2">Almost there!</h1>
-      <p className="text-white/50 text-center mb-8">
+      <p className="text-dark-silver text-center mb-8">
         Create an account or sign in to continue to payment
       </p>
 
       {/* Toggle */}
-      <div className="flex bg-white/[0.04] rounded-xl p-1 mb-8">
+      <div className="flex bg-dune rounded-xl p-1 mb-8">
         <button
           onClick={() => { setMode('signup'); setError('') }}
           className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors ${
             mode === 'signup'
-              ? 'bg-[#6B4EFF] text-white'
-              : 'text-white/50 hover:text-white/70'
+              ? 'bg-gold-400 text-black'
+              : 'text-dark-silver hover:text-silver'
           }`}
         >
           Sign Up
@@ -122,15 +121,15 @@ export function AuthStep({
           onClick={() => { setMode('signin'); setError('') }}
           className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors ${
             mode === 'signin'
-              ? 'bg-[#6B4EFF] text-white'
-              : 'text-white/50 hover:text-white/70'
+              ? 'bg-gold-400 text-black'
+              : 'text-dark-silver hover:text-silver'
           }`}
         >
           Sign In
         </button>
       </div>
 
-      <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-6">
+      <div className="bg-dune border border-dark-grey rounded-2xl p-6">
         {mode === 'signup' ? (
           <div className="space-y-4">
             <div>
@@ -205,7 +204,7 @@ export function AuthStep({
         <button
           onClick={mode === 'signup' ? handleSignUp : handleSignIn}
           disabled={isPending}
-          className="w-full mt-6 py-3.5 rounded-xl text-sm font-semibold bg-[#6B4EFF] hover:bg-[#5A3EEE] disabled:opacity-50 transition-colors"
+          className="w-full mt-6 py-3.5 rounded-xl text-sm font-semibold bg-gold-400 hover:bg-gold-500 text-black disabled:opacity-50 transition-colors"
         >
           {isPending
             ? 'Processing...'
@@ -218,7 +217,7 @@ export function AuthStep({
       <div className="flex gap-3 mt-6">
         <button
           onClick={() => dispatch({ type: 'PREV_STEP' })}
-          className="w-full px-6 py-3 rounded-xl text-sm font-medium bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-center"
+          className="w-full px-6 py-3 rounded-xl text-sm font-medium bg-dune border border-dark-grey hover:bg-dark-grey transition-colors text-center"
         >
           Back to Review
         </button>

@@ -100,23 +100,23 @@ const FAQS = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#0A0A0F] text-white">
+    <main className="min-h-screen bg-black text-white">
       <Nav />
 
       {/* ── Hero ── */}
       <section className="max-w-6xl mx-auto px-6 pt-20 pb-24 text-center">
-        <div className="inline-block bg-[#6B4EFF]/10 border border-[#6B4EFF]/30 text-[#A48FFF] text-sm font-medium px-4 py-1.5 rounded-full mb-8">
+        <div className="inline-block bg-gold-400/10 border border-gold-400/30 text-gold-300 text-sm font-medium px-4 py-1.5 rounded-full mb-8">
           Mobile Detailing &middot; At Your Door
         </div>
 
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-tight tracking-tight mb-6">
           Book the best car{' '}
-          <span className="text-[#6B4EFF]">detailing</span>
+          <span className="text-gold-400">detailing</span>
           <br />
           near you.
         </h1>
 
-        <p className="text-lg text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-lg text-dark-silver max-w-2xl mx-auto mb-10 leading-relaxed">
           Professional interior and exterior car detailing, delivered to your
           driveway. Book in under a minute — we bring everything.
         </p>
@@ -124,26 +124,26 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
           <Link
             href="/book"
-            className="bg-[#6B4EFF] hover:bg-[#5A3EEE] text-white font-semibold px-8 py-4 rounded-2xl text-lg transition-colors"
+            className="bg-gold-400 hover:bg-gold-500 text-black font-semibold px-8 py-4 rounded-2xl text-lg transition-colors"
           >
             Book a Detail
           </Link>
           <a
             href="#how-it-works"
-            className="bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold px-8 py-4 rounded-2xl text-lg transition-colors"
+            className="bg-dune hover:bg-dark-grey border border-dark-grey text-white font-semibold px-8 py-4 rounded-2xl text-lg transition-colors"
           >
             How It Works
           </a>
         </div>
 
         {/* Trust bar */}
-        <div className="flex flex-wrap items-center justify-center gap-6 text-white/30 text-sm">
+        <div className="flex flex-wrap items-center justify-center gap-6 text-dark-grey text-sm">
           <span>Certified Detailers</span>
-          <span className="w-1 h-1 rounded-full bg-white/20" />
+          <span className="w-1 h-1 rounded-full bg-dark-grey" />
           <span>Fully Insured</span>
-          <span className="w-1 h-1 rounded-full bg-white/20" />
+          <span className="w-1 h-1 rounded-full bg-dark-grey" />
           <span>Satisfaction Guaranteed</span>
-          <span className="w-1 h-1 rounded-full bg-white/20" />
+          <span className="w-1 h-1 rounded-full bg-dark-grey" />
           <span>Eco-Friendly Products</span>
         </div>
       </section>
@@ -151,7 +151,7 @@ export default function Home() {
       {/* ── Packages ── */}
       <section id="packages" className="max-w-6xl mx-auto px-6 pb-28">
         <h2 className="text-3xl font-bold text-center mb-3">Our Packages</h2>
-        <p className="text-white/50 text-center mb-12">
+        <p className="text-dark-silver text-center mb-12">
           Transparent pricing. No hidden fees. Surcharges may apply for larger vehicles.
         </p>
 
@@ -161,31 +161,31 @@ export default function Home() {
               key={pkg.name}
               className={`relative rounded-2xl p-6 border transition-colors ${
                 pkg.popular
-                  ? 'bg-[#6B4EFF]/[0.08] border-[#6B4EFF]/40'
-                  : 'bg-white/[0.04] border-white/[0.08] hover:border-[#6B4EFF]/30'
+                  ? 'bg-gold-400/[0.08] border-gold-400/40'
+                  : 'bg-dune border-dark-grey hover:border-gold-400/30'
               }`}
             >
               {pkg.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#6B4EFF] text-white text-xs font-semibold px-3 py-1 rounded-full">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold-400 text-black text-xs font-semibold px-3 py-1 rounded-full">
                   Most Popular
                 </div>
               )}
 
               <h3 className="font-semibold text-lg mb-1">{pkg.name}</h3>
-              <p className="text-white/40 text-sm mb-4">{pkg.desc}</p>
+              <p className="text-grey text-sm mb-4">{pkg.desc}</p>
 
               <div className="flex items-end gap-1 mb-6">
-                <span className="text-4xl font-bold text-[#6B4EFF]">${pkg.price}</span>
-                <span className="text-white/40 text-sm mb-1">~{pkg.hours} hrs</span>
+                <span className="text-4xl font-bold text-gold-400">${pkg.price}</span>
+                <span className="text-grey text-sm mb-1">~{pkg.hours} hrs</span>
               </div>
 
               {pkg.exterior.length > 0 && (
                 <div className="mb-4">
-                  <span className="text-xs text-white/40 uppercase tracking-wider">Exterior</span>
+                  <span className="text-xs text-grey uppercase tracking-wider">Exterior</span>
                   <ul className="mt-2 space-y-1.5">
                     {pkg.exterior.map((item) => (
-                      <li key={item} className="flex items-start gap-2 text-sm text-white/70">
-                        <span className="text-[#6B4EFF] mt-0.5">&#10003;</span>
+                      <li key={item} className="flex items-start gap-2 text-sm text-silver">
+                        <span className="text-gold-400 mt-0.5">&#10003;</span>
                         {item}
                       </li>
                     ))}
@@ -195,11 +195,11 @@ export default function Home() {
 
               {pkg.interior.length > 0 && (
                 <div className="mb-6">
-                  <span className="text-xs text-white/40 uppercase tracking-wider">Interior</span>
+                  <span className="text-xs text-grey uppercase tracking-wider">Interior</span>
                   <ul className="mt-2 space-y-1.5">
                     {pkg.interior.map((item) => (
-                      <li key={item} className="flex items-start gap-2 text-sm text-white/70">
-                        <span className="text-[#6B4EFF] mt-0.5">&#10003;</span>
+                      <li key={item} className="flex items-start gap-2 text-sm text-silver">
+                        <span className="text-gold-400 mt-0.5">&#10003;</span>
                         {item}
                       </li>
                     ))}
@@ -211,8 +211,8 @@ export default function Home() {
                 href="/book"
                 className={`block text-center py-3 rounded-xl text-sm font-semibold transition-colors ${
                   pkg.popular
-                    ? 'bg-[#6B4EFF] hover:bg-[#5A3EEE] text-white'
-                    : 'bg-white/5 hover:bg-white/10 border border-white/10 text-white'
+                    ? 'bg-gold-400 hover:bg-gold-500 text-black'
+                    : 'bg-dark-grey hover:bg-grey border border-dark-grey text-white'
                 }`}
               >
                 Book Now
@@ -221,18 +221,18 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="text-center text-white/30 text-sm mt-6">
-          <Link href="/pricing" className="text-[#A48FFF] hover:underline">
+        <p className="text-center text-dark-grey text-sm mt-6">
+          <Link href="/pricing" className="text-gold-300 hover:underline">
             View full pricing comparison &rarr;
           </Link>
         </p>
       </section>
 
       {/* ── How it works ── */}
-      <section id="how-it-works" className="bg-white/[0.02] border-y border-white/[0.06] py-24">
+      <section id="how-it-works" className="bg-dune/50 border-y border-dune py-24">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-3">How it works</h2>
-          <p className="text-white/50 text-center mb-14">Book in under 2 minutes. We handle the rest.</p>
+          <p className="text-dark-silver text-center mb-14">Book in under 2 minutes. We handle the rest.</p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -253,9 +253,9 @@ export default function Home() {
               },
             ].map((item) => (
               <div key={item.step} className="text-center">
-                <div className="text-5xl font-black text-[#6B4EFF]/20 mb-4">{item.step}</div>
+                <div className="text-5xl font-black text-gold-400/20 mb-4">{item.step}</div>
                 <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
+                <p className="text-dark-silver text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -265,36 +265,36 @@ export default function Home() {
       {/* ── Why OtoPro vs traditional ── */}
       <section className="max-w-4xl mx-auto px-6 py-24">
         <h2 className="text-3xl font-bold text-center mb-3">Why OtoPro?</h2>
-        <p className="text-white/50 text-center mb-12">
+        <p className="text-dark-silver text-center mb-12">
           See how we compare to traditional car washes and freelance detailers.
         </p>
 
-        <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl overflow-hidden">
-          <div className="grid grid-cols-3 text-sm font-semibold border-b border-white/[0.06]">
-            <div className="p-4 text-white/40">Feature</div>
-            <div className="p-4 text-center text-[#6B4EFF]">OtoPro</div>
-            <div className="p-4 text-center text-white/40">Others</div>
+        <div className="bg-dune border border-dark-grey rounded-2xl overflow-hidden">
+          <div className="grid grid-cols-3 text-sm font-semibold border-b border-dune">
+            <div className="p-4 text-grey">Feature</div>
+            <div className="p-4 text-center text-gold-400">OtoPro</div>
+            <div className="p-4 text-center text-grey">Others</div>
           </div>
           {FEATURES.map((f, i) => (
             <div
               key={f.label}
               className={`grid grid-cols-3 text-sm ${
-                i < FEATURES.length - 1 ? 'border-b border-white/[0.04]' : ''
+                i < FEATURES.length - 1 ? 'border-b border-dune/50' : ''
               }`}
             >
-              <div className="p-4 text-white/60">{f.label}</div>
-              <div className="p-4 text-center text-[#6B4EFF]">{f.us ? '✓' : '—'}</div>
-              <div className="p-4 text-center text-white/30">{f.them ? '✓' : '—'}</div>
+              <div className="p-4 text-dark-silver">{f.label}</div>
+              <div className="p-4 text-center text-gold-400">{f.us ? '✓' : '—'}</div>
+              <div className="p-4 text-center text-dark-grey">{f.them ? '✓' : '—'}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── Services grid ── */}
-      <section className="bg-white/[0.02] border-y border-white/[0.06] py-24">
+      <section className="bg-dune/50 border-y border-dune py-24">
         <div className="max-w-6xl mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-3">What&apos;s included</h2>
-          <p className="text-white/50 text-center mb-12">
+          <p className="text-dark-silver text-center mb-12">
             Every service performed by certified professionals with premium products.
           </p>
 
@@ -309,10 +309,10 @@ export default function Home() {
             ].map((s) => (
               <div
                 key={s.title}
-                className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-6 hover:border-[#6B4EFF]/40 transition-colors"
+                className="bg-dune border border-dark-grey rounded-2xl p-6 hover:border-gold-400/40 transition-colors"
               >
                 <h3 className="font-semibold text-lg mb-2">{s.title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{s.desc}</p>
+                <p className="text-dark-silver text-sm leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -322,8 +322,8 @@ export default function Home() {
       {/* ── FAQ ── */}
       <section className="max-w-3xl mx-auto px-6 py-24">
         <h2 className="text-3xl font-bold text-center mb-3">Frequently Asked Questions</h2>
-        <p className="text-white/50 text-center mb-12">
-          <Link href="/faq" className="text-[#A48FFF] hover:underline">
+        <p className="text-dark-silver text-center mb-12">
+          <Link href="/faq" className="text-gold-300 hover:underline">
             View all FAQs &rarr;
           </Link>
         </p>
@@ -332,13 +332,13 @@ export default function Home() {
           {FAQS.map((faq) => (
             <details
               key={faq.q}
-              className="group bg-white/[0.04] border border-white/[0.08] rounded-xl overflow-hidden"
+              className="group bg-dune border border-dark-grey rounded-xl overflow-hidden"
             >
               <summary className="cursor-pointer p-5 text-sm font-medium flex items-center justify-between list-none">
                 {faq.q}
-                <span className="text-white/30 group-open:rotate-45 transition-transform text-lg">+</span>
+                <span className="text-dark-grey group-open:rotate-45 transition-transform text-lg">+</span>
               </summary>
-              <div className="px-5 pb-5 text-sm text-white/50 leading-relaxed">
+              <div className="px-5 pb-5 text-sm text-dark-silver leading-relaxed">
                 {faq.a}
               </div>
             </details>
@@ -347,17 +347,17 @@ export default function Home() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="bg-[#6B4EFF]/[0.06] border-y border-[#6B4EFF]/20 py-20">
+      <section className="bg-gold-400/[0.06] border-y border-gold-400/20 py-20">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h2 className="text-4xl sm:text-5xl font-bold mb-5">
             Ready for a cleaner ride?
           </h2>
-          <p className="text-white/50 mb-10 text-lg">
+          <p className="text-dark-silver mb-10 text-lg">
             Book your first detail today. No commitment, no hidden fees.
           </p>
           <Link
             href="/book"
-            className="inline-block bg-[#6B4EFF] hover:bg-[#5A3EEE] text-white font-semibold px-10 py-4 rounded-2xl text-lg transition-colors"
+            className="inline-block bg-gold-400 hover:bg-gold-500 text-black font-semibold px-10 py-4 rounded-2xl text-lg transition-colors"
           >
             Book a Detail
           </Link>

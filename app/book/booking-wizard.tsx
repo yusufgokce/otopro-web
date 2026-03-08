@@ -74,15 +74,12 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
   }
 
   // Determine steps & labels based on auth status
-  // Auth'd:   Service(0) → Schedule(1) → Vehicle(2) → Review(3) → Payment(4)
-  // No auth:  Service(0) → Schedule(1) → Vehicle(2) → Review(3) → Account(4) → Payment(5)
   const stepsLabels = isAuthenticated
     ? ['Service', 'Schedule', 'Vehicle', 'Review', 'Payment']
     : ['Service', 'Schedule', 'Vehicle', 'Review', 'Account', 'Payment']
 
   const paymentStepIndex = isAuthenticated ? 4 : 5
 
-  // Which step are we showing?
   const showPayment = state.currentStep === paymentStepIndex && bookingId
 
   return (
@@ -95,20 +92,20 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-colors ${
                   i < state.currentStep
-                    ? 'bg-[#6B4EFF] text-white'
+                    ? 'bg-gold-400 text-black'
                     : i === state.currentStep
-                      ? 'bg-[#6B4EFF] text-white'
-                      : 'bg-white/10 text-white/40'
+                      ? 'bg-gold-400 text-black'
+                      : 'bg-dark-grey text-grey'
                 }`}
               >
                 {i < state.currentStep ? '\u2713' : i + 1}
               </div>
-              <span className="text-[10px] text-white/40 mt-1 hidden sm:block">{label}</span>
+              <span className="text-[10px] text-grey mt-1 hidden sm:block">{label}</span>
             </div>
             {i < stepsLabels.length - 1 && (
               <div
                 className={`w-8 h-px ${
-                  i < state.currentStep ? 'bg-[#6B4EFF]' : 'bg-white/10'
+                  i < state.currentStep ? 'bg-gold-400' : 'bg-dark-grey'
                 }`}
               />
             )}

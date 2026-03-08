@@ -101,33 +101,33 @@ const SECTIONS = [
 
 export default function FaqPage() {
   return (
-    <main className="min-h-screen bg-[#0A0A0F] text-white">
+    <main className="min-h-screen bg-black text-white">
       <Nav />
 
       <section className="max-w-3xl mx-auto px-6 pt-16 pb-24">
         <h1 className="text-4xl sm:text-5xl font-bold text-center mb-3">
           Frequently Asked Questions
         </h1>
-        <p className="text-white/50 text-center mb-14">
+        <p className="text-dark-silver text-center mb-14">
           Everything you need to know about OtoPro.
         </p>
 
         {SECTIONS.map((section) => (
           <div key={section.title} className="mb-12">
-            <h2 className="text-xl font-bold mb-4 text-[#A48FFF]">{section.title}</h2>
+            <h2 className="text-xl font-bold mb-4 text-gold-300">{section.title}</h2>
             <div className="space-y-3">
               {section.faqs.map((faq) => (
                 <details
                   key={faq.q}
-                  className="group bg-white/[0.04] border border-white/[0.08] rounded-xl overflow-hidden"
+                  className="group bg-dune border border-dark-grey rounded-xl overflow-hidden"
                 >
                   <summary className="cursor-pointer p-5 text-sm font-medium flex items-center justify-between list-none">
                     {faq.q}
-                    <span className="text-white/30 group-open:rotate-45 transition-transform text-lg ml-4 shrink-0">
+                    <span className="text-dark-grey group-open:rotate-45 transition-transform text-lg ml-4 shrink-0">
                       +
                     </span>
                   </summary>
-                  <div className="px-5 pb-5 text-sm text-white/50 leading-relaxed">
+                  <div className="px-5 pb-5 text-sm text-dark-silver leading-relaxed">
                     {faq.a}
                   </div>
                 </details>
@@ -137,10 +137,10 @@ export default function FaqPage() {
         ))}
 
         <div className="text-center mt-8">
-          <p className="text-white/40 text-sm mb-4">Still have questions?</p>
+          <p className="text-grey text-sm mb-4">Still have questions?</p>
           <Link
             href="/book"
-            className="inline-block bg-[#6B4EFF] hover:bg-[#5A3EEE] text-white font-semibold px-8 py-3.5 rounded-2xl transition-colors"
+            className="inline-block bg-gold-400 hover:bg-gold-500 text-black font-semibold px-8 py-3.5 rounded-2xl transition-colors"
           >
             Book a Detail
           </Link>

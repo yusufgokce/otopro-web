@@ -34,9 +34,9 @@ export default async function ArticlePage({ params }: Props) {
   if (!article) notFound()
 
   const categoryColour = {
-    canada: 'bg-blue-500/10 text-blue-400',
-    ceramic: 'bg-purple-500/10 text-purple-400',
-    general: 'bg-emerald-500/10 text-emerald-400',
+    canada: 'bg-blue-400/10 text-blue-400',
+    ceramic: 'bg-gold-400/10 text-gold-400',
+    general: 'bg-green-400/10 text-green-400',
   }[article.category]
 
   // Related articles: same category, excluding self
@@ -45,7 +45,7 @@ export default async function ArticlePage({ params }: Props) {
     .slice(0, 3)
 
   return (
-    <main className="min-h-screen bg-[#0A0A0F] text-white">
+    <main className="min-h-screen bg-black text-white">
       <Nav />
 
       <article className="max-w-3xl mx-auto px-6 pt-10 pb-24">
@@ -54,7 +54,7 @@ export default async function ArticlePage({ params }: Props) {
           <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${categoryColour}`}>
             {categoryLabels[article.category]}
           </span>
-          <span className="text-white/30 text-sm">{article.readTime} min read</span>
+          <span className="text-dark-grey text-sm">{article.readTime} min read</span>
         </div>
 
         {/* Title */}
@@ -63,7 +63,7 @@ export default async function ArticlePage({ params }: Props) {
         </h1>
 
         {/* Intro */}
-        <p className="text-lg text-white/60 leading-relaxed mb-10 pb-10 border-b border-white/[0.08]">
+        <p className="text-lg text-dark-silver leading-relaxed mb-10 pb-10 border-b border-dune">
           {article.intro}
         </p>
 
@@ -74,7 +74,7 @@ export default async function ArticlePage({ params }: Props) {
               <h2 className="text-xl font-semibold mb-4">{section.heading}</h2>
               <div className="space-y-4">
                 {section.paragraphs.map((para, j) => (
-                  <p key={j} className="text-white/60 leading-relaxed">
+                  <p key={j} className="text-dark-silver leading-relaxed">
                     {para}
                   </p>
                 ))}
@@ -84,12 +84,12 @@ export default async function ArticlePage({ params }: Props) {
         </div>
 
         {/* Key Takeaways */}
-        <div className="mt-12 bg-[#6B4EFF]/10 border border-[#6B4EFF]/20 rounded-2xl p-6">
-          <h2 className="font-semibold text-[#A48FFF] mb-4">Key Takeaways</h2>
+        <div className="mt-12 bg-gold-400/10 border border-gold-400/20 rounded-2xl p-6">
+          <h2 className="font-semibold text-gold-300 mb-4">Key Takeaways</h2>
           <ul className="space-y-2">
             {article.keyTakeaways.map((point, i) => (
-              <li key={i} className="flex items-start gap-3 text-sm text-white/70">
-                <span className="text-[#6B4EFF] mt-0.5 shrink-0">✓</span>
+              <li key={i} className="flex items-start gap-3 text-sm text-silver">
+                <span className="text-gold-400 mt-0.5 shrink-0">&#10003;</span>
                 {point}
               </li>
             ))}
@@ -97,14 +97,14 @@ export default async function ArticlePage({ params }: Props) {
         </div>
 
         {/* CTA */}
-        <div className="mt-10 bg-white/[0.04] border border-white/[0.08] rounded-2xl p-8 text-center">
+        <div className="mt-10 bg-dune border border-dark-grey rounded-2xl p-8 text-center">
           <h3 className="font-semibold text-lg mb-2">Ready to protect your car?</h3>
-          <p className="text-white/50 text-sm mb-6">
+          <p className="text-dark-silver text-sm mb-6">
             Book a professional detail or ceramic coating with OtoPro — at your location.
           </p>
           <Link
             href="/book"
-            className="inline-block bg-[#6B4EFF] hover:bg-[#5A3EEE] text-white font-semibold px-8 py-3 rounded-xl transition-colors"
+            className="inline-block bg-gold-400 hover:bg-gold-500 text-black font-semibold px-8 py-3 rounded-xl transition-colors"
           >
             Book a Detail
           </Link>
@@ -119,12 +119,12 @@ export default async function ArticlePage({ params }: Props) {
                 <Link
                   key={rel.slug}
                   href={`/guides/${rel.slug}`}
-                  className="group bg-white/[0.04] border border-white/[0.08] rounded-xl p-4 hover:border-[#6B4EFF]/40 transition-all"
+                  className="group bg-dune border border-dark-grey rounded-xl p-4 hover:border-gold-400/40 transition-all"
                 >
-                  <p className="text-sm font-medium leading-snug group-hover:text-[#A48FFF] transition-colors">
+                  <p className="text-sm font-medium leading-snug group-hover:text-gold-300 transition-colors">
                     {rel.title}
                   </p>
-                  <p className="text-xs text-white/30 mt-1">{rel.readTime} min read</p>
+                  <p className="text-xs text-dark-grey mt-1">{rel.readTime} min read</p>
                 </Link>
               ))}
             </div>

@@ -56,7 +56,6 @@ function PaymentForm({
     }
 
     if (paymentIntent?.status === 'succeeded') {
-      // Mark deposit paid in the database
       const result = await markDepositPaid(bookingId, paymentIntentId)
       if (!result.success) {
         setError(result.error || 'Payment succeeded but failed to update booking')
@@ -83,7 +82,7 @@ function PaymentForm({
       <button
         type="submit"
         disabled={!stripe || processing}
-        className="w-full mt-6 py-3.5 rounded-xl text-sm font-semibold bg-[#6B4EFF] hover:bg-[#5A3EEE] disabled:opacity-50 transition-colors"
+        className="w-full mt-6 py-3.5 rounded-xl text-sm font-semibold bg-gold-400 hover:bg-gold-500 text-black disabled:opacity-50 transition-colors"
       >
         {processing ? 'Processing...' : `Pay Deposit — $${depositAmount.toFixed(2)}`}
       </button>
@@ -135,22 +134,22 @@ export function PaymentStep({
   return (
     <div>
       <h1 className="text-3xl font-bold text-center mb-2">Pay deposit</h1>
-      <p className="text-white/50 text-center mb-8">
+      <p className="text-dark-silver text-center mb-8">
         A 30% deposit secures your appointment. The remaining balance is collected at
         service.
       </p>
 
       {/* Price summary */}
-      <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-5 mb-6 space-y-2">
+      <div className="bg-dune border border-dark-grey rounded-2xl p-5 mb-6 space-y-2">
         <div className="flex justify-between text-sm">
-          <span className="text-white/60">Service total</span>
+          <span className="text-dark-silver">Service total</span>
           <span>${totalPrice.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between text-sm font-semibold text-[#6B4EFF]">
+        <div className="flex justify-between text-sm font-semibold text-gold-400">
           <span>Due today (30% deposit)</span>
           <span>${depositAmount.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between text-sm text-white/40">
+        <div className="flex justify-between text-sm text-grey">
           <span>Due at appointment</span>
           <span>${(totalPrice - depositAmount).toFixed(2)}</span>
         </div>
@@ -159,8 +158,8 @@ export function PaymentStep({
       {/* Stripe Elements */}
       {loading && (
         <div className="flex items-center justify-center py-16">
-          <div className="w-6 h-6 border-2 border-[#6B4EFF] border-t-transparent rounded-full animate-spin" />
-          <span className="ml-3 text-white/50 text-sm">Setting up payment...</span>
+          <div className="w-6 h-6 border-2 border-gold-400 border-t-transparent rounded-full animate-spin" />
+          <span className="ml-3 text-dark-silver text-sm">Setting up payment...</span>
         </div>
       )}
 
@@ -169,7 +168,7 @@ export function PaymentStep({
           <p className="text-red-400 text-sm mb-4">{error}</p>
           <button
             onClick={initPayment}
-            className="px-6 py-2.5 rounded-xl text-sm font-medium bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+            className="px-6 py-2.5 rounded-xl text-sm font-medium bg-dune border border-dark-grey hover:bg-dark-grey transition-colors"
           >
             Try again
           </button>
@@ -177,7 +176,7 @@ export function PaymentStep({
       )}
 
       {clientSecret && paymentIntentId && !loading && (
-        <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-6">
+        <div className="bg-dune border border-dark-grey rounded-2xl p-6">
           <Elements
             stripe={stripePromise}
             options={{
@@ -185,26 +184,26 @@ export function PaymentStep({
               appearance: {
                 theme: 'night',
                 variables: {
-                  colorPrimary: '#6B4EFF',
-                  colorBackground: '#12121A',
+                  colorPrimary: '#F9A471',
+                  colorBackground: '#32302f',
                   colorText: '#FFFFFF',
-                  colorTextSecondary: '#FFFFFF80',
-                  colorDanger: '#EF4444',
-                  fontFamily: 'inherit',
+                  colorTextSecondary: '#a9a6a4',
+                  colorDanger: '#F76B5A',
+                  fontFamily: 'Jost, sans-serif',
                   borderRadius: '12px',
                   spacingUnit: '4px',
                 },
                 rules: {
                   '.Input': {
-                    backgroundColor: 'rgba(255,255,255,0.06)',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    backgroundColor: '#181716',
+                    border: '1px solid #615e5c',
                   },
                   '.Input:focus': {
-                    borderColor: '#6B4EFF',
-                    boxShadow: '0 0 0 1px rgba(107,78,255,0.5)',
+                    borderColor: '#F9A471',
+                    boxShadow: '0 0 0 1px rgba(249,164,113,0.5)',
                   },
                   '.Label': {
-                    color: 'rgba(255,255,255,0.6)',
+                    color: '#a9a6a4',
                   },
                 },
               },
@@ -221,7 +220,7 @@ export function PaymentStep({
       )}
 
       {/* Security badges */}
-      <div className="flex items-center justify-center gap-6 mt-6 text-white/30 text-xs">
+      <div className="flex items-center justify-center gap-6 mt-6 text-dark-grey text-xs">
         <div className="flex items-center gap-1.5">
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />

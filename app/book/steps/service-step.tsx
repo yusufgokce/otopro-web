@@ -19,7 +19,7 @@ export function ServiceStep({ services, state, dispatch }: Props) {
   return (
     <div>
       <h1 className="text-3xl font-bold text-center mb-2">Choose your detail package</h1>
-      <p className="text-white/50 text-center mb-10">
+      <p className="text-dark-silver text-center mb-10">
         Select the service that fits your needs
       </p>
 
@@ -32,24 +32,24 @@ export function ServiceStep({ services, state, dispatch }: Props) {
               onClick={() => select(s)}
               className={`text-left p-6 rounded-2xl border transition-all ${
                 selected
-                  ? 'bg-[#6B4EFF]/10 border-[#6B4EFF]'
-                  : 'bg-white/[0.04] border-white/[0.08] hover:border-[#6B4EFF]/40'
+                  ? 'bg-gold-400/10 border-gold-400'
+                  : 'bg-dune border-dark-grey hover:border-gold-400/40'
               }`}
             >
               <div className="flex items-start justify-between mb-3">
                 <h3 className="font-semibold text-lg">{s.name}</h3>
                 {selected && (
-                  <span className="text-[#6B4EFF] text-lg">✓</span>
+                  <span className="text-gold-400 text-lg">&#10003;</span>
                 )}
               </div>
-              <p className="text-white/50 text-sm leading-relaxed mb-4">
+              <p className="text-dark-silver text-sm leading-relaxed mb-4">
                 {s.description}
               </p>
               <div className="flex items-end justify-between">
-                <span className="text-2xl font-bold text-[#6B4EFF]">
+                <span className="text-2xl font-bold text-gold-400">
                   ${s.base_price}
                 </span>
-                <span className="text-white/40 text-sm">
+                <span className="text-grey text-sm">
                   ~{s.estimated_duration_hours} hrs
                 </span>
               </div>

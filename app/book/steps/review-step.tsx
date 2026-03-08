@@ -38,13 +38,11 @@ export function ReviewStep({
   const [error, setError] = useState('')
 
   function handleSubmit() {
-    // Not authenticated — go to auth step first
     if (!isAuthenticated) {
       dispatch({ type: 'NEXT_STEP' })
       return
     }
 
-    // Authenticated — create booking then proceed to payment
     startTransition(async () => {
       const result = await createBooking({
         vehicleMake: state.vehicleMake,
@@ -77,23 +75,23 @@ export function ReviewStep({
   return (
     <div>
       <h1 className="text-3xl font-bold text-center mb-2">Review your booking</h1>
-      <p className="text-white/50 text-center mb-10">
+      <p className="text-dark-silver text-center mb-10">
         Make sure everything looks good
       </p>
 
-      <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl divide-y divide-white/[0.06]">
+      <div className="bg-dune border border-dark-grey rounded-2xl divide-y divide-dune/50">
         {/* Service */}
         <div className="p-5 flex justify-between items-start">
           <div>
-            <span className="text-xs text-white/40 uppercase tracking-wider">Service</span>
+            <span className="text-xs text-grey uppercase tracking-wider">Service</span>
             <p className="font-semibold mt-1">{state.selectedService?.name}</p>
-            <p className="text-white/40 text-sm">
+            <p className="text-grey text-sm">
               ~{state.selectedService?.estimated_duration_hours} hours
             </p>
           </div>
           <button
             onClick={() => dispatch({ type: 'GO_TO_STEP', payload: 0 })}
-            className="text-[#A48FFF] text-sm hover:text-[#6B4EFF]"
+            className="text-gold-300 text-sm hover:text-gold-400"
           >
             Edit
           </button>
@@ -102,17 +100,17 @@ export function ReviewStep({
         {/* Date/Time */}
         <div className="p-5 flex justify-between items-start">
           <div>
-            <span className="text-xs text-white/40 uppercase tracking-wider">Date & Time</span>
+            <span className="text-xs text-grey uppercase tracking-wider">Date & Time</span>
             <p className="font-semibold mt-1">
               {state.selectedDate ? formatDate(state.selectedDate) : ''}
             </p>
-            <p className="text-white/40 text-sm">
+            <p className="text-grey text-sm">
               {state.selectedTime ? TIME_SLOT_LABELS[state.selectedTime as TimeSlot] : ''}
             </p>
           </div>
           <button
             onClick={() => dispatch({ type: 'GO_TO_STEP', payload: 1 })}
-            className="text-[#A48FFF] text-sm hover:text-[#6B4EFF]"
+            className="text-gold-300 text-sm hover:text-gold-400"
           >
             Edit
           </button>
@@ -121,17 +119,17 @@ export function ReviewStep({
         {/* Vehicle */}
         <div className="p-5 flex justify-between items-start">
           <div>
-            <span className="text-xs text-white/40 uppercase tracking-wider">Vehicle</span>
+            <span className="text-xs text-grey uppercase tracking-wider">Vehicle</span>
             <p className="font-semibold mt-1">
               {state.vehicleYear} {state.vehicleMake} {state.vehicleModel}
             </p>
-            <p className="text-white/40 text-sm">
+            <p className="text-grey text-sm">
               {state.vehicleColor} &middot; {state.bodyStyle}
             </p>
           </div>
           <button
             onClick={() => dispatch({ type: 'GO_TO_STEP', payload: 2 })}
-            className="text-[#A48FFF] text-sm hover:text-[#6B4EFF]"
+            className="text-gold-300 text-sm hover:text-gold-400"
           >
             Edit
           </button>
@@ -140,15 +138,15 @@ export function ReviewStep({
         {/* Address */}
         <div className="p-5 flex justify-between items-start">
           <div>
-            <span className="text-xs text-white/40 uppercase tracking-wider">Location</span>
+            <span className="text-xs text-grey uppercase tracking-wider">Location</span>
             <p className="font-semibold mt-1">{state.streetAddress}</p>
-            <p className="text-white/40 text-sm">
+            <p className="text-grey text-sm">
               {state.city}, {state.province} {state.postalCode}
             </p>
           </div>
           <button
             onClick={() => dispatch({ type: 'GO_TO_STEP', payload: 2 })}
-            className="text-[#A48FFF] text-sm hover:text-[#6B4EFF]"
+            className="text-gold-300 text-sm hover:text-gold-400"
           >
             Edit
           </button>
@@ -157,34 +155,34 @@ export function ReviewStep({
         {/* Special Requests */}
         {state.specialRequests && (
           <div className="p-5">
-            <span className="text-xs text-white/40 uppercase tracking-wider">
+            <span className="text-xs text-grey uppercase tracking-wider">
               Special Requests
             </span>
-            <p className="text-white/60 text-sm mt-1">{state.specialRequests}</p>
+            <p className="text-dark-silver text-sm mt-1">{state.specialRequests}</p>
           </div>
         )}
 
         {/* Price breakdown */}
         <div className="p-5 space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-white/60">Base price</span>
+            <span className="text-dark-silver">Base price</span>
             <span>${state.selectedService?.base_price.toFixed(2)}</span>
           </div>
           {surcharge > 0 && (
             <div className="flex justify-between text-sm">
-              <span className="text-white/60">Body style surcharge ({state.bodyStyle})</span>
+              <span className="text-dark-silver">Body style surcharge ({state.bodyStyle})</span>
               <span>+${surcharge.toFixed(2)}</span>
             </div>
           )}
-          <div className="flex justify-between font-bold text-lg pt-2 border-t border-white/[0.06]">
+          <div className="flex justify-between font-bold text-lg pt-2 border-t border-dune/50">
             <span>Total</span>
-            <span className="text-[#6B4EFF]">${totalPrice.toFixed(2)}</span>
+            <span className="text-gold-400">${totalPrice.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-sm text-[#6B4EFF]/80 pt-1">
+          <div className="flex justify-between text-sm text-gold-400/80 pt-1">
             <span>Due today (30% deposit)</span>
             <span>${depositAmount.toFixed(2)}</span>
           </div>
-          <p className="text-white/30 text-xs">
+          <p className="text-dark-grey text-xs">
             Remaining ${(totalPrice - depositAmount).toFixed(2)} collected at your appointment.
           </p>
         </div>
@@ -197,14 +195,14 @@ export function ReviewStep({
       <div className="flex gap-3 mt-6">
         <button
           onClick={() => dispatch({ type: 'PREV_STEP' })}
-          className="px-6 py-3 rounded-xl text-sm font-medium bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+          className="px-6 py-3 rounded-xl text-sm font-medium bg-dune border border-dark-grey hover:bg-dark-grey transition-colors"
         >
           Back
         </button>
         <button
           onClick={handleSubmit}
           disabled={isPending}
-          className="flex-1 py-3 rounded-xl text-sm font-semibold bg-[#6B4EFF] hover:bg-[#5A3EEE] disabled:opacity-50 transition-colors"
+          className="flex-1 py-3 rounded-xl text-sm font-semibold bg-gold-400 hover:bg-gold-500 text-black disabled:opacity-50 transition-colors"
         >
           {isPending
             ? 'Creating booking...'

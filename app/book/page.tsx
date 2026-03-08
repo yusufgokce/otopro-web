@@ -19,7 +19,7 @@ export default async function BookPage() {
   const { data: { user } } = await supabase.auth.getUser()
 
   return (
-    <main className="min-h-screen bg-[#0A0A0F] text-white">
+    <main className="min-h-screen bg-black text-white">
       <Nav />
 
       <BookingWizard

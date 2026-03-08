@@ -76,31 +76,31 @@ export function ScheduleStep({ state, dispatch }: Props) {
   return (
     <div>
       <h1 className="text-3xl font-bold text-center mb-2">Pick your date & time</h1>
-      <p className="text-white/50 text-center mb-10">
+      <p className="text-dark-silver text-center mb-10">
         Choose when you&apos;d like us to come
       </p>
 
       {/* Calendar */}
-      <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-6 mb-6">
+      <div className="bg-dune border border-dark-grey rounded-2xl p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={prevMonth}
             disabled={!canGoPrev}
-            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10 disabled:opacity-20 disabled:cursor-not-allowed"
+            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-dark-grey disabled:opacity-20 disabled:cursor-not-allowed"
           >
-            ←
+            &larr;
           </button>
           <span className="font-semibold">{formatMonth(viewYear, viewMonth)}</span>
           <button
             onClick={nextMonth}
             disabled={!canGoNext}
-            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10 disabled:opacity-20 disabled:cursor-not-allowed"
+            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-dark-grey disabled:opacity-20 disabled:cursor-not-allowed"
           >
-            →
+            &rarr;
           </button>
         </div>
 
-        <div className="grid grid-cols-7 gap-1 text-center text-xs text-white/40 mb-2">
+        <div className="grid grid-cols-7 gap-1 text-center text-xs text-grey mb-2">
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
             <div key={d} className="py-1">{d}</div>
           ))}
@@ -127,15 +127,15 @@ export function ScheduleStep({ state, dispatch }: Props) {
                 onClick={() => dispatch({ type: 'SET_DATE', payload: dateStr })}
                 className={`h-10 rounded-lg text-sm transition-colors relative ${
                   disabled
-                    ? 'text-white/15 cursor-not-allowed'
+                    ? 'text-dark-grey cursor-not-allowed'
                     : selected
-                      ? 'bg-[#6B4EFF] text-white font-semibold'
-                      : 'hover:bg-white/10 text-white/80'
+                      ? 'bg-gold-400 text-black font-semibold'
+                      : 'hover:bg-dark-grey text-silver'
                 }`}
               >
                 {day}
                 {isToday && !selected && (
-                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#6B4EFF]" />
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold-400" />
                 )}
               </button>
             )
@@ -153,8 +153,8 @@ export function ScheduleStep({ state, dispatch }: Props) {
               onClick={() => dispatch({ type: 'SET_TIME', payload: slot })}
               className={`py-3 rounded-xl text-sm font-medium border transition-colors ${
                 selected
-                  ? 'bg-[#6B4EFF] border-[#6B4EFF] text-white'
-                  : 'bg-white/[0.04] border-white/[0.08] text-white/60 hover:border-[#6B4EFF]/40'
+                  ? 'bg-gold-400 border-gold-400 text-black'
+                  : 'bg-dune border-dark-grey text-dark-silver hover:border-gold-400/40'
               }`}
             >
               {TIME_SLOT_LABELS[slot]}
@@ -167,14 +167,14 @@ export function ScheduleStep({ state, dispatch }: Props) {
       <div className="flex gap-3">
         <button
           onClick={() => dispatch({ type: 'PREV_STEP' })}
-          className="px-6 py-3 rounded-xl text-sm font-medium bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+          className="px-6 py-3 rounded-xl text-sm font-medium bg-dune border border-dark-grey hover:bg-dark-grey transition-colors"
         >
           Back
         </button>
         <button
           onClick={() => dispatch({ type: 'NEXT_STEP' })}
           disabled={!state.selectedDate || !state.selectedTime}
-          className="flex-1 py-3 rounded-xl text-sm font-semibold bg-[#6B4EFF] hover:bg-[#5A3EEE] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 py-3 rounded-xl text-sm font-semibold bg-gold-400 hover:bg-gold-500 text-black disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
           Continue
         </button>
