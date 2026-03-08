@@ -7,6 +7,7 @@ import { TIME_SLOT_LABELS } from '@/lib/types/booking'
 interface Props {
   state: WizardState
   totalPrice: number
+  depositAmount: number
 }
 
 function formatDate(dateStr: string) {
@@ -19,7 +20,7 @@ function formatDate(dateStr: string) {
   })
 }
 
-export function Confirmation({ state, totalPrice }: Props) {
+export function Confirmation({ state, totalPrice, depositAmount }: Props) {
   return (
     <div className="max-w-md mx-auto text-center py-12">
       <div className="w-16 h-16 bg-[#6B4EFF]/20 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -36,7 +37,7 @@ export function Confirmation({ state, totalPrice }: Props) {
 
       <h1 className="text-3xl font-bold mb-2">Booking confirmed!</h1>
       <p className="text-white/50 mb-8">
-        Your detailing session has been scheduled
+        Your deposit has been paid and your session is locked in.
       </p>
 
       <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-6 text-left mb-8">
@@ -67,18 +68,41 @@ export function Confirmation({ state, totalPrice }: Props) {
               {state.city}, {state.province} {state.postalCode}
             </p>
           </div>
-          <div className="pt-3 border-t border-white/[0.06]">
-            <div className="flex justify-between font-bold">
-              <span>Total</span>
-              <span className="text-[#6B4EFF]">${totalPrice.toFixed(2)}</span>
+          <div className="pt-3 border-t border-white/[0.06] space-y-1.5">
+            <div className="flex justify-between text-sm">
+              <span className="text-white/60">Service total</span>
+              <span>${totalPrice.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-sm text-green-400">
+              <span>Deposit paid</span>
+              <span>${depositAmount.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between font-bold pt-1">
+              <span>Remaining at appointment</span>
+              <span className="text-[#6B4EFF]">${(totalPrice - depositAmount).toFixed(2)}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <p className="text-white/40 text-sm mb-8">
-        Your detailer will reach out before the appointment to confirm details.
-      </p>
+      {/* What happens next */}
+      <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl p-5 text-left mb-8">
+        <h3 className="font-semibold text-sm mb-3">What happens next</h3>
+        <div className="space-y-3 text-sm text-white/60">
+          <div className="flex items-start gap-3">
+            <span className="text-[#6B4EFF] font-bold mt-0.5">1</span>
+            <span>You&apos;ll receive a confirmation email with your booking details.</span>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="text-[#6B4EFF] font-bold mt-0.5">2</span>
+            <span>Your detailer will reach out before the appointment to confirm.</span>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="text-[#6B4EFF] font-bold mt-0.5">3</span>
+            <span>Remaining balance of ${(totalPrice - depositAmount).toFixed(2)} is collected at service.</span>
+          </div>
+        </div>
+      </div>
 
       <Link
         href="/"

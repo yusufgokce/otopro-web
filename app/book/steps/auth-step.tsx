@@ -11,7 +11,7 @@ interface Props {
   surcharge: number
   totalPrice: number
   depositAmount: number
-  onBookingComplete: () => void
+  onBookingCreated: (bookingId: string) => void
 }
 
 const inputClass =
@@ -25,7 +25,7 @@ export function AuthStep({
   surcharge,
   totalPrice,
   depositAmount,
-  onBookingComplete,
+  onBookingCreated,
 }: Props) {
   const [mode, setMode] = useState<'signup' | 'signin'>('signup')
   const [isPending, startTransition] = useTransition()
@@ -58,8 +58,8 @@ export function AuthStep({
       depositAmount,
     })
 
-    if (result.success) {
-      onBookingComplete()
+    if (result.success && result.bookingId) {
+      onBookingCreated(result.bookingId)
     } else {
       setError(result.error || 'Failed to create booking')
     }
@@ -103,7 +103,7 @@ export function AuthStep({
     <div>
       <h1 className="text-3xl font-bold text-center mb-2">Almost there!</h1>
       <p className="text-white/50 text-center mb-8">
-        Create an account or sign in to confirm your booking
+        Create an account or sign in to continue to payment
       </p>
 
       {/* Toggle */}
@@ -210,8 +210,8 @@ export function AuthStep({
           {isPending
             ? 'Processing...'
             : mode === 'signup'
-              ? 'Create Account & Book'
-              : 'Sign In & Book'}
+              ? 'Create Account & Continue'
+              : 'Sign In & Continue'}
         </button>
       </div>
 

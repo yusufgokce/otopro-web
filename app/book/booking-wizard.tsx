@@ -7,9 +7,8 @@ import { ScheduleStep } from './steps/schedule-step'
 import { VehicleStep } from './steps/vehicle-step'
 import { ReviewStep } from './steps/review-step'
 import { AuthStep } from './steps/auth-step'
+import { PaymentStep } from './steps/payment-step'
 import { Confirmation } from './steps/confirmation'
-
-const STEPS = ['Service', 'Schedule', 'Vehicle', 'Review', 'Account']
 
 const initialState: WizardState = {
   currentStep: 0,
@@ -41,7 +40,7 @@ function wizardReducer(state: WizardState, action: WizardAction): WizardState {
     case 'SET_ADDRESS':
       return { ...state, ...action.payload }
     case 'NEXT_STEP':
-      return { ...state, currentStep: Math.min(state.currentStep + 1, 4) }
+      return { ...state, currentStep: Math.min(state.currentStep + 1, 5) }
     case 'PREV_STEP':
       return { ...state, currentStep: Math.max(state.currentStep - 1, 0) }
     case 'GO_TO_STEP':
@@ -59,7 +58,8 @@ interface Props {
 
 export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: Props) {
   const [state, dispatch] = useReducer(wizardReducer, initialState)
-  const [bookingComplete, setBookingComplete] = useState(false)
+  const [bookingId, setBookingId] = useState<string | null>(null)
+  const [paymentComplete, setPaymentComplete] = useState(false)
 
   const surcharge = bodyStylePricing.find(
     (b) => b.body_style === state.bodyStyle,
@@ -68,19 +68,28 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
   const totalPrice = (state.selectedService?.base_price ?? 0) + surcharge
   const depositAmount = Math.round(totalPrice * 0.3 * 100) / 100
 
-  if (bookingComplete) {
-    return <Confirmation state={state} totalPrice={totalPrice} />
+  // Confirmation screen
+  if (paymentComplete) {
+    return <Confirmation state={state} totalPrice={totalPrice} depositAmount={depositAmount} />
   }
 
-  // If authenticated, skip auth step — max step is 3 (review)
-  const maxStep = isAuthenticated ? 3 : 4
-  const visibleSteps = isAuthenticated ? STEPS.slice(0, 4) : STEPS
+  // Determine steps & labels based on auth status
+  // Auth'd:   Service(0) → Schedule(1) → Vehicle(2) → Review(3) → Payment(4)
+  // No auth:  Service(0) → Schedule(1) → Vehicle(2) → Review(3) → Account(4) → Payment(5)
+  const stepsLabels = isAuthenticated
+    ? ['Service', 'Schedule', 'Vehicle', 'Review', 'Payment']
+    : ['Service', 'Schedule', 'Vehicle', 'Review', 'Account', 'Payment']
+
+  const paymentStepIndex = isAuthenticated ? 4 : 5
+
+  // Which step are we showing?
+  const showPayment = state.currentStep === paymentStepIndex && bookingId
 
   return (
     <div className="max-w-2xl mx-auto px-6 pb-20">
       {/* Progress bar */}
       <div className="flex items-center justify-center gap-2 py-8">
-        {visibleSteps.map((label, i) => (
+        {stepsLabels.map((label, i) => (
           <div key={label} className="flex items-center gap-2">
             <div className="flex flex-col items-center">
               <div
@@ -92,11 +101,11 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
                       : 'bg-white/10 text-white/40'
                 }`}
               >
-                {i < state.currentStep ? '✓' : i + 1}
+                {i < state.currentStep ? '\u2713' : i + 1}
               </div>
               <span className="text-[10px] text-white/40 mt-1 hidden sm:block">{label}</span>
             </div>
-            {i < visibleSteps.length - 1 && (
+            {i < stepsLabels.length - 1 && (
               <div
                 className={`w-8 h-px ${
                   i < state.currentStep ? 'bg-[#6B4EFF]' : 'bg-white/10'
@@ -129,7 +138,10 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
           totalPrice={totalPrice}
           depositAmount={depositAmount}
           isAuthenticated={isAuthenticated}
-          onBookingComplete={() => setBookingComplete(true)}
+          onBookingCreated={(id) => {
+            setBookingId(id)
+            dispatch({ type: 'GO_TO_STEP', payload: paymentStepIndex })
+          }}
         />
       )}
       {state.currentStep === 4 && !isAuthenticated && (
@@ -139,7 +151,18 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
           totalPrice={totalPrice}
           depositAmount={depositAmount}
           dispatch={dispatch}
-          onBookingComplete={() => setBookingComplete(true)}
+          onBookingCreated={(id) => {
+            setBookingId(id)
+            dispatch({ type: 'GO_TO_STEP', payload: paymentStepIndex })
+          }}
+        />
+      )}
+      {showPayment && (
+        <PaymentStep
+          bookingId={bookingId}
+          depositAmount={depositAmount}
+          totalPrice={totalPrice}
+          onPaymentComplete={() => setPaymentComplete(true)}
         />
       )}
     </div>

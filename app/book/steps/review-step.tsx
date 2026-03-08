@@ -12,7 +12,7 @@ interface Props {
   totalPrice: number
   depositAmount: number
   isAuthenticated: boolean
-  onBookingComplete: () => void
+  onBookingCreated: (bookingId: string) => void
 }
 
 function formatDate(dateStr: string) {
@@ -32,17 +32,19 @@ export function ReviewStep({
   totalPrice,
   depositAmount,
   isAuthenticated,
-  onBookingComplete,
+  onBookingCreated,
 }: Props) {
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState('')
 
   function handleSubmit() {
+    // Not authenticated — go to auth step first
     if (!isAuthenticated) {
       dispatch({ type: 'NEXT_STEP' })
       return
     }
 
+    // Authenticated — create booking then proceed to payment
     startTransition(async () => {
       const result = await createBooking({
         vehicleMake: state.vehicleMake,
@@ -64,8 +66,8 @@ export function ReviewStep({
         depositAmount,
       })
 
-      if (result.success) {
-        onBookingComplete()
+      if (result.success && result.bookingId) {
+        onBookingCreated(result.bookingId)
       } else {
         setError(result.error || 'Something went wrong')
       }
@@ -178,8 +180,12 @@ export function ReviewStep({
             <span>Total</span>
             <span className="text-[#6B4EFF]">${totalPrice.toFixed(2)}</span>
           </div>
+          <div className="flex justify-between text-sm text-[#6B4EFF]/80 pt-1">
+            <span>Due today (30% deposit)</span>
+            <span>${depositAmount.toFixed(2)}</span>
+          </div>
           <p className="text-white/30 text-xs">
-            30% deposit (${depositAmount.toFixed(2)}) collected via the app after confirmation.
+            Remaining ${(totalPrice - depositAmount).toFixed(2)} collected at your appointment.
           </p>
         </div>
       </div>
@@ -201,9 +207,9 @@ export function ReviewStep({
           className="flex-1 py-3 rounded-xl text-sm font-semibold bg-[#6B4EFF] hover:bg-[#5A3EEE] disabled:opacity-50 transition-colors"
         >
           {isPending
-            ? 'Submitting...'
+            ? 'Creating booking...'
             : isAuthenticated
-              ? 'Submit Booking'
+              ? 'Continue to Payment'
               : 'Continue to Sign In'}
         </button>
       </div>

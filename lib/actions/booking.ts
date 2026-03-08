@@ -91,3 +91,72 @@ export async function createBooking(payload: BookingPayload): Promise<BookingRes
 
   return { success: true, bookingId: session.id }
 }
+
+// --------------- Stripe Payment ---------------
+
+interface PaymentIntentResult {
+  success: boolean
+  clientSecret?: string
+  paymentIntentId?: string
+  error?: string
+}
+
+export async function createPaymentIntent(
+  sessionId: string,
+  amount: number,
+): Promise<PaymentIntentResult> {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return { success: false, error: 'Not authenticated' }
+
+  const { data, error } = await supabase.functions.invoke(
+    'create-payment-intent',
+    { body: { sessionId, amount } },
+  )
+
+  if (error || !data) {
+    return {
+      success: false,
+      error: (data as Record<string, string>)?.error || 'Failed to create payment intent',
+    }
+  }
+
+  return {
+    success: true,
+    clientSecret: data.clientSecret,
+    paymentIntentId: data.paymentIntentId,
+  }
+}
+
+interface MarkPaidResult {
+  success: boolean
+  error?: string
+}
+
+export async function markDepositPaid(
+  sessionId: string,
+  paymentIntentId: string,
+): Promise<MarkPaidResult> {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return { success: false, error: 'Not authenticated' }
+
+  const { error } = await supabase
+    .from('detailing_sessions')
+    .update({
+      deposit_paid: true,
+      stripe_deposit_payment_id: paymentIntentId,
+      current_status: 'confirmed',
+    })
+    .eq('id', sessionId)
+    .eq('user_id', user.id)
+
+  if (error) return { success: false, error: 'Failed to update payment status' }
+  return { success: true }
+}
