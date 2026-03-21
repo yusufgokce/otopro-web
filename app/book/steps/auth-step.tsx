@@ -15,7 +15,7 @@ interface Props {
 }
 
 const inputClass =
-  'w-full bg-dune border border-dark-grey rounded-xl px-4 py-3 text-white placeholder:text-grey focus:border-gold-400 focus:outline-none focus:ring-1 focus:ring-gold-400/50 transition-colors'
+  'w-full bg-surface-widget border border-dark-grey rounded-xl px-4 py-3 text-foreground placeholder:text-grey focus:border-accent-blue-500 focus:outline-none focus:ring-1 focus:ring-accent-blue-500/50 transition-colors'
 
 const labelClass = 'block text-sm text-dark-silver mb-1.5'
 
@@ -106,12 +106,12 @@ export function AuthStep({
       </p>
 
       {/* Toggle */}
-      <div className="flex bg-dune rounded-xl p-1 mb-8">
+      <div className="flex bg-surface-widget rounded-xl p-1 mb-8">
         <button
           onClick={() => { setMode('signup'); setError('') }}
           className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors ${
             mode === 'signup'
-              ? 'bg-gold-400 text-black'
+              ? 'bg-accent-blue-500 text-white'
               : 'text-dark-silver hover:text-silver'
           }`}
         >
@@ -121,7 +121,7 @@ export function AuthStep({
           onClick={() => { setMode('signin'); setError('') }}
           className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors ${
             mode === 'signin'
-              ? 'bg-gold-400 text-black'
+              ? 'bg-accent-blue-500 text-white'
               : 'text-dark-silver hover:text-silver'
           }`}
         >
@@ -129,7 +129,7 @@ export function AuthStep({
         </button>
       </div>
 
-      <div className="bg-dune border border-dark-grey rounded-2xl p-6">
+      <div className="bg-surface-widget border border-dark-grey rounded-2xl p-6">
         {mode === 'signup' ? (
           <div className="space-y-4">
             <div>
@@ -204,7 +204,7 @@ export function AuthStep({
         <button
           onClick={mode === 'signup' ? handleSignUp : handleSignIn}
           disabled={isPending}
-          className="w-full mt-6 py-3.5 rounded-xl text-sm font-semibold bg-gold-400 hover:bg-gold-500 text-black disabled:opacity-50 transition-colors"
+          className="w-full mt-6 py-3.5 rounded-xl text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-50 transition-colors"
         >
           {isPending
             ? 'Processing...'
@@ -217,7 +217,7 @@ export function AuthStep({
       <div className="flex gap-3 mt-6">
         <button
           onClick={() => dispatch({ type: 'PREV_STEP' })}
-          className="w-full px-6 py-3 rounded-xl text-sm font-medium bg-dune border border-dark-grey hover:bg-dark-grey transition-colors text-center"
+          className="w-full px-6 py-3 rounded-xl text-sm font-medium bg-surface-widget border border-dark-grey hover:bg-surface-widget-hover transition-colors text-center"
         >
           Back to Review
         </button>

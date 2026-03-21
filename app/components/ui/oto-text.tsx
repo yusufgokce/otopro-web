@@ -6,7 +6,7 @@ import { type HTMLAttributes, type ElementType, type ReactNode } from "react";
 //
 // Usage:
 //   <OtoText.H1>Page Title</OtoText.H1>
-//   <OtoText.H3 className="text-gold-400">Accented Title</OtoText.H3>
+//   <OtoText.H3 className="text-accent-blue-500">Accented Title</OtoText.H3>
 //   <OtoText.Body>Regular paragraph text</OtoText.Body>
 //   <OtoText.Caption>2 hours ago</OtoText.Caption>
 //   <OtoText.Label>SECTION HEADER</OtoText.Label>
@@ -42,49 +42,49 @@ function createTextComponent(
 /** 32px, bold, -0.5 tracking — Page titles, hero text */
 const H1 = createTextComponent(
   "h1",
-  "text-[32px] font-bold tracking-[-0.5px] text-white",
+  "text-[32px] font-bold tracking-[-0.5px] text-foreground",
   "OtoText.H1"
 );
 
 /** 28px, bold, -0.5 tracking — Section headers */
 const H2 = createTextComponent(
   "h2",
-  "text-[28px] font-bold tracking-[-0.5px] text-white",
+  "text-[28px] font-bold tracking-[-0.5px] text-foreground",
   "OtoText.H2"
 );
 
 /** 24px, semibold, -0.3 tracking — Card titles, dialogs */
 const H3 = createTextComponent(
   "h3",
-  "text-2xl font-semibold tracking-[-0.3px] text-white",
+  "text-2xl font-semibold tracking-[-0.3px] text-foreground",
   "OtoText.H3"
 );
 
 /** 20px, semibold, -0.2 tracking — Sub-section headers */
 const H4 = createTextComponent(
   "h4",
-  "text-xl font-semibold tracking-[-0.2px] text-white",
+  "text-xl font-semibold tracking-[-0.2px] text-foreground",
   "OtoText.H4"
 );
 
 /** 18px, semibold, -0.1 tracking — Group headers */
 const H5 = createTextComponent(
   "h5",
-  "text-lg font-semibold tracking-[-0.1px] text-white",
+  "text-lg font-semibold tracking-[-0.1px] text-foreground",
   "OtoText.H5"
 );
 
 /** 16px, semibold — List item titles, bold body */
 const H6 = createTextComponent(
   "h6",
-  "text-base font-semibold text-white",
+  "text-base font-semibold text-foreground",
   "OtoText.H6"
 );
 
 /** 14px, semibold, 0.1 tracking — Small headers, labels */
 const H7 = createTextComponent(
   "span",
-  "text-sm font-semibold tracking-[0.1px] text-white",
+  "text-sm font-semibold tracking-[0.1px] text-foreground",
   "OtoText.H7"
 );
 
@@ -93,7 +93,7 @@ const H7 = createTextComponent(
 /** 16px, normal, 1.5 leading — Default body text */
 const Body = createTextComponent(
   "p",
-  "text-base font-normal leading-relaxed text-white",
+  "text-base font-normal leading-relaxed text-foreground",
   "OtoText.Body"
 );
 

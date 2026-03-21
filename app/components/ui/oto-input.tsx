@@ -71,12 +71,12 @@ export const OtoInput = forwardRef<HTMLInputElement, OtoInputProps>(
             aria-invalid={hasError}
             aria-describedby={hasError ? `${id}-error` : undefined}
             className={[
-              "w-full bg-dune border rounded-lg px-4 py-3 text-white",
+              "w-full bg-surface-widget border rounded-lg px-4 py-3 text-foreground",
               "placeholder:text-grey",
               "focus:outline-none focus:ring-1 transition-colors",
               hasError
                 ? "border-red-400 focus:border-red-400 focus:ring-red-400/50"
-                : "border-dark-grey focus:border-gold-400 focus:ring-gold-400/50",
+                : "border-dark-grey focus:border-accent-blue-500 focus:ring-accent-blue-500/50",
               prefixIcon ? "pl-11" : "",
               suffixIcon ? "pr-11" : "",
               disabled ? "cursor-not-allowed" : "",
@@ -165,12 +165,12 @@ export const OtoSelect = forwardRef<HTMLSelectElement, OtoSelectProps>(
           disabled={disabled}
           aria-invalid={hasError}
           className={[
-            "w-full bg-dune border rounded-lg px-4 py-3 text-white",
+            "w-full bg-surface-widget border rounded-lg px-4 py-3 text-foreground",
             "focus:outline-none focus:ring-1 transition-colors",
             "appearance-none cursor-pointer",
             hasError
               ? "border-red-400 focus:border-red-400 focus:ring-red-400/50"
-              : "border-dark-grey focus:border-gold-400 focus:ring-gold-400/50",
+              : "border-dark-grey focus:border-accent-blue-500 focus:ring-accent-blue-500/50",
             disabled ? "cursor-not-allowed" : "",
           ]
             .filter(Boolean)

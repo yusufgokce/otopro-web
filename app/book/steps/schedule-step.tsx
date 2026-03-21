@@ -81,12 +81,12 @@ export function ScheduleStep({ state, dispatch }: Props) {
       </p>
 
       {/* Calendar */}
-      <div className="bg-dune border border-dark-grey rounded-2xl p-6 mb-6">
+      <div className="bg-surface-widget border border-dark-grey rounded-2xl p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={prevMonth}
             disabled={!canGoPrev}
-            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-dark-grey disabled:opacity-20 disabled:cursor-not-allowed"
+            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-widget-hover disabled:opacity-20 disabled:cursor-not-allowed"
           >
             &larr;
           </button>
@@ -94,7 +94,7 @@ export function ScheduleStep({ state, dispatch }: Props) {
           <button
             onClick={nextMonth}
             disabled={!canGoNext}
-            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-dark-grey disabled:opacity-20 disabled:cursor-not-allowed"
+            className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-widget-hover disabled:opacity-20 disabled:cursor-not-allowed"
           >
             &rarr;
           </button>
@@ -129,13 +129,13 @@ export function ScheduleStep({ state, dispatch }: Props) {
                   disabled
                     ? 'text-dark-grey cursor-not-allowed'
                     : selected
-                      ? 'bg-gold-400 text-black font-semibold'
-                      : 'hover:bg-dark-grey text-silver'
+                      ? 'bg-accent-blue-500 text-white font-semibold'
+                      : 'hover:bg-surface-widget-hover text-silver'
                 }`}
               >
                 {day}
                 {isToday && !selected && (
-                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-gold-400" />
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-accent-blue-500" />
                 )}
               </button>
             )
@@ -153,8 +153,8 @@ export function ScheduleStep({ state, dispatch }: Props) {
               onClick={() => dispatch({ type: 'SET_TIME', payload: slot })}
               className={`py-3 rounded-xl text-sm font-medium border transition-colors ${
                 selected
-                  ? 'bg-gold-400 border-gold-400 text-black'
-                  : 'bg-dune border-dark-grey text-dark-silver hover:border-gold-400/40'
+                  ? 'bg-accent-blue-500 border-accent-blue-500 text-white'
+                  : 'bg-surface-widget border-dark-grey text-dark-silver hover:border-accent-blue-500/40'
               }`}
             >
               {TIME_SLOT_LABELS[slot]}
@@ -167,14 +167,14 @@ export function ScheduleStep({ state, dispatch }: Props) {
       <div className="flex gap-3">
         <button
           onClick={() => dispatch({ type: 'PREV_STEP' })}
-          className="px-6 py-3 rounded-xl text-sm font-medium bg-dune border border-dark-grey hover:bg-dark-grey transition-colors"
+          className="px-6 py-3 rounded-xl text-sm font-medium bg-surface-widget border border-dark-grey hover:bg-surface-widget-hover transition-colors"
         >
           Back
         </button>
         <button
           onClick={() => dispatch({ type: 'NEXT_STEP' })}
           disabled={!state.selectedDate || !state.selectedTime}
-          className="flex-1 py-3 rounded-xl text-sm font-semibold bg-gold-400 hover:bg-gold-500 text-black disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 py-3 rounded-xl text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
           Continue
         </button>

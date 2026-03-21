@@ -101,7 +101,7 @@ const SECTIONS = [
 
 export default function FaqPage() {
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-surface-primary text-foreground">
       <Nav />
 
       <section className="max-w-3xl mx-auto px-6 pt-16 pb-24">
@@ -114,12 +114,12 @@ export default function FaqPage() {
 
         {SECTIONS.map((section) => (
           <div key={section.title} className="mb-12">
-            <h2 className="text-xl font-bold mb-4 text-gold-300">{section.title}</h2>
+            <h2 className="text-xl font-bold mb-4 text-accent-blue-300">{section.title}</h2>
             <div className="space-y-3">
               {section.faqs.map((faq) => (
                 <details
                   key={faq.q}
-                  className="group bg-dune border border-dark-grey rounded-xl overflow-hidden"
+                  className="group bg-surface-widget border border-dark-grey rounded-xl overflow-hidden"
                 >
                   <summary className="cursor-pointer p-5 text-sm font-medium flex items-center justify-between list-none">
                     {faq.q}
@@ -140,7 +140,7 @@ export default function FaqPage() {
           <p className="text-grey text-sm mb-4">Still have questions?</p>
           <Link
             href="/book"
-            className="inline-block bg-gold-400 hover:bg-gold-500 text-black font-semibold px-8 py-3.5 rounded-2xl transition-colors"
+            className="inline-block bg-accent-blue-500 hover:bg-accent-blue-600 text-white font-semibold px-8 py-3.5 rounded-2xl transition-colors"
           >
             Book a Detail
           </Link>

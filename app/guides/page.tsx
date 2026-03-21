@@ -27,13 +27,13 @@ export default function GuidesPage() {
   }))
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-surface-primary text-foreground">
       <Nav />
 
       <div className="max-w-6xl mx-auto px-6 pt-12 pb-24">
         {/* Header */}
         <div className="text-center mb-16">
-          <div className="inline-block bg-gold-400/10 border border-gold-400/30 text-gold-300 text-sm font-medium px-4 py-1.5 rounded-full mb-6">
+          <div className="inline-block bg-accent-blue-500/10 border border-accent-blue-500/30 text-accent-blue-300 text-sm font-medium px-4 py-1.5 rounded-full mb-6">
             {articles.length} guides
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4">
@@ -59,7 +59,7 @@ export default function GuidesPage() {
                   <Link
                     key={article.slug}
                     href={`/guides/${article.slug}`}
-                    className="group bg-dune border border-dark-grey rounded-2xl p-6 hover:border-gold-400/40 hover:bg-dune/80 transition-all"
+                    className="group bg-surface-widget border border-dark-grey rounded-2xl p-6 hover:border-accent-blue-500/40 hover:bg-surface-widget/80 transition-all"
                   >
                     <div className="flex items-center gap-2 mb-3">
                       <span
@@ -67,7 +67,7 @@ export default function GuidesPage() {
                           category === 'canada'
                             ? 'bg-blue-400/10 text-blue-400'
                             : category === 'ceramic'
-                            ? 'bg-gold-400/10 text-gold-400'
+                            ? 'bg-accent-blue-500/10 text-accent-blue-500'
                             : 'bg-green-400/10 text-green-400'
                         }`}
                       >
@@ -76,14 +76,14 @@ export default function GuidesPage() {
                       <span className="text-dark-grey text-xs">{article.readTime} min read</span>
                     </div>
 
-                    <h3 className="font-semibold text-base leading-snug mb-2 group-hover:text-gold-300 transition-colors">
+                    <h3 className="font-semibold text-base leading-snug mb-2 group-hover:text-accent-blue-300 transition-colors">
                       {article.title}
                     </h3>
                     <p className="text-grey text-sm leading-relaxed line-clamp-2">
                       {article.description}
                     </p>
 
-                    <div className="mt-4 text-gold-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="mt-4 text-accent-blue-500 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
                       Read guide &rarr;
                     </div>
                   </Link>

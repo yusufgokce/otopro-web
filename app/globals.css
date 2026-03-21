@@ -51,11 +51,98 @@
   --color-gold-200: #E9E3DE;
   --color-gold-100: #F7F6F2;
 
+  /* ── Teal ── */
+  --color-teal-800: #1a3a38;
+  --color-teal-700: #155e5a;
+  --color-teal-600: #0d7d76;
+  --color-teal-500: #14b8a6;
+  --color-teal-400: #2dd4bf;
+  --color-teal-300: #5eead4;
+  --color-teal-200: #99f6e4;
+  --color-teal-100: #ccfbf1;
+
+  /* ── Accent Blue ── */
+  --color-accent-blue-800: #1e2a4a;
+  --color-accent-blue-700: #1d3f7a;
+  --color-accent-blue-600: #2558b0;
+  --color-accent-blue-500: #3A82FF;
+  --color-accent-blue-400: #5B9AFF;
+  --color-accent-blue-300: #8AB8FF;
+  --color-accent-blue-200: #B8D4FF;
+  --color-accent-blue-100: #E0EDFF;
+
+  /* ── Theme-aware Surfaces (resolve via CSS vars for light/dark switching) ── */
+  --color-surface-primary: var(--surface-primary);
+  --color-surface-widget: var(--surface-widget);
+  --color-surface-widget-hover: var(--surface-widget-hover);
+
+  /* ── Theme-aware Foreground (text) ── */
+  --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-muted: var(--foreground-muted);
+
+  /* ── Theme-aware Semantic: Destructive ── */
+  --color-destructive-bg: var(--destructive-bg);
+  --color-destructive-text: var(--destructive-text);
+
+  /* ── Theme-aware Semantic: Success / Confirmation ── */
+  --color-success-bg: var(--success-bg);
+  --color-success-text: var(--success-text);
+  --color-success-toggle: var(--success-toggle);
+
   /* ── Font ── */
   --font-sans: var(--font-jost);
 }
 
+/* ══════════════════════════════════════════════════════════
+   Dark Mode (default)
+   ══════════════════════════════════════════════════════════ */
+:root {
+  --surface-primary: rgb(13, 13, 13);
+  --surface-widget: rgb(28, 28, 28);
+  --surface-widget-hover: rgb(46, 46, 46);
+
+  --foreground: #ffffff;
+  --foreground-secondary: #a9a6a4;
+  --foreground-muted: #94908d;
+
+  --destructive-bg: rgb(58, 31, 28);
+  --destructive-text: rgb(232, 107, 89);
+
+  --success-bg: rgb(30, 36, 29);
+  --success-text: rgb(98, 186, 110);
+  --success-toggle: rgb(98, 186, 110);
+}
+
+/* ══════════════════════════════════════════════════════════
+   Light Mode
+   ══════════════════════════════════════════════════════════ */
+.light {
+  --surface-primary: #F2F3F5;
+  --surface-widget: #FFFFFF;
+  --surface-widget-hover: #E8E9EB;
+
+  --foreground: #111111;
+  --foreground-secondary: #4B5563;
+  --foreground-muted: #6B7280;
+
+  --destructive-bg: #FEF2F2;
+  --destructive-text: #DC2626;
+
+  --success-bg: #F0FDF4;
+  --success-text: #16A34A;
+  --success-toggle: #16A34A;
+
+  /* Override neutrals for light mode contrast */
+  --color-dark-grey: #D1D5DB;
+  --color-grey: #6B7280;
+  --color-dark-silver: #4B5563;
+  --color-silver: #374151;
+  --color-dune: #E5E7EB;
+  --color-black: #F3F4F6;
+}
+
 body {
-  background: var(--color-black);
-  color: #ffffff;
+  background: var(--surface-primary);
+  color: var(--foreground);
 }

@@ -82,7 +82,7 @@ function PaymentForm({
       <button
         type="submit"
         disabled={!stripe || processing}
-        className="w-full mt-6 py-3.5 rounded-xl text-sm font-semibold bg-gold-400 hover:bg-gold-500 text-black disabled:opacity-50 transition-colors"
+        className="w-full mt-6 py-3.5 rounded-xl text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-50 transition-colors"
       >
         {processing ? 'Processing...' : `Pay Deposit — $${depositAmount.toFixed(2)}`}
       </button>
@@ -140,12 +140,12 @@ export function PaymentStep({
       </p>
 
       {/* Price summary */}
-      <div className="bg-dune border border-dark-grey rounded-2xl p-5 mb-6 space-y-2">
+      <div className="bg-surface-widget border border-dark-grey rounded-2xl p-5 mb-6 space-y-2">
         <div className="flex justify-between text-sm">
           <span className="text-dark-silver">Service total</span>
           <span>${totalPrice.toFixed(2)}</span>
         </div>
-        <div className="flex justify-between text-sm font-semibold text-gold-400">
+        <div className="flex justify-between text-sm font-semibold text-accent-blue-500">
           <span>Due today (30% deposit)</span>
           <span>${depositAmount.toFixed(2)}</span>
         </div>
@@ -158,7 +158,7 @@ export function PaymentStep({
       {/* Stripe Elements */}
       {loading && (
         <div className="flex items-center justify-center py-16">
-          <div className="w-6 h-6 border-2 border-gold-400 border-t-transparent rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-accent-blue-500 border-t-transparent rounded-full animate-spin" />
           <span className="ml-3 text-dark-silver text-sm">Setting up payment...</span>
         </div>
       )}
@@ -168,7 +168,7 @@ export function PaymentStep({
           <p className="text-red-400 text-sm mb-4">{error}</p>
           <button
             onClick={initPayment}
-            className="px-6 py-2.5 rounded-xl text-sm font-medium bg-dune border border-dark-grey hover:bg-dark-grey transition-colors"
+            className="px-6 py-2.5 rounded-xl text-sm font-medium bg-surface-widget border border-dark-grey hover:bg-surface-widget-hover transition-colors"
           >
             Try again
           </button>
@@ -176,7 +176,7 @@ export function PaymentStep({
       )}
 
       {clientSecret && paymentIntentId && !loading && (
-        <div className="bg-dune border border-dark-grey rounded-2xl p-6">
+        <div className="bg-surface-widget border border-dark-grey rounded-2xl p-6">
           <Elements
             stripe={stripePromise}
             options={{
@@ -184,23 +184,23 @@ export function PaymentStep({
               appearance: {
                 theme: 'night',
                 variables: {
-                  colorPrimary: '#F9A471',
-                  colorBackground: '#32302f',
+                  colorPrimary: '#3A82FF',
+                  colorBackground: 'rgb(28, 28, 28)',
                   colorText: '#FFFFFF',
                   colorTextSecondary: '#a9a6a4',
-                  colorDanger: '#F76B5A',
+                  colorDanger: 'rgb(232, 107, 89)',
                   fontFamily: 'Jost, sans-serif',
                   borderRadius: '12px',
                   spacingUnit: '4px',
                 },
                 rules: {
                   '.Input': {
-                    backgroundColor: '#181716',
-                    border: '1px solid #615e5c',
+                    backgroundColor: 'rgb(13, 13, 13)',
+                    border: '1px solid rgb(46, 46, 46)',
                   },
                   '.Input:focus': {
-                    borderColor: '#F9A471',
-                    boxShadow: '0 0 0 1px rgba(249,164,113,0.5)',
+                    borderColor: '#3A82FF',
+                    boxShadow: '0 0 0 1px rgba(58,130,255,0.5)',
                   },
                   '.Label': {
                     color: '#a9a6a4',

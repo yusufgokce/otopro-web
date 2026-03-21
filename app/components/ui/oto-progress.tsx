@@ -51,7 +51,7 @@ export function OtoProgressBar({
   } else if (colorMode === "static") {
     fillStyle = {
       width: `${percent}%`,
-      backgroundColor: "#F9A471", // gold-400
+      backgroundColor: "#F9A471", // accent-blue-500
     };
   } else {
     fillStyle = {
@@ -102,7 +102,7 @@ export function OtoStepProgress({
           key={i}
           className={[
             "h-1 flex-1 rounded-full transition-colors duration-300",
-            i <= current ? "bg-gold-400" : "bg-dark-grey",
+            i <= current ? "bg-accent-blue-500" : "bg-dark-grey",
           ].join(" ")}
         />
       ))}
@@ -140,10 +140,10 @@ export function OtoStepCircles({
                 className={[
                   "w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors",
                   isCompleted
-                    ? "bg-gold-400 text-black"
+                    ? "bg-accent-blue-500 text-white"
                     : isActive
-                      ? "bg-gold-400/20 text-gold-400 border-2 border-gold-400"
-                      : "bg-dune text-grey border border-dark-grey",
+                      ? "bg-accent-blue-500/20 text-accent-blue-500 border-2 border-accent-blue-500"
+                      : "bg-surface-widget text-grey border border-dark-grey",
                 ].join(" ")}
               >
                 {isCompleted ? (
@@ -158,7 +158,7 @@ export function OtoStepCircles({
               <span
                 className={[
                   "hidden sm:block mt-1.5 text-xs whitespace-nowrap",
-                  isActive ? "text-gold-400 font-semibold" : "text-grey",
+                  isActive ? "text-accent-blue-500 font-semibold" : "text-grey",
                 ].join(" ")}
               >
                 {label}
@@ -170,7 +170,7 @@ export function OtoStepCircles({
               <div
                 className={[
                   "w-8 md:w-12 h-px mx-1",
-                  isCompleted ? "bg-gold-400" : "bg-dark-grey",
+                  isCompleted ? "bg-accent-blue-500" : "bg-dark-grey",
                 ].join(" ")}
               />
             )}

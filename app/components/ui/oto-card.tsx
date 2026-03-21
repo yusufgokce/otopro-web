@@ -29,13 +29,13 @@ const paddingClasses: Record<OtoCardPadding, string> = {
 
 const variantClasses: Record<OtoCardVariant, string> = {
   elevated: [
-    "bg-dune border border-dark-grey rounded-2xl",
+    "bg-surface-widget border border-dark-grey rounded-2xl",
     "shadow-[0_2px_8px_rgba(0,0,0,0.2)]",
   ].join(" "),
 
-  outlined: "bg-dune border border-dark-grey rounded-2xl",
+  outlined: "bg-surface-widget border border-dark-grey rounded-2xl",
 
-  filled: "bg-dune/60 rounded-2xl",
+  filled: "bg-surface-widget/60 rounded-2xl",
 };
 
 export function OtoCard({
@@ -67,9 +67,9 @@ export function OtoCard({
       className={[
         variantClasses[variant],
         paddingClasses[padding],
-        highlight ? "border-gold-400" : "",
+        highlight ? "border-accent-blue-500" : "",
         isInteractive
-          ? "cursor-pointer transition-colors hover:border-gold-400/40"
+          ? "cursor-pointer transition-colors hover:border-accent-blue-500/40"
           : "",
         className,
       ]

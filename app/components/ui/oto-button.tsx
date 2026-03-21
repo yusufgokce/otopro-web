@@ -49,32 +49,32 @@ const iconSizeClasses: Record<OtoButtonSize, string> = {
 
 const variantClasses: Record<OtoButtonVariant, string> = {
   primary: [
-    "bg-gold-400 text-black font-semibold",
-    "hover:bg-gold-500 active:bg-gold-600",
+    "bg-accent-blue-500 text-white font-semibold",
+    "hover:bg-accent-blue-600 active:bg-accent-blue-700",
     "disabled:bg-grey disabled:text-dark-silver",
   ].join(" "),
 
   secondary: [
-    "bg-dune text-white font-semibold border border-dark-grey",
-    "hover:bg-dark-grey/60 active:bg-dark-grey",
-    "disabled:bg-dune disabled:text-grey disabled:border-dark-grey/50",
+    "bg-surface-widget text-foreground font-semibold border border-dark-grey",
+    "hover:bg-surface-widget-hover active:bg-dark-grey",
+    "disabled:bg-surface-widget disabled:text-grey disabled:border-dark-grey/50",
   ].join(" "),
 
   outline: [
-    "bg-transparent text-gold-400 font-semibold border-[1.5px] border-gold-400",
-    "hover:bg-gold-400/10 active:bg-gold-400/20",
+    "bg-transparent text-accent-blue-500 font-semibold border-[1.5px] border-accent-blue-500",
+    "hover:bg-accent-blue-500/10 active:bg-accent-blue-500/20",
     "disabled:border-grey disabled:text-grey",
   ].join(" "),
 
   ghost: [
-    "bg-transparent text-white font-semibold",
-    "hover:bg-white/[0.06] active:bg-white/10",
+    "bg-transparent text-foreground font-semibold",
+    "hover:bg-foreground/[0.06] active:bg-foreground/10",
     "disabled:text-grey",
   ].join(" "),
 
   destructive: [
-    "bg-red-400 text-white font-semibold",
-    "hover:bg-red-500 active:bg-red-600",
+    "bg-destructive-bg text-destructive-text font-semibold",
+    "hover:bg-red-800/80 active:bg-red-700/80",
     "disabled:bg-grey disabled:text-dark-silver",
   ].join(" "),
 };

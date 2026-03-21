@@ -44,6 +44,7 @@ export const PROVINCES = [
 
 export interface WizardState {
   currentStep: number
+  editingFromReview: boolean
   selectedService: ServiceType | null
   selectedDate: string | null
   selectedTime: TimeSlot | null
@@ -66,6 +67,8 @@ export type WizardAction =
   | { type: 'SET_VEHICLE'; payload: Partial<Pick<WizardState, 'vehicleMake' | 'vehicleModel' | 'vehicleYear' | 'vehicleColor' | 'bodyStyle'>> }
   | { type: 'SET_ADDRESS'; payload: Partial<Pick<WizardState, 'streetAddress' | 'city' | 'province' | 'postalCode' | 'specialRequests'>> }
   | { type: 'GO_TO_STEP'; payload: number }
+  | { type: 'EDIT_FROM_REVIEW'; payload: number }
+  | { type: 'RETURN_TO_REVIEW' }
   | { type: 'NEXT_STEP' }
   | { type: 'PREV_STEP' }
 

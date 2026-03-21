@@ -25,8 +25,8 @@ export function OtoLink({
       target="_blank"
       rel="noopener noreferrer"
       className={[
-        "text-gold-400 underline underline-offset-2 decoration-gold-400/60",
-        "hover:decoration-gold-400 hover:text-gold-300",
+        "text-accent-blue-500 underline underline-offset-2 decoration-accent-blue-500/60",
+        "hover:decoration-accent-blue-500 hover:text-accent-blue-300",
         "transition-colors",
         className,
       ]

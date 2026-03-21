@@ -2,13 +2,13 @@ import Link from 'next/link'
 
 export function Footer() {
   return (
-    <footer className="border-t border-dune bg-black">
+    <footer className="border-t border-dark-grey/30 bg-surface-primary">
       <div className="max-w-6xl mx-auto px-6 py-14">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <span className="text-xl font-bold tracking-tight">
-              Oto<span className="text-gold-400">Pro</span>
+              Oto<span className="text-accent-blue-500">Pro</span>
             </span>
             <p className="text-grey text-sm mt-3 leading-relaxed">
               Professional mobile car detailing, delivered to your driveway.
@@ -46,7 +46,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-dune pt-6 text-center text-dark-grey text-sm">
+        <div className="border-t border-dark-grey/30 pt-6 text-center text-dark-grey text-sm">
           &copy; {new Date().getFullYear()} OtoPro. All rights reserved.
         </div>
       </div>

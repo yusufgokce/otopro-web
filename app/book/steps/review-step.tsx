@@ -37,6 +37,10 @@ export function ReviewStep({
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState('')
 
+  function handleEdit(step: number) {
+    dispatch({ type: 'EDIT_FROM_REVIEW', payload: step })
+  }
+
   function handleSubmit() {
     if (!isAuthenticated) {
       dispatch({ type: 'NEXT_STEP' })
@@ -79,7 +83,7 @@ export function ReviewStep({
         Make sure everything looks good
       </p>
 
-      <div className="bg-dune border border-dark-grey rounded-2xl divide-y divide-dune/50">
+      <div className="bg-surface-widget border border-dark-grey rounded-2xl divide-y divide-dune/50">
         {/* Service */}
         <div className="p-5 flex justify-between items-start">
           <div>
@@ -90,8 +94,8 @@ export function ReviewStep({
             </p>
           </div>
           <button
-            onClick={() => dispatch({ type: 'GO_TO_STEP', payload: 0 })}
-            className="text-gold-300 text-sm hover:text-gold-400"
+            onClick={() => handleEdit(0)}
+            className="text-accent-blue-300 text-sm hover:text-accent-blue-500"
           >
             Edit
           </button>
@@ -109,8 +113,8 @@ export function ReviewStep({
             </p>
           </div>
           <button
-            onClick={() => dispatch({ type: 'GO_TO_STEP', payload: 1 })}
-            className="text-gold-300 text-sm hover:text-gold-400"
+            onClick={() => handleEdit(1)}
+            className="text-accent-blue-300 text-sm hover:text-accent-blue-500"
           >
             Edit
           </button>
@@ -128,8 +132,8 @@ export function ReviewStep({
             </p>
           </div>
           <button
-            onClick={() => dispatch({ type: 'GO_TO_STEP', payload: 2 })}
-            className="text-gold-300 text-sm hover:text-gold-400"
+            onClick={() => handleEdit(2)}
+            className="text-accent-blue-300 text-sm hover:text-accent-blue-500"
           >
             Edit
           </button>
@@ -145,8 +149,8 @@ export function ReviewStep({
             </p>
           </div>
           <button
-            onClick={() => dispatch({ type: 'GO_TO_STEP', payload: 2 })}
-            className="text-gold-300 text-sm hover:text-gold-400"
+            onClick={() => handleEdit(3)}
+            className="text-accent-blue-300 text-sm hover:text-accent-blue-500"
           >
             Edit
           </button>
@@ -174,11 +178,11 @@ export function ReviewStep({
               <span>+${surcharge.toFixed(2)}</span>
             </div>
           )}
-          <div className="flex justify-between font-bold text-lg pt-2 border-t border-dune/50">
+          <div className="flex justify-between font-bold text-lg pt-2 border-t border-surface-widget/50">
             <span>Total</span>
-            <span className="text-gold-400">${totalPrice.toFixed(2)}</span>
+            <span className="text-accent-blue-500">${totalPrice.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-sm text-gold-400/80 pt-1">
+          <div className="flex justify-between text-sm text-accent-blue-500/80 pt-1">
             <span>Due today (30% deposit)</span>
             <span>${depositAmount.toFixed(2)}</span>
           </div>
@@ -195,14 +199,14 @@ export function ReviewStep({
       <div className="flex gap-3 mt-6">
         <button
           onClick={() => dispatch({ type: 'PREV_STEP' })}
-          className="px-6 py-3 rounded-xl text-sm font-medium bg-dune border border-dark-grey hover:bg-dark-grey transition-colors"
+          className="px-6 py-3 rounded-xl text-sm font-medium bg-surface-widget border border-dark-grey hover:bg-surface-widget-hover transition-colors"
         >
           Back
         </button>
         <button
           onClick={handleSubmit}
           disabled={isPending}
-          className="flex-1 py-3 rounded-xl text-sm font-semibold bg-gold-400 hover:bg-gold-500 text-black disabled:opacity-50 transition-colors"
+          className="flex-1 py-3 rounded-xl text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-50 transition-colors"
         >
           {isPending
             ? 'Creating booking...'

@@ -32,10 +32,10 @@ export function OtoAccordion({
       className={`group border-b border-dark-grey ${className}`}
     >
       <summary className="flex items-center justify-between py-5 cursor-pointer list-none select-none">
-        <span className="text-base font-semibold text-white pr-4">
+        <span className="text-base font-semibold text-foreground pr-4">
           {title}
         </span>
-        <span className="text-gold-400 text-xl font-light transition-transform duration-200 group-open:rotate-45 shrink-0">
+        <span className="text-accent-blue-500 text-xl font-light transition-transform duration-200 group-open:rotate-45 shrink-0">
           +
         </span>
       </summary>

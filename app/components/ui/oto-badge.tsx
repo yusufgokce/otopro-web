@@ -29,13 +29,13 @@ interface OtoBadgeProps {
 }
 
 const variantClasses: Record<OtoBadgeVariant, string> = {
-  success: "bg-green-800/60 text-green-300",
-  warning: "bg-gold-800/60 text-gold-400",
-  error: "bg-red-800/60 text-red-300",
+  success: "bg-success-bg text-success-text",
+  warning: "bg-accent-blue-800/60 text-accent-blue-500",
+  error: "bg-destructive-bg text-destructive-text",
   info: "bg-blue-800/60 text-blue-300",
   pending: "bg-dark-grey/60 text-grey",
-  promotion: "bg-gold-800/60 text-gold-300",
-  neutral: "bg-dune text-dark-silver",
+  promotion: "bg-accent-blue-800/60 text-accent-blue-300",
+  neutral: "bg-surface-widget text-dark-silver",
 };
 
 const sizeClasses: Record<OtoBadgeSize, string> = {

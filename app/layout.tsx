@@ -23,13 +23,27 @@ export const metadata: Metadata = {
   },
 };
 
+// Inline script to apply saved theme before first paint (prevents flash)
+const themeScript = `
+(function(){
+  try {
+    if(localStorage.getItem('otopro-theme')==='light'){
+      document.documentElement.classList.add('light');
+    }
+  } catch(e){}
+})();
+`;
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className={`${jost.variable} font-sans`}>{children}</body>
     </html>
   );

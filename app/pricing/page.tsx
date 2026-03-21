@@ -89,7 +89,7 @@ const SERVICE_NAMES = Object.keys(PACKAGES[0].services)
 
 export default function PricingPage() {
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-surface-primary text-foreground">
       <Nav />
 
       <section className="max-w-6xl mx-auto px-6 pt-16 pb-24">
@@ -107,26 +107,26 @@ export default function PricingPage() {
               key={pkg.name}
               className={`relative rounded-2xl p-6 border ${
                 pkg.tag
-                  ? 'bg-gold-400/[0.08] border-gold-400/40'
-                  : 'bg-dune border-dark-grey'
+                  ? 'bg-accent-blue-500/[0.08] border-accent-blue-500/40'
+                  : 'bg-surface-widget border-dark-grey'
               }`}
             >
               {pkg.tag && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold-400 text-black text-xs font-semibold px-3 py-1 rounded-full">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent-blue-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
                   {pkg.tag}
                 </div>
               )}
               <h3 className="font-semibold text-lg mb-1">{pkg.name}</h3>
               <div className="flex items-end gap-1 mb-4">
-                <span className="text-4xl font-bold text-gold-400">${pkg.price}</span>
+                <span className="text-4xl font-bold text-accent-blue-500">${pkg.price}</span>
                 <span className="text-grey text-sm mb-1">~{pkg.hours} hrs</span>
               </div>
               <Link
                 href="/book"
                 className={`block text-center py-3 rounded-xl text-sm font-semibold transition-colors ${
                   pkg.tag
-                    ? 'bg-gold-400 hover:bg-gold-500 text-black'
-                    : 'bg-dark-grey hover:bg-grey border border-dark-grey text-white'
+                    ? 'bg-accent-blue-500 hover:bg-accent-blue-600 text-white'
+                    : 'bg-dark-grey hover:bg-grey border border-dark-grey text-foreground'
                 }`}
               >
                 Book Now
@@ -138,10 +138,10 @@ export default function PricingPage() {
         {/* Comparison table */}
         <h2 className="text-2xl font-bold text-center mb-8">Package comparison</h2>
 
-        <div className="bg-dune border border-dark-grey rounded-2xl overflow-x-auto">
+        <div className="bg-surface-widget border border-dark-grey rounded-2xl overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-dune">
+              <tr className="border-b border-surface-widget">
                 <th className="text-left p-4 text-grey font-medium">Service</th>
                 {PACKAGES.map((p) => (
                   <th key={p.name} className="p-4 text-center font-semibold">
@@ -154,13 +154,13 @@ export default function PricingPage() {
               {SERVICE_NAMES.map((service, i) => (
                 <tr
                   key={service}
-                  className={i < SERVICE_NAMES.length - 1 ? 'border-b border-dune/50' : ''}
+                  className={i < SERVICE_NAMES.length - 1 ? 'border-b border-surface-widget/50' : ''}
                 >
                   <td className="p-4 text-dark-silver">{service}</td>
                   {PACKAGES.map((pkg) => (
                     <td key={pkg.name} className="p-4 text-center">
                       {pkg.services[service as keyof typeof pkg.services] ? (
-                        <span className="text-gold-400">&#10003;</span>
+                        <span className="text-accent-blue-500">&#10003;</span>
                       ) : (
                         <span className="text-dark-grey">&mdash;</span>
                       )}
@@ -178,16 +178,16 @@ export default function PricingPage() {
           Larger vehicles require more time and product. Here&apos;s the breakdown.
         </p>
 
-        <div className="max-w-md mx-auto bg-dune border border-dark-grey rounded-2xl overflow-hidden">
+        <div className="max-w-md mx-auto bg-surface-widget border border-dark-grey rounded-2xl overflow-hidden">
           {SURCHARGES.map((s, i) => (
             <div
               key={s.style}
               className={`flex items-center justify-between p-4 text-sm ${
-                i < SURCHARGES.length - 1 ? 'border-b border-dune/50' : ''
+                i < SURCHARGES.length - 1 ? 'border-b border-surface-widget/50' : ''
               }`}
             >
               <span className="text-silver">{s.style}</span>
-              <span className={s.surcharge === '$0' ? 'text-dark-grey' : 'text-gold-300 font-medium'}>
+              <span className={s.surcharge === '$0' ? 'text-dark-grey' : 'text-accent-blue-300 font-medium'}>
                 {s.surcharge}
               </span>
             </div>
@@ -198,7 +198,7 @@ export default function PricingPage() {
         <div className="text-center mt-16">
           <Link
             href="/book"
-            className="inline-block bg-gold-400 hover:bg-gold-500 text-black font-semibold px-10 py-4 rounded-2xl text-lg transition-colors"
+            className="inline-block bg-accent-blue-500 hover:bg-accent-blue-600 text-white font-semibold px-10 py-4 rounded-2xl text-lg transition-colors"
           >
             Book a Detail
           </Link>

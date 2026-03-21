@@ -66,7 +66,7 @@ export async function createBooking(payload: BookingPayload): Promise<BookingRes
   const { data: session, error: sessionErr } = await supabase
     .from('detailing_sessions')
     .insert({
-      user_id: user.id,
+      customer_id: user.id,
       vehicle_id: vehicleId,
       service_type_id: payload.serviceTypeId,
       scheduled_date: payload.scheduledDate,
@@ -155,7 +155,7 @@ export async function markDepositPaid(
       current_status: 'confirmed',
     })
     .eq('id', sessionId)
-    .eq('user_id', user.id)
+    .eq('customer_id', user.id)
 
   if (error) return { success: false, error: 'Failed to update payment status' }
   return { success: true }

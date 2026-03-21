@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { BookingWizard } from './booking-wizard'
 import { Nav } from '../components/nav'
@@ -19,14 +20,16 @@ export default async function BookPage() {
   const { data: { user } } = await supabase.auth.getUser()
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-surface-primary text-foreground">
       <Nav />
 
-      <BookingWizard
-        services={services ?? []}
-        bodyStylePricing={bodyStylePricing ?? []}
-        isAuthenticated={!!user}
-      />
+      <Suspense>
+        <BookingWizard
+          services={services ?? []}
+          bodyStylePricing={bodyStylePricing ?? []}
+          isAuthenticated={!!user}
+        />
+      </Suspense>
     </main>
   )
 }
