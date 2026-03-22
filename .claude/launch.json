@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "otopro-web",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--prefix", "/Users/yusuf/Desktop/otopro-web"],
+      "runtimeExecutable": "/Users/yusuf/Desktop/otopro-web/node_modules/.bin/next",
+      "runtimeArgs": ["dev", "--dir", "/Users/yusuf/Desktop/otopro-web"],
       "port": 3000
     }
   ]

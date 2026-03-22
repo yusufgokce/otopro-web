@@ -3,8 +3,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import type { ServiceType, BodyStylePricing, BodyStyle } from '@/lib/types/booking'
-import { OtoText } from './ui/oto-text'
-import { OtoCard } from './ui/oto-card'
 
 // ── Types ──
 
@@ -19,7 +17,7 @@ interface Meta {
 function ChevronIcon({ className = '' }: { className?: string }) {
   return (
     <svg
-      className={`w-4 h-4 text-grey pointer-events-none ${className}`}
+      className={`w-4 h-4 text-foreground-muted pointer-events-none ${className}`}
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -117,19 +115,21 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
   }
 
   const selectClass =
-    'w-full appearance-none bg-surface-widget border border-dark-grey rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-accent-blue-500 transition-colors cursor-pointer'
+    'w-full appearance-none bg-surface-widget border border-dark-grey/60 rounded-2xl px-4 py-3.5 text-sm text-foreground placeholder:text-foreground-muted focus:outline-none focus:border-accent-blue-500 focus:ring-1 focus:ring-accent-blue-500/30 transition-all cursor-pointer'
 
   return (
     <div>
       {/* ── Vehicle Selection Card ── */}
       <div className="max-w-3xl mx-auto">
-        <OtoCard variant="outlined" padding="lg" className="bg-surface-widget/80 backdrop-blur">
-          <OtoText.H5 className="mb-1 text-center">Get your price instantly</OtoText.H5>
-          <OtoText.BodySmall className="mb-6 text-center">
-            Enter your vehicle details to see exact pricing.
-          </OtoText.BodySmall>
+        <div className="bg-surface-widget border border-dark-grey/40 rounded-3xl p-8 md:p-10 shadow-[0_4px_40px_rgba(0,0,0,0.08)]">
+          <p className="text-xs font-semibold tracking-[1.5px] uppercase text-foreground-muted mb-1 text-center">
+            Instant Quote
+          </p>
+          <h3 className="text-lg font-semibold text-foreground mb-6 text-center">
+            Enter your vehicle details
+          </h3>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
             {/* Year */}
             <div className="relative">
               <select
@@ -147,7 +147,7 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                   </option>
                 ))}
               </select>
-              <ChevronIcon className="absolute right-3 top-1/2 -translate-y-1/2" />
+              <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
             </div>
 
             {/* Make */}
@@ -171,7 +171,7 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                   </option>
                 ))}
               </select>
-              <ChevronIcon className="absolute right-3 top-1/2 -translate-y-1/2" />
+              <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
             </div>
 
             {/* Model */}
@@ -186,7 +186,7 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                 disabled={!make || isLoadingModels}
               >
                 <option value="">
-                  {isLoadingModels ? 'Loading…' : 'Model'}
+                  {isLoadingModels ? 'Loading...' : 'Model'}
                 </option>
                 {models.map((m) => (
                   <option key={m} value={m}>
@@ -194,7 +194,7 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                   </option>
                 ))}
               </select>
-              <ChevronIcon className="absolute right-3 top-1/2 -translate-y-1/2" />
+              <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
             </div>
 
             {/* Body Style */}
@@ -220,11 +220,11 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                   )
                 })}
               </select>
-              <ChevronIcon className="absolute right-3 top-1/2 -translate-y-1/2" />
+              <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
             </div>
           </div>
 
-          {/* Optional color + CTA row */}
+          {/* Color + CTA */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="relative">
               <select
@@ -239,41 +239,43 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                   </option>
                 ))}
               </select>
-              <ChevronIcon className="absolute right-3 top-1/2 -translate-y-1/2" />
+              <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
             </div>
 
             <button
               onClick={handleSeePricing}
               disabled={!canSeePricing}
-              className="col-span-1 md:col-span-3 h-[46px] rounded-xl text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              className="col-span-1 md:col-span-3 h-[50px] rounded-full text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
             >
               {canSeePricing
                 ? `See pricing for ${year} ${make} ${model}`
                 : 'See My Price'}
             </button>
           </div>
-        </OtoCard>
+        </div>
       </div>
 
       {/* ── Pricing Results ── */}
       {showPricing && (
-        <div id="pricing-results" className="max-w-6xl mx-auto pt-16 pb-8">
-          <div className="text-center mb-10">
-            <OtoText.Label className="mb-2">
+        <div id="pricing-results" className="max-w-6xl mx-auto pt-20 pb-8">
+          <div className="text-center mb-12">
+            <p className="text-xs font-semibold tracking-[1.5px] uppercase text-foreground-muted mb-3">
               Pricing for your {year} {make} {model}
               {surcharge > 0 && (
                 <span className="text-accent-blue-400 ml-2">
                   ({bodyStyle} +${surcharge})
                 </span>
               )}
-            </OtoText.Label>
-            <OtoText.H2 className="mb-2">Choose your package</OtoText.H2>
-            <OtoText.BodySmall>
+            </p>
+            <h2 className="text-[32px] font-bold tracking-[-0.5px] text-foreground mb-3">
+              Choose your package
+            </h2>
+            <p className="text-sm text-foreground-muted">
               All prices include mobile service at your location. No hidden fees.
-            </OtoText.BodySmall>
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {services
               .filter((s) => s.is_active)
               .map((service) => {
@@ -283,56 +285,57 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                   service.name.toLowerCase().includes('complete')
 
                 return (
-                  <OtoCard
+                  <div
                     key={service.id}
-                    variant="outlined"
-                    padding="md"
-                    highlight={isComplete}
-                    className={`relative ${isComplete ? 'bg-accent-blue-800/20' : ''}`}
+                    className={`relative bg-surface-widget border rounded-3xl p-7 transition-all ${
+                      isComplete
+                        ? 'border-accent-blue-500 shadow-[0_0_0_1px_rgba(58,130,255,0.3),0_8px_40px_rgba(58,130,255,0.1)]'
+                        : 'border-dark-grey/40 hover:border-dark-grey'
+                    }`}
                   >
                     {isComplete && (
-                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent-blue-500 text-white text-[10px] font-semibold px-3 py-1 rounded-full">
+                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent-blue-500 text-white text-[10px] font-semibold tracking-[0.5px] uppercase px-4 py-1 rounded-full">
                         Most Popular
                       </span>
                     )}
 
-                    <OtoText.H5 className="mb-1">{service.name}</OtoText.H5>
-                    <OtoText.BodySmall className="mb-4">{service.description}</OtoText.BodySmall>
+                    <h3 className="text-lg font-semibold text-foreground mb-1">{service.name}</h3>
+                    <p className="text-sm text-foreground-muted mb-5 leading-relaxed">{service.description}</p>
 
-                    <div className="flex items-end gap-2 mb-6">
-                      <span className="text-4xl font-bold text-accent-blue-500">
+                    <div className="flex items-baseline gap-2 mb-7">
+                      <span className="text-4xl font-bold text-foreground">
                         ${total}
                       </span>
                       {surcharge > 0 && (
-                        <span className="text-sm text-grey line-through mb-1">
+                        <span className="text-sm text-foreground-muted line-through">
                           ${service.base_price}
                         </span>
                       )}
-                      <span className="text-xs text-grey mb-1">
+                      <span className="text-xs text-foreground-muted ml-auto">
                         ~{service.estimated_duration_hours} hrs
                       </span>
                     </div>
 
                     <Link
                       href={buildBookLink(service.id)}
-                      className={`block text-center py-3 rounded-xl text-sm font-semibold transition-colors ${
+                      className={`block text-center py-3.5 rounded-full text-sm font-semibold transition-all ${
                         isComplete
                           ? 'bg-accent-blue-500 hover:bg-accent-blue-600 text-white'
-                          : 'bg-surface-widget hover:bg-surface-widget-hover border border-dark-grey text-foreground'
+                          : 'bg-surface-widget hover:bg-surface-widget-hover border border-dark-grey/60 text-foreground'
                       }`}
                     >
                       Book Now — ${total}
                     </Link>
-                  </OtoCard>
+                  </div>
                 )
               })}
           </div>
 
-          <OtoText.BodySmall className="text-center mt-6">
-            <Link href="/pricing" className="text-accent-blue-400 hover:underline">
+          <p className="text-center mt-8 text-sm text-foreground-muted">
+            <Link href="/pricing" className="text-accent-blue-400 hover:text-accent-blue-300 transition-colors">
               View full pricing comparison &rarr;
             </Link>
-          </OtoText.BodySmall>
+          </p>
         </div>
       )}
     </div>

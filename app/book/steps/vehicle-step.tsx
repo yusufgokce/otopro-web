@@ -90,8 +90,8 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-1">
+    <div>
+      <div>
         <h1 className="text-3xl font-bold text-center mb-2">Your vehicle</h1>
         <p className="text-dark-silver text-center mb-10">
           Tell us about your car so we can prepare the right service

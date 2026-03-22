@@ -177,8 +177,8 @@ export function LocationStep({ state, dispatch }: Props) {
   }
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-1 min-h-0">
+    <div>
+      <div>
         <h1 className="text-3xl font-bold text-center mb-2">Service location</h1>
         <p className="text-foreground-secondary text-center mb-6">
           Where should we come to detail your vehicle?
@@ -232,22 +232,24 @@ export function LocationStep({ state, dispatch }: Props) {
         {/* ── Enter address manually ── */}
         <div>
           <p className="text-sm font-medium text-foreground mb-2">Enter address manually</p>
-          <div className="bg-surface-widget border border-dark-grey rounded-2xl p-4">
-            {/* Row 1: Street, City, Province, Postal — all horizontal */}
-            <div className="grid grid-cols-12 gap-3">
-              <div className="col-span-4">
-                <label className={labelClass}>Street Address</label>
-                <input
-                  className={inputClass}
-                  placeholder="123 Main St"
-                  value={state.streetAddress}
-                  onChange={(e) =>
-                    dispatch({ type: 'SET_ADDRESS', payload: { streetAddress: e.target.value } })
-                  }
-                />
-                {errors.street && <span className="text-red-400 text-xs">{errors.street}</span>}
-              </div>
-              <div className="col-span-3">
+          <div className="bg-surface-widget border border-dark-grey rounded-2xl p-4 space-y-3">
+            {/* Row 1: Street Address (full width) */}
+            <div>
+              <label className={labelClass}>Street Address</label>
+              <input
+                className={inputClass}
+                placeholder="123 Main St"
+                value={state.streetAddress}
+                onChange={(e) =>
+                  dispatch({ type: 'SET_ADDRESS', payload: { streetAddress: e.target.value } })
+                }
+              />
+              {errors.street && <span className="text-red-400 text-xs">{errors.street}</span>}
+            </div>
+
+            {/* Row 2: City, Province, Postal */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="col-span-2 sm:col-span-1">
                 <label className={labelClass}>City</label>
                 <input
                   className={inputClass}
@@ -259,7 +261,7 @@ export function LocationStep({ state, dispatch }: Props) {
                 />
                 {errors.city && <span className="text-red-400 text-xs">{errors.city}</span>}
               </div>
-              <div className="col-span-2">
+              <div>
                 <label className={labelClass}>Province</label>
                 <div className="relative">
                   <select
@@ -278,11 +280,11 @@ export function LocationStep({ state, dispatch }: Props) {
                 </div>
                 {errors.province && <span className="text-red-400 text-xs">{errors.province}</span>}
               </div>
-              <div className="col-span-3">
+              <div>
                 <label className={labelClass}>
                   Postal Code
                   {postalNeeded && !state.postalCode && (
-                    <span className="text-accent-blue-500 ml-1">← enter here</span>
+                    <span className="text-accent-blue-500 ml-1">← enter</span>
                   )}
                 </label>
                 <input
@@ -299,8 +301,8 @@ export function LocationStep({ state, dispatch }: Props) {
               </div>
             </div>
 
-            {/* Row 2: Special requests */}
-            <div className="mt-3">
+            {/* Row 3: Special requests */}
+            <div>
               <label className={labelClass}>Special Requests (optional)</label>
               <textarea
                 className={`${inputClass} resize-none`}
