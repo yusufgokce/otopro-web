@@ -1,18 +1,18 @@
-import { Nav } from '../components/nav'
+import { NavServer } from '../components/nav-server'
 import { Footer } from '../components/footer'
 import { FaqSections } from './faq-sections'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'FAQ | OtoPro',
-  description: 'Frequently asked questions about OtoPro mobile car detailing services.',
+  title: 'FAQ | otopro',
+  description: 'Frequently asked questions about otopro mobile car detailing services.',
 }
 
 export default function FaqPage() {
   return (
     <main className="min-h-screen bg-surface-primary text-foreground">
-      <Nav />
+      <NavServer />
 
       <section className="max-w-3xl mx-auto px-6 pt-16 pb-24">
         <p className="text-xs font-semibold tracking-[1.5px] uppercase text-foreground-muted text-center mb-3">
@@ -22,7 +22,7 @@ export default function FaqPage() {
           Frequently Asked Questions
         </h1>
         <p className="text-foreground-muted text-center mb-14">
-          Everything you need to know about OtoPro.
+          Everything you need to know about otopro.
         </p>
 
         <FaqSections />

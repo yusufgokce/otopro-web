@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { articles, categoryLabels, type Article } from '@/lib/articles'
-import { Nav } from '../components/nav'
+import { NavServer } from '../components/nav-server'
 import { Footer } from '../components/footer'
 
 export const metadata: Metadata = {
-  title: 'Car Detailing Guides & Tips | OtoPro',
+  title: 'Car Detailing Guides & Tips | otopro',
   description:
     'Expert guides on ceramic coating, paint protection, and car care for Canadian drivers. Learn how to protect your vehicle from road salt, harsh winters, and UV damage.',
 }
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const categoryOrder: Article['category'][] = ['canada', 'ceramic', 'general']
 
 const categoryDescriptions: Record<Article['category'], string> = {
-  canada: 'Protecting your vehicle in Canada\'s harsh climate — salt, UV, and freeze-thaw cycles.',
+  canada: 'Protecting your vehicle in Canada\'s harsh climate. Salt, UV, and freeze-thaw cycles.',
   ceramic: 'Everything you need to know about ceramic coatings, from how they work to long-term care.',
   general: 'Detailing fundamentals: paint correction, clay bar, interior care, and more.',
 }
@@ -28,7 +28,7 @@ export default function GuidesPage() {
 
   return (
     <main className="min-h-screen bg-surface-primary text-foreground">
-      <Nav />
+      <NavServer />
 
       <div className="max-w-6xl mx-auto px-6 pt-12 pb-24">
         {/* Header */}
@@ -40,7 +40,7 @@ export default function GuidesPage() {
             Car Detailing Guides
           </h1>
           <p className="text-dark-silver text-lg max-w-2xl mx-auto">
-            In-depth guides on protecting your car in Canada — from ceramic coating
+            In-depth guides on protecting your car in Canada, from ceramic coating
             science to seasonal detailing schedules.
           </p>
         </div>

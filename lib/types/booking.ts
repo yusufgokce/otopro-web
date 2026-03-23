@@ -45,6 +45,8 @@ export const PROVINCES = [
 export interface WizardState {
   currentStep: number
   editingFromReview: boolean
+  /** Used internally to remember which step to return to after editing */
+  _returnToStep?: number
   selectedService: ServiceType | null
   selectedDate: string | null
   selectedTime: TimeSlot | null
@@ -90,4 +92,6 @@ export interface BookingPayload {
   bodyStyleSurcharge: number
   totalPrice: number
   depositAmount: number
+  /** Email address for guest checkouts — stored on detailing_sessions.guest_email */
+  guestEmail?: string
 }

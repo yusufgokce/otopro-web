@@ -84,7 +84,7 @@ function PaymentForm({
         disabled={!stripe || processing}
         className="w-full mt-6 py-3.5 rounded-xl text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-50 transition-colors"
       >
-        {processing ? 'Processing...' : `Pay Deposit — $${depositAmount.toFixed(2)}`}
+        {processing ? 'Processing...' : `Pay Deposit $${depositAmount.toFixed(2)}`}
       </button>
     </form>
   )

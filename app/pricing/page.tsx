@@ -1,10 +1,10 @@
 import Link from 'next/link'
-import { Nav } from '../components/nav'
+import { NavServer } from '../components/nav-server'
 import { Footer } from '../components/footer'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Pricing | OtoPro',
+  title: 'Pricing | otopro',
   description: 'Transparent pricing for professional mobile car detailing. No hidden fees.',
 }
 
@@ -20,7 +20,7 @@ const PACKAGES = [
       'Tire shine application': true,
       'Window & mirror cleaning': true,
       'Door jamb detail': true,
-      'High-gloss spray wax': true,
+      'High gloss spray wax': true,
       'Wheel degreasing': false,
       'Deep vacuum & crevice detail': false,
       'Full surface wipe-down': false,
@@ -42,7 +42,7 @@ const PACKAGES = [
       'Tire shine application': true,
       'Window & mirror cleaning': true,
       'Door jamb detail': true,
-      'High-gloss spray wax': true,
+      'High gloss spray wax': true,
       'Wheel degreasing': true,
       'Deep vacuum & crevice detail': true,
       'Full surface wipe-down': true,
@@ -64,7 +64,7 @@ const PACKAGES = [
       'Tire shine application': false,
       'Window & mirror cleaning': true,
       'Door jamb detail': false,
-      'High-gloss spray wax': false,
+      'High gloss spray wax': false,
       'Wheel degreasing': false,
       'Deep vacuum & crevice detail': true,
       'Full surface wipe-down': true,
@@ -90,7 +90,7 @@ const SERVICE_NAMES = Object.keys(PACKAGES[0].services)
 export default function PricingPage() {
   return (
     <main className="min-h-screen bg-surface-primary text-foreground">
-      <Nav />
+      <NavServer />
 
       <section className="max-w-6xl mx-auto px-6 pt-16 pb-24">
         <h1 className="text-4xl sm:text-5xl font-bold text-center mb-3">
@@ -119,7 +119,7 @@ export default function PricingPage() {
               <h3 className="font-semibold text-lg mb-1">{pkg.name}</h3>
               <div className="flex items-end gap-1 mb-4">
                 <span className="text-4xl font-bold text-accent-blue-500">${pkg.price}</span>
-                <span className="text-grey text-sm mb-1">~{pkg.hours} hrs</span>
+                <span className="text-grey text-sm mb-1">{pkg.hours} Hours</span>
               </div>
               <Link
                 href="/book"

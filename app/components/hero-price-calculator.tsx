@@ -93,7 +93,7 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
   const surcharge =
     bodyStylePricing.find((b) => b.body_style === bodyStyle)?.surcharge ?? 0
 
-  const canSeePricing = year && make && model && bodyStyle
+  const canSeePricing = year && make && model && bodyStyle && color
 
   const handleSeePricing = () => {
     if (!canSeePricing) return
@@ -115,13 +115,13 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
   }
 
   const selectClass =
-    'w-full appearance-none bg-surface-widget border border-dark-grey/60 rounded-2xl px-4 py-3.5 text-sm text-foreground placeholder:text-foreground-muted focus:outline-none focus:border-accent-blue-500 focus:ring-1 focus:ring-accent-blue-500/30 transition-all cursor-pointer'
+    'w-full appearance-none bg-surface-widget border border-dark-grey/20 rounded-2xl px-4 py-3.5 text-sm text-foreground placeholder:text-foreground-muted focus:outline-none focus:border-accent-blue-500 focus:ring-1 focus:ring-accent-blue-500/30 transition-all cursor-pointer'
 
   return (
     <div>
       {/* ── Vehicle Selection Card ── */}
       <div className="max-w-3xl mx-auto">
-        <div className="bg-surface-widget border border-dark-grey/40 rounded-3xl p-8 md:p-10 shadow-[0_4px_40px_rgba(0,0,0,0.08)]">
+        <div className="bg-surface-widget border border-dark-grey/15 rounded-3xl p-8 md:p-10 shadow-[0_4px_40px_rgba(0,0,0,0.08)]">
           <p className="text-xs font-semibold tracking-[1.5px] uppercase text-foreground-muted mb-1 text-center">
             Instant Quote
           </p>
@@ -129,7 +129,7 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
             Enter your vehicle details
           </h3>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-3">
             {/* Year */}
             <div className="relative">
               <select
@@ -222,17 +222,15 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
               </select>
               <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
             </div>
-          </div>
 
-          {/* Color + CTA */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {/* Color */}
             <div className="relative">
               <select
                 value={color}
                 onChange={(e) => setColor(e.target.value)}
                 className={selectClass}
               >
-                <option value="">Color (optional)</option>
+                <option value="">Color</option>
                 {meta?.colors.map((c) => (
                   <option key={c} value={c}>
                     {c}
@@ -241,17 +239,18 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
               </select>
               <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
             </div>
-
-            <button
-              onClick={handleSeePricing}
-              disabled={!canSeePricing}
-              className="col-span-1 md:col-span-3 h-[50px] rounded-full text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
-            >
-              {canSeePricing
-                ? `See pricing for ${year} ${make} ${model}`
-                : 'See My Price'}
-            </button>
           </div>
+
+          {/* CTA */}
+          <button
+            onClick={handleSeePricing}
+            disabled={!canSeePricing}
+            className="w-full h-[50px] rounded-full text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
+          >
+            {canSeePricing
+              ? `See pricing for ${year} ${make} ${model}`
+              : 'See My Price'}
+          </button>
         </div>
       </div>
 
@@ -290,7 +289,7 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                     className={`relative bg-surface-widget border rounded-3xl p-7 transition-all ${
                       isComplete
                         ? 'border-accent-blue-500 shadow-[0_0_0_1px_rgba(58,130,255,0.3),0_8px_40px_rgba(58,130,255,0.1)]'
-                        : 'border-dark-grey/40 hover:border-dark-grey'
+                        : 'border-dark-grey/15 hover:border-dark-grey'
                     }`}
                   >
                     {isComplete && (
@@ -312,7 +311,7 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                         </span>
                       )}
                       <span className="text-xs text-foreground-muted ml-auto">
-                        ~{service.estimated_duration_hours} hrs
+                        {service.estimated_duration_hours} Hours
                       </span>
                     </div>
 
@@ -321,10 +320,10 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                       className={`block text-center py-3.5 rounded-full text-sm font-semibold transition-all ${
                         isComplete
                           ? 'bg-accent-blue-500 hover:bg-accent-blue-600 text-white'
-                          : 'bg-surface-widget hover:bg-surface-widget-hover border border-dark-grey/60 text-foreground'
+                          : 'bg-surface-widget hover:bg-surface-widget-hover border border-dark-grey/20 text-foreground'
                       }`}
                     >
-                      Book Now — ${total}
+                      Book
                     </Link>
                   </div>
                 )

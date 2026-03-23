@@ -1,11 +1,11 @@
 import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { BookingWizard } from './booking-wizard'
-import { Nav } from '../components/nav'
+import { NavServer } from '../components/nav-server'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Book a Detail | OtoPro',
+  title: 'Book a Detail | otopro',
   description: 'Book professional car detailing at your location in under a minute.',
 }
 
@@ -21,7 +21,7 @@ export default async function BookPage() {
 
   return (
     <main className="min-h-screen bg-surface-primary text-foreground">
-      <Nav />
+      <NavServer />
 
       <Suspense>
         <BookingWizard

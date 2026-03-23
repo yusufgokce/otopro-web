@@ -16,7 +16,7 @@ const SECTIONS = [
       },
       {
         q: 'Do I need to provide water or electricity?',
-        a: 'No. Our detailers arrive fully equipped with everything needed — water, power, tools, and premium products. All you need to do is tell us where your car is parked.',
+        a: 'No. Our detailers arrive fully equipped with everything needed . Water, power, tools, and premium products are all included. All you need to do is tell us where your car is parked.',
       },
       {
         q: 'What products do your detailers use?',
@@ -49,7 +49,7 @@ const SECTIONS = [
       },
       {
         q: 'Can I book recurring detailing sessions?',
-        a: 'Yes. Through the OtoPro app you can set up recurring bookings on a schedule that works for you — weekly, bi-weekly, or monthly.',
+        a: 'Yes. Through the otopro app you can set up recurring bookings on a schedule that works for you , weekly, bi-weekly, or monthly.',
       },
     ],
   },
@@ -66,7 +66,7 @@ const SECTIONS = [
       },
       {
         q: 'How does payment work?',
-        a: 'A 30% deposit is collected when your booking is confirmed. The remaining balance is paid after the service is completed. All payments are handled securely through the OtoPro app.',
+        a: 'A 30% deposit is collected when your booking is confirmed. The remaining balance is paid after the service is completed. All payments are handled securely through the otopro app.',
       },
       {
         q: 'Do you offer discounts for multiple vehicles?',
@@ -79,15 +79,15 @@ const SECTIONS = [
     faqs: [
       {
         q: "What if I'm not satisfied with the results?",
-        a: "We stand behind our work. If you're not happy with any aspect of the service, contact us within 24 hours and we'll make it right — free of charge.",
+        a: "We stand behind our work. If you're not happy with any aspect of the service, contact us within 24 hours and we'll make it right , free of charge.",
       },
       {
         q: 'Are your detailers insured?',
-        a: 'Yes. All OtoPro detailers carry comprehensive liability insurance. Your vehicle is protected throughout the entire service.',
+        a: 'Yes. All otopro detailers carry comprehensive liability insurance. Your vehicle is protected throughout the entire service.',
       },
       {
         q: 'What happens if my car is damaged during detailing?',
-        a: "In the unlikely event of any damage, our insurance policy covers it fully. Document the issue and contact us immediately — we'll handle the rest.",
+        a: "In the unlikely event of any damage, our insurance policy covers it fully. Document the issue and contact us immediately . We'll handle the rest.",
       },
     ],
   },

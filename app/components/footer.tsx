@@ -2,13 +2,13 @@ import Link from 'next/link'
 
 export function Footer() {
   return (
-    <footer className="border-t border-dark-grey/20">
+    <footer className="border-t border-dark-grey/10">
       <div className="max-w-6xl mx-auto px-6 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-14">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <span className="text-xl font-bold tracking-tight">
-              Oto<span className="text-accent-blue-500">Pro</span>
+              oto<span className="text-accent-blue-500">pro</span>
             </span>
             <p className="text-foreground-muted text-sm mt-4 leading-relaxed max-w-[240px]">
               Professional mobile car detailing, delivered to your driveway.
@@ -49,7 +49,7 @@ export function Footer() {
                 FAQ
               </Link>
               <Link href="/book" className="block text-sm text-foreground-muted hover:text-foreground transition-colors">
-                Book Online
+                Book
               </Link>
             </div>
           </div>
@@ -71,8 +71,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-dark-grey/20 pt-8 text-center text-foreground-muted text-xs tracking-[0.3px]">
-          &copy; {new Date().getFullYear()} OtoPro. All rights reserved.
+        <div className="border-t border-dark-grey/10 pt-8 text-center text-foreground-muted text-xs tracking-[0.3px]">
+          &copy; {new Date().getFullYear()} otopro. All rights reserved.
         </div>
       </div>
     </footer>

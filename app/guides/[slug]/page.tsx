@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getArticle, articles, categoryLabels } from '@/lib/articles'
-import { Nav } from '../../components/nav'
+import { NavServer } from '../../components/nav-server'
 import { Footer } from '../../components/footer'
 
 interface Props {
@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = getArticle(slug)
   if (!article) return {}
   return {
-    title: `${article.title} | OtoPro Guides`,
+    title: `${article.title} | otopro Guides`,
     description: article.description,
     openGraph: {
       title: article.title,
@@ -46,7 +46,7 @@ export default async function ArticlePage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-surface-primary text-foreground">
-      <Nav />
+      <NavServer />
 
       <article className="max-w-3xl mx-auto px-6 pt-10 pb-24">
         {/* Meta */}
@@ -100,7 +100,7 @@ export default async function ArticlePage({ params }: Props) {
         <div className="mt-10 bg-surface-widget border border-dark-grey rounded-2xl p-8 text-center">
           <h3 className="font-semibold text-lg mb-2">Ready to protect your car?</h3>
           <p className="text-dark-silver text-sm mb-6">
-            Book a professional detail or ceramic coating with OtoPro — at your location.
+            Book a professional detail or ceramic coating with otopro — at your location.
           </p>
           <Link
             href="/book"

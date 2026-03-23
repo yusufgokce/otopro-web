@@ -79,8 +79,6 @@ export function LocationStep({ state, dispatch }: Props) {
   const [suggestions, setSuggestions] = useState<NominatimResult[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [searching, setSearching] = useState(false)
-  const [postalNeeded, setPostalNeeded] = useState(false)
-  const postalRef = useRef<HTMLInputElement>(null)
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
@@ -150,10 +148,6 @@ export function LocationStep({ state, dispatch }: Props) {
 
     setSearchQuery('')
     setSuggestions([])
-    setPostalNeeded(true)
-
-    // Focus the postal code input so user can type it right away
-    setTimeout(() => postalRef.current?.focus(), 100)
   }
 
   function validate(): boolean {
@@ -161,11 +155,6 @@ export function LocationStep({ state, dispatch }: Props) {
     if (!state.streetAddress.trim()) e.street = 'Required'
     if (!state.city.trim()) e.city = 'Required'
     if (!state.province) e.province = 'Required'
-    if (!state.postalCode.trim()) {
-      e.postal = 'Required'
-    } else if (!/^[A-Za-z]\d[A-Za-z]\s?\d[A-Za-z]\d$/.test(state.postalCode.trim())) {
-      e.postal = 'Format: A1A 1A1'
-    }
     setErrors(e)
     return Object.keys(e).length === 0
   }
@@ -248,8 +237,8 @@ export function LocationStep({ state, dispatch }: Props) {
             </div>
 
             {/* Row 2: City, Province, Postal */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              <div className="col-span-2 sm:col-span-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
                 <label className={labelClass}>City</label>
                 <input
                   className={inputClass}
@@ -279,25 +268,6 @@ export function LocationStep({ state, dispatch }: Props) {
                   <ChevronIcon />
                 </div>
                 {errors.province && <span className="text-red-400 text-xs">{errors.province}</span>}
-              </div>
-              <div>
-                <label className={labelClass}>
-                  Postal Code
-                  {postalNeeded && !state.postalCode && (
-                    <span className="text-accent-blue-500 ml-1">← enter</span>
-                  )}
-                </label>
-                <input
-                  ref={postalRef}
-                  className={`${inputClass} ${postalNeeded && !state.postalCode ? 'border-accent-blue-500 ring-1 ring-accent-blue-500/50' : ''}`}
-                  placeholder="M5H 2N2"
-                  value={state.postalCode}
-                  onChange={(e) => {
-                    dispatch({ type: 'SET_ADDRESS', payload: { postalCode: e.target.value.toUpperCase() } })
-                    if (e.target.value) setPostalNeeded(false)
-                  }}
-                />
-                {errors.postal && <span className="text-red-400 text-xs">{errors.postal}</span>}
               </div>
             </div>
 

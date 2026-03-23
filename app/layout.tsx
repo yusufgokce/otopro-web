@@ -5,19 +5,19 @@ import "./globals.css";
 const jost = Jost({ subsets: ["latin"], variable: "--font-jost" });
 
 export const metadata: Metadata = {
-  title: "OtoPro — Premium Mobile Car Detailing",
+  title: "otopro | Premium Mobile Car Detailing",
   description:
-    "Book professional car detailing at your location. OtoPro brings the detail shop to your driveway — interior, exterior, ceramic coating and more.",
+    "Book professional car detailing at your location. otopro brings the detail shop to your driveway. Interior, exterior, ceramic coating and more.",
   keywords: [
     "car detailing",
     "mobile detailing",
     "auto detailing",
     "ceramic coating",
     "car wash",
-    "OtoPro",
+    "otopro",
   ],
   openGraph: {
-    title: "OtoPro — Premium Mobile Car Detailing",
+    title: "otopro | Premium Mobile Car Detailing",
     description: "Professional car detailing, at your door.",
     type: "website",
   },

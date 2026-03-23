@@ -68,10 +68,6 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
     dispatch({ type: 'SET_VEHICLE', payload: { vehicleMake: make, vehicleModel: '' } })
   }
 
-  function getSurcharge(bs: BodyStyle) {
-    return bodyStylePricing.find((b) => b.body_style === bs)?.surcharge ?? 0
-  }
-
   function validate(): boolean {
     const e: Record<string, string> = {}
     if (!state.vehicleYear) e.year = 'Required'
@@ -90,11 +86,11 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
   }
 
   return (
-    <div>
-      <div>
-        <h1 className="text-3xl font-bold text-center mb-2">Your vehicle</h1>
+    <div className="flex flex-col h-full">
+      <div className="flex-1">
+        <h1 className="text-3xl font-bold text-center mb-2">Find your quote</h1>
         <p className="text-dark-silver text-center mb-10">
-          Tell us about your car so we can prepare the right service
+          Tell us about your vehicle to get an instant price
         </p>
 
         <div className="bg-surface-widget border border-dark-grey rounded-2xl p-6">
@@ -196,7 +192,6 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
             <div className="grid grid-cols-3 gap-2">
               {BODY_STYLES.map((bs) => {
                 const selected = state.bodyStyle === bs
-                const extra = getSurcharge(bs)
                 return (
                   <button
                     key={bs}
@@ -211,9 +206,6 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
                     }`}
                   >
                     {bs}
-                    {extra > 0 && (
-                      <span className="text-accent-blue-300 text-xs ml-1">+${extra}</span>
-                    )}
                   </button>
                 )
               })}
@@ -225,19 +217,14 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
         </div>
       </div>
 
-      {/* Nav — always visible at bottom */}
-      <div className="flex gap-3 pt-6 pb-2">
-        <button
-          onClick={() => dispatch({ type: 'PREV_STEP' })}
-          className="px-6 py-3 rounded-xl text-sm font-medium bg-surface-widget border border-dark-grey hover:bg-surface-widget-hover transition-colors"
-        >
-          Back
-        </button>
+      {/* Footer nav — no back button on step 1 */}
+      <div className="sticky bottom-0 bg-surface-primary pt-6 pb-6">
+        <div className="absolute inset-x-0 -top-6 h-6 bg-gradient-to-t from-[var(--surface-primary)] to-transparent pointer-events-none" />
         <button
           onClick={handleContinue}
-          className="flex-1 py-3 rounded-xl text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white transition-colors"
+          className="w-full py-3 rounded-xl text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white transition-colors"
         >
-          Continue
+          See My Prices
         </button>
       </div>
     </div>

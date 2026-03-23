@@ -13,6 +13,10 @@ interface Props {
   depositAmount: number
   isAuthenticated: boolean
   onBookingCreated: (bookingId: string) => void
+  /** Map step names to their indices so edit buttons dispatch the correct step */
+  stepIndices?: { service: number; schedule: number; vehicle: number; location: number }
+  /** Whether the vehicle step exists in this flow */
+  hasVehicleStep?: boolean
 }
 
 function formatDate(dateStr: string) {
@@ -33,6 +37,8 @@ export function ReviewStep({
   depositAmount,
   isAuthenticated,
   onBookingCreated,
+  stepIndices = { service: 0, schedule: 1, vehicle: 2, location: 3 },
+  hasVehicleStep = true,
 }: Props) {
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState('')
@@ -42,11 +48,6 @@ export function ReviewStep({
   }
 
   function handleSubmit() {
-    if (!isAuthenticated) {
-      dispatch({ type: 'NEXT_STEP' })
-      return
-    }
-
     startTransition(async () => {
       const result = await createBooking({
         vehicleMake: state.vehicleMake,
@@ -90,11 +91,11 @@ export function ReviewStep({
             <span className="text-xs text-grey uppercase tracking-wider">Service</span>
             <p className="font-semibold mt-1">{state.selectedService?.name}</p>
             <p className="text-grey text-sm">
-              ~{state.selectedService?.estimated_duration_hours} hours
+              {state.selectedService?.estimated_duration_hours} Hours
             </p>
           </div>
           <button
-            onClick={() => handleEdit(0)}
+            onClick={() => handleEdit(stepIndices.service)}
             className="text-accent-blue-300 text-sm hover:text-accent-blue-500"
           >
             Edit
@@ -113,7 +114,7 @@ export function ReviewStep({
             </p>
           </div>
           <button
-            onClick={() => handleEdit(1)}
+            onClick={() => handleEdit(stepIndices.schedule)}
             className="text-accent-blue-300 text-sm hover:text-accent-blue-500"
           >
             Edit
@@ -131,12 +132,14 @@ export function ReviewStep({
               {state.vehicleColor} &middot; {state.bodyStyle}
             </p>
           </div>
-          <button
-            onClick={() => handleEdit(2)}
-            className="text-accent-blue-300 text-sm hover:text-accent-blue-500"
-          >
-            Edit
-          </button>
+          {hasVehicleStep && (
+            <button
+              onClick={() => handleEdit(stepIndices.vehicle)}
+              className="text-accent-blue-300 text-sm hover:text-accent-blue-500"
+            >
+              Edit
+            </button>
+          )}
         </div>
 
         {/* Address */}
@@ -149,7 +152,7 @@ export function ReviewStep({
             </p>
           </div>
           <button
-            onClick={() => handleEdit(3)}
+            onClick={() => handleEdit(stepIndices.location)}
             className="text-accent-blue-300 text-sm hover:text-accent-blue-500"
           >
             Edit
@@ -208,11 +211,7 @@ export function ReviewStep({
           disabled={isPending}
           className="flex-1 py-3 rounded-xl text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-50 transition-colors"
         >
-          {isPending
-            ? 'Creating booking...'
-            : isAuthenticated
-              ? 'Continue to Payment'
-              : 'Continue to Sign In'}
+          {isPending ? 'Creating booking...' : 'Continue to Payment'}
         </button>
       </div>
     </div>

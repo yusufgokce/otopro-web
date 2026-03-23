@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { Nav } from './components/nav'
+import { NavServer } from './components/nav-server'
 import { Footer } from './components/footer'
 import { HeroPriceCalculator } from './components/hero-price-calculator'
 import { OtoAccordion } from './components/ui/oto-accordion'
@@ -13,8 +13,8 @@ const FEATURES = [
   { label: 'Transparent pricing', us: true, them: false },
   { label: 'Online booking in under 2 min', us: true, them: false },
   { label: 'Satisfaction guarantee', us: true, them: false },
-  { label: 'Body-style-adjusted pricing', us: true, them: false },
-  { label: 'No hidden fees', us: true, them: true },
+  { label: 'Body style adjusted pricing', us: true, them: false },
+  { label: 'No hidden fees', us: true, them: false },
 ]
 
 const FAQS = [
@@ -65,7 +65,7 @@ const SERVICES = [
   },
   {
     title: 'Ceramic Coating',
-    desc: 'Long-lasting nano-ceramic protection — hydrophobic, scratch-resistant.',
+    desc: 'Long lasting nano ceramic protection with hydrophobic, scratch resistant finish.',
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
@@ -93,7 +93,7 @@ const SERVICES = [
   },
   {
     title: 'Wheel & Tire Detail',
-    desc: 'Degreasing, scrubbing, and tire dressing for a factory-fresh look.',
+    desc: 'Degreasing, scrubbing, and tire dressing for a factory fresh look.',
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m0 0l4.5-7.795M12 12l4.5 7.794M12 12L7.5 19.795" />
@@ -111,7 +111,7 @@ const STEPS = [
   {
     step: '02',
     title: 'Pick a date & location',
-    desc: 'Choose when and where. We come to your driveway fully equipped — no prep needed.',
+    desc: 'Choose when and where. We come to your driveway fully equipped with no prep needed.',
   },
   {
     step: '03',
@@ -132,7 +132,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-surface-primary text-foreground">
-      <Nav />
+      <NavServer />
 
       {/* ── Hero ── */}
       <section className="max-w-6xl mx-auto px-6 pt-24 md:pt-32 pb-20 text-center">
@@ -156,7 +156,7 @@ export default async function Home() {
         </h1>
 
         <p className="text-lg md:text-xl text-foreground-muted max-w-xl mx-auto mb-14 leading-relaxed">
-          Enter your vehicle to get an instant price. Book in under a minute — we bring everything to you.
+          Enter your vehicle to get an instant price. Book in under a minute, we bring everything to you.
         </p>
 
         {/* Price Calculator */}
@@ -176,14 +176,14 @@ export default async function Home() {
             Three simple steps
           </h2>
           <p className="text-foreground-muted text-center mb-16 max-w-md mx-auto">
-            From price to clean car — no phone calls, no guesswork.
+            From price to clean car. No phone calls, no guesswork.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {STEPS.map((item) => (
               <div
                 key={item.step}
-                className="bg-surface-widget border border-dark-grey/30 rounded-3xl p-8 text-left group hover:border-dark-grey/60 transition-colors"
+                className="bg-surface-widget border border-dark-grey/15 rounded-3xl p-8 text-left group hover:border-dark-grey/60 transition-colors"
               >
                 <span className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-accent-blue-500/10 text-accent-blue-500 text-lg font-bold mb-5">
                   {item.step}
@@ -200,24 +200,24 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ── Why OtoPro vs traditional ── */}
+      {/* ── Why otopro vs traditional ── */}
       <section className="py-28 md:py-32">
         <div className="max-w-3xl mx-auto px-6">
           <p className="text-xs font-semibold tracking-[1.5px] uppercase text-foreground-muted text-center mb-3">
             The difference
           </p>
           <h2 className="text-[32px] md:text-[40px] font-bold tracking-[-0.5px] text-foreground text-center mb-4">
-            Why OtoPro?
+            Why otopro?
           </h2>
           <p className="text-foreground-muted text-center mb-14 max-w-md mx-auto">
             See how we compare to traditional car washes and freelance detailers.
           </p>
 
-          <div className="bg-surface-widget border border-dark-grey/30 rounded-3xl overflow-hidden">
+          <div className="bg-surface-widget border border-dark-grey/15 rounded-3xl overflow-hidden">
             {/* Header */}
-            <div className="grid grid-cols-[1fr_80px_80px] md:grid-cols-[1fr_100px_100px] text-xs font-semibold tracking-[0.5px] uppercase border-b border-dark-grey/30">
+            <div className="grid grid-cols-[1fr_80px_80px] md:grid-cols-[1fr_100px_100px] text-xs font-semibold tracking-[0.5px] uppercase border-b border-dark-grey/15">
               <div className="p-5 text-foreground-muted">Feature</div>
-              <div className="p-5 text-center text-accent-blue-500">OtoPro</div>
+              <div className="p-5 text-center text-accent-blue-500">otopro</div>
               <div className="p-5 text-center text-foreground-muted">Others</div>
             </div>
             {/* Rows */}
@@ -225,7 +225,7 @@ export default async function Home() {
               <div
                 key={f.label}
                 className={`grid grid-cols-[1fr_80px_80px] md:grid-cols-[1fr_100px_100px] text-sm ${
-                  i < FEATURES.length - 1 ? 'border-b border-dark-grey/20' : ''
+                  i < FEATURES.length - 1 ? 'border-b border-dark-grey/10' : ''
                 }`}
               >
                 <div className="p-5 text-foreground-muted">{f.label}</div>
@@ -270,7 +270,7 @@ export default async function Home() {
             {SERVICES.map((s) => (
               <div
                 key={s.title}
-                className="bg-surface-widget border border-dark-grey/30 rounded-3xl p-7 hover:border-dark-grey/60 transition-colors group"
+                className="bg-surface-widget border border-dark-grey/15 rounded-3xl p-7 hover:border-dark-grey/60 transition-colors group"
               >
                 <div className="w-11 h-11 rounded-2xl bg-accent-blue-500/10 text-accent-blue-500 flex items-center justify-center mb-5 group-hover:bg-accent-blue-500/15 transition-colors">
                   {s.icon}
@@ -316,7 +316,7 @@ export default async function Home() {
               Ready for a cleaner ride?
             </h2>
             <p className="text-lg text-foreground-muted mb-10 max-w-lg mx-auto">
-              Enter your vehicle above or book directly — no commitment, no hidden fees.
+              Enter your vehicle above or book directly. No commitment, no hidden fees.
             </p>
             <Link
               href="/book"

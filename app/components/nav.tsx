@@ -3,8 +3,48 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { ThemeToggle } from './theme-toggle'
+import { UserMenu } from './user-menu'
 
-export function Nav() {
+function TypewriterLogo() {
+  const fullText = 'otopro'
+  const [displayed, setDisplayed] = useState('')
+  const [showCursor, setShowCursor] = useState(true)
+
+  useEffect(() => {
+    let i = 0
+    const interval = setInterval(() => {
+      i++
+      setDisplayed(fullText.slice(0, i))
+      if (i >= fullText.length) {
+        clearInterval(interval)
+        setTimeout(() => setShowCursor(false), 1500)
+      }
+    }, 120)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <span className="inline-flex items-center text-2xl font-bold tracking-tight">
+      <span className="glass-text">
+        <span className="glass-text-inner">{displayed.slice(0, 3)}</span>
+      </span>
+      <span className="glass-text glass-text-accent">
+        <span className="glass-text-inner">{displayed.slice(3)}</span>
+      </span>
+      <span
+        className={`inline-block w-[2px] h-[1.1em] bg-accent-blue-500 ml-[2px] align-middle transition-opacity duration-100 ${
+          showCursor ? 'opacity-100 animate-pulse' : 'opacity-0'
+        }`}
+      />
+    </span>
+  )
+}
+
+interface NavProps {
+  user?: { name: string; email: string } | null
+}
+
+export function Nav({ user }: NavProps) {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -18,13 +58,13 @@ export function Nav() {
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-surface-primary/90 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.06)]'
+          ? 'bg-surface-primary/40 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.03)]'
           : 'bg-transparent'
       }`}
     >
       <div className="flex items-center justify-between px-6 py-5 max-w-6xl mx-auto">
         <Link href="/" className="text-xl font-bold tracking-tight text-foreground">
-          Oto<span className="text-accent-blue-500">Pro</span>
+          <TypewriterLogo />
         </Link>
 
         {/* Desktop links */}
@@ -48,12 +88,16 @@ export function Nav() {
             FAQ
           </Link>
           <ThemeToggle />
-          <Link
-            href="/book"
-            className="bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
-          >
-            Book Online
-          </Link>
+          {user ? (
+            <UserMenu userName={user.name} userEmail={user.email} />
+          ) : (
+            <Link
+              href="/book"
+              className="bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
+            >
+              Book
+            </Link>
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -61,21 +105,21 @@ export function Nav() {
           <ThemeToggle />
           <button
             onClick={() => setOpen(!open)}
-            className="w-9 h-9 flex flex-col items-center justify-center gap-1.5 rounded-full hover:bg-surface-widget transition-colors"
+            className="relative w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-widget transition-colors"
           >
             <span
-              className={`w-5 h-0.5 bg-foreground transition-all duration-200 ${
-                open ? 'rotate-45 translate-y-1' : ''
+              className={`absolute w-5 h-0.5 bg-foreground transition-all duration-300 ${
+                open ? 'rotate-45 translate-y-0' : '-translate-y-[5px]'
               }`}
             />
             <span
-              className={`w-5 h-0.5 bg-foreground transition-all duration-200 ${
-                open ? 'opacity-0' : ''
+              className={`absolute w-5 h-0.5 bg-foreground transition-all duration-300 ${
+                open ? 'opacity-0 scale-x-0' : 'opacity-100'
               }`}
             />
             <span
-              className={`w-5 h-0.5 bg-foreground transition-all duration-200 ${
-                open ? '-rotate-45 -translate-y-1' : ''
+              className={`absolute w-5 h-0.5 bg-foreground transition-all duration-300 ${
+                open ? '-rotate-45 translate-y-0' : 'translate-y-[5px]'
               }`}
             />
           </button>
@@ -106,13 +150,39 @@ export function Nav() {
           >
             FAQ
           </Link>
+          {user && (
+            <>
+              <div className="border-t border-dark-grey/30 my-2" />
+              <Link
+                href="/dashboard"
+                onClick={() => setOpen(false)}
+                className="block py-3 text-sm text-foreground-muted hover:text-foreground transition-colors"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/dashboard/garage"
+                onClick={() => setOpen(false)}
+                className="block py-3 text-sm text-foreground-muted hover:text-foreground transition-colors"
+              >
+                My Garage
+              </Link>
+              <Link
+                href="/dashboard/bookings"
+                onClick={() => setOpen(false)}
+                className="block py-3 text-sm text-foreground-muted hover:text-foreground transition-colors"
+              >
+                My Bookings
+              </Link>
+            </>
+          )}
           <div className="pt-3">
             <Link
               href="/book"
               onClick={() => setOpen(false)}
               className="block text-center bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-3 rounded-full transition-colors"
             >
-              Book Online
+              Book
             </Link>
           </div>
         </div>
