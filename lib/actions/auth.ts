@@ -25,13 +25,18 @@ export async function signUp(
   if (error) return { success: false, error: error.message }
   if (!data.user) return { success: false, error: 'Sign up failed' }
 
-  await supabase.from('users').upsert({
+  const { error: upsertErr } = await supabase.from('users').upsert({
     id: data.user.id,
     email,
     full_name: fullName,
     phone: phone || null,
     user_type: 'customer',
   })
+
+  if (upsertErr) {
+    console.error('[auth] Failed to create user profile:', upsertErr)
+    return { success: false, error: 'Account created but profile setup failed. Please try logging in.' }
+  }
 
   return { success: true, userId: data.user.id }
 }

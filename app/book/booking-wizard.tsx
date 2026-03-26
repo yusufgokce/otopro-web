@@ -53,6 +53,7 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
   const [bookingError, setBookingError] = useState('')
   const [isCreatingBooking, startBookingTransition] = useTransition()
   const prefilled = useRef(false)
+  const bookingCreationStarted = useRef(false)
 
   // Build dynamic step list
   const steps = (() => {
@@ -63,6 +64,18 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
   })()
 
   const paymentStepIndex = steps.indexOf('Payment')
+
+  // Persist wizard state to sessionStorage on every change
+  useEffect(() => {
+    sessionStorage.setItem('otopro-wizard', JSON.stringify(state))
+  }, [state])
+
+  // Clear sessionStorage when payment is complete
+  useEffect(() => {
+    if (paymentComplete) {
+      sessionStorage.removeItem('otopro-wizard')
+    }
+  }, [paymentComplete])
 
   // Pre-fill from URL params (coming from homepage price calculator)
   useEffect(() => {
@@ -75,6 +88,58 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
     const body = searchParams.get('body') as BodyStyle | null
     const color = searchParams.get('color')
     const serviceId = searchParams.get('service')
+    const hasUrlParams = year || make || model || body || color || serviceId
+
+    // Restore from sessionStorage if no URL params are present
+    if (!hasUrlParams) {
+      try {
+        const saved = sessionStorage.getItem('otopro-wizard')
+        if (saved) {
+          const parsed = JSON.parse(saved) as WizardState
+          // Re-lookup selectedService from the services prop (methods don't survive JSON round-trip)
+          if (parsed.selectedService) {
+            const matchedService = services.find((s) => s.id === parsed.selectedService!.id)
+            parsed.selectedService = matchedService ?? null
+          }
+          // Restore each field via existing actions
+          if (parsed.vehicleMake || parsed.vehicleModel || parsed.vehicleYear || parsed.bodyStyle || parsed.vehicleColor) {
+            dispatch({
+              type: 'SET_VEHICLE',
+              payload: {
+                vehicleMake: parsed.vehicleMake,
+                vehicleModel: parsed.vehicleModel,
+                vehicleYear: parsed.vehicleYear,
+                vehicleColor: parsed.vehicleColor,
+                bodyStyle: parsed.bodyStyle,
+              },
+            })
+          }
+          if (parsed.selectedService) {
+            dispatch({ type: 'SELECT_SERVICE', payload: parsed.selectedService })
+          }
+          if (parsed.selectedDate) dispatch({ type: 'SET_DATE', payload: parsed.selectedDate })
+          if (parsed.selectedTime) dispatch({ type: 'SET_TIME', payload: parsed.selectedTime })
+          if (parsed.streetAddress || parsed.city || parsed.province || parsed.postalCode) {
+            dispatch({
+              type: 'SET_ADDRESS',
+              payload: {
+                streetAddress: parsed.streetAddress,
+                city: parsed.city,
+                province: parsed.province,
+                postalCode: parsed.postalCode,
+                specialRequests: parsed.specialRequests,
+              },
+            })
+          }
+          if (parsed.currentStep > 0) {
+            dispatch({ type: 'GO_TO_STEP', payload: parsed.currentStep })
+          }
+          return
+        }
+      } catch {
+        // Invalid sessionStorage data — ignore and continue with URL params / defaults
+      }
+    }
 
     if (year || make || model || body || color) {
       dispatch({
@@ -108,6 +173,8 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
 
   /** Create booking in DB, then advance to payment */
   function handleCreateBookingAndPay(email?: string) {
+    if (bookingCreationStarted.current) return
+    bookingCreationStarted.current = true
     setBookingError('')
     startBookingTransition(async () => {
       const result = await createBooking({
@@ -135,6 +202,8 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
         setBookingId(result.bookingId)
         dispatch({ type: 'GO_TO_STEP', payload: paymentStepIndex })
       } else {
+        // Reset so user can retry
+        bookingCreationStarted.current = false
         setBookingError(result.error || 'Something went wrong creating your booking')
       }
     })
@@ -162,7 +231,7 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
     state.currentStep === paymentStepIndex
 
   useEffect(() => {
-    if (needsBookingCreation) {
+    if (needsBookingCreation && !bookingCreationStarted.current) {
       handleCreateBookingAndPay()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -221,11 +290,10 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
           <AccountStep
             dispatch={dispatch}
             onAuthenticated={() => {
-              // Just flip auth — the useEffect for needsBookingCreation will
-              // handle creating the booking + advancing to payment.
-              // (Account is removed from steps, so currentStep 3 now points at
-              //  Payment, triggering the effect.)
               setUserAuthenticated(true)
+              // Directly trigger booking creation — don't rely solely on the effect.
+              // setTimeout lets state settle (steps array recomputes) before we act.
+              setTimeout(() => handleCreateBookingAndPay(), 0)
             }}
             onGuest={(email) => {
               setGuestEmail(email)
