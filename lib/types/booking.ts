@@ -18,6 +18,7 @@ export type BodyStyle =
   | 'Sedan'
   | 'Coupe'
   | 'Hatchback'
+  | 'Crossover'
   | 'SUV'
   | 'Truck'
   | 'Van'
@@ -35,7 +36,7 @@ export const TIME_SLOT_LABELS: Record<TimeSlot, string> = {
 }
 
 export const BODY_STYLES: BodyStyle[] = [
-  'Sedan', 'Coupe', 'Hatchback', 'SUV', 'Truck', 'Van', 'Minivan', 'Convertible', 'Wagon',
+  'Sedan', 'Coupe', 'Hatchback', 'Crossover', 'SUV', 'Truck', 'Van', 'Minivan', 'Convertible', 'Wagon',
 ]
 
 export const PROVINCES = [

@@ -79,7 +79,7 @@ const PACKAGES = [
 
 const SURCHARGES = [
   { style: 'Sedan / Coupe / Hatchback', surcharge: '$0' },
-  { style: 'Convertible / Wagon', surcharge: '+$15' },
+  { style: 'Crossover / Convertible / Wagon', surcharge: '+$15' },
   { style: 'SUV', surcharge: '+$30' },
   { style: 'Minivan', surcharge: '+$35' },
   { style: 'Truck / Van', surcharge: '+$40' },
