@@ -209,19 +209,6 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
     })
   }
 
-  // Confirmation screen
-  if (paymentComplete) {
-    return (
-      <Confirmation
-        state={state}
-        totalPrice={totalPrice}
-        depositAmount={depositAmount}
-        bookingId={bookingId}
-        email={guestEmail ?? undefined}
-      />
-    )
-  }
-
   // For authenticated users: when they advance past Details, create booking automatically
   const needsBookingCreation =
     userAuthenticated &&
@@ -239,6 +226,19 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
 
   const showPayment = state.currentStep === paymentStepIndex && bookingId
   const currentStepName = steps[state.currentStep] ?? 'Vehicle'
+
+  // Confirmation screen (after all hooks)
+  if (paymentComplete) {
+    return (
+      <Confirmation
+        state={state}
+        totalPrice={totalPrice}
+        depositAmount={depositAmount}
+        bookingId={bookingId}
+        email={guestEmail ?? undefined}
+      />
+    )
+  }
 
   return (
     <div className="max-w-5xl mx-auto px-6 h-[calc(100vh-80px)] flex flex-col md:flex-row gap-8 bg-surface-primary">
