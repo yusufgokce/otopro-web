@@ -23,7 +23,7 @@ export function TrustBadges() {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [displayIndex, setDisplayIndex] = useState(0)
   const [nextIndex, setNextIndex] = useState(1)
-  const timeoutRef = useRef<NodeJS.Timeout>()
+  const timeoutRef = useRef<NodeJS.Timeout>(null)
 
   useEffect(() => {
     const interval = setInterval(() => {
