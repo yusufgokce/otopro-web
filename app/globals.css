@@ -91,14 +91,14 @@
   --color-success-toggle: var(--success-toggle);
 
   /* ── Font ── */
-  --font-sans: var(--font-jost);
+  --font-sans: 'Satoshi', sans-serif;
 }
 
 /* ══════════════════════════════════════════════════════════
    Dark Mode (default)
    ══════════════════════════════════════════════════════════ */
 :root {
-  --surface-primary: rgb(13, 13, 13);
+  --surface-primary: rgb(17, 17, 17);
   --surface-widget: rgb(28, 28, 28);
   --surface-widget-hover: rgb(46, 46, 46);
 
@@ -112,13 +112,16 @@
   --success-bg: rgb(30, 36, 29);
   --success-text: rgb(98, 186, 110);
   --success-toggle: rgb(98, 186, 110);
+
+  --cta-bg: rgba(30, 42, 74, 0.2);
+  --cta-border: rgba(29, 63, 122, 0.2);
 }
 
 /* ══════════════════════════════════════════════════════════
    Light Mode
    ══════════════════════════════════════════════════════════ */
 .light {
-  --surface-primary: #F2F3F5;
+  --surface-primary: rgb(247, 247, 247);
   --surface-widget: #FFFFFF;
   --surface-widget-hover: #E8E9EB;
 
@@ -132,6 +135,9 @@
   --success-bg: #F0FDF4;
   --success-text: #16A34A;
   --success-toggle: #16A34A;
+
+  --cta-bg: #E0EDFF;
+  --cta-border: #B8D4FF;
 
   /* Override neutrals for light mode contrast */
   --color-dark-grey: #E5E7EB;

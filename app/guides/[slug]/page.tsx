@@ -45,7 +45,8 @@ export default async function ArticlePage({ params }: Props) {
     .slice(0, 3)
 
   return (
-    <main className="min-h-screen bg-surface-primary text-foreground">
+    <>
+    <main className="relative z-10 min-h-screen bg-surface-primary text-foreground rounded-b-[32px] shadow-[0_4px_40px_rgba(0,0,0,0.15)]">
       <NavServer />
 
       <article className="max-w-3xl mx-auto px-6 pt-10 pb-24">
@@ -132,7 +133,8 @@ export default async function ArticlePage({ params }: Props) {
         )}
       </article>
 
-      <Footer />
     </main>
+    <Footer />
+    </>
   )
 }

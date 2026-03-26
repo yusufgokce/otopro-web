@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import { Jost } from "next/font/google";
 import "./globals.css";
-
-const jost = Jost({ subsets: ["latin"], variable: "--font-jost" });
 
 export const metadata: Metadata = {
   title: "otopro | Premium Mobile Car Detailing",
@@ -42,9 +39,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`${jost.variable} font-sans`}>{children}</body>
+      <body className="font-sans">{children}</body>
     </html>
   );
 }

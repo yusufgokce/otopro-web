@@ -27,7 +27,8 @@ export default function GuidesPage() {
   }))
 
   return (
-    <main className="min-h-screen bg-surface-primary text-foreground">
+    <>
+    <main className="relative z-10 min-h-screen bg-surface-primary text-foreground rounded-b-[32px] shadow-[0_4px_40px_rgba(0,0,0,0.15)]">
       <NavServer />
 
       <div className="max-w-6xl mx-auto px-6 pt-12 pb-24">
@@ -93,7 +94,8 @@ export default function GuidesPage() {
           ))}
         </div>
       </div>
-      <Footer />
     </main>
+    <Footer />
+    </>
   )
 }

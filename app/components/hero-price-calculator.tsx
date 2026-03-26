@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import type { ServiceType, BodyStylePricing, BodyStyle } from '@/lib/types/booking'
 
@@ -12,17 +12,27 @@ interface Meta {
   colors: string[]
 }
 
-// ── Chevron icon for selects ──
+// ── Icons ──
+
+function SearchIcon() {
+  return (
+    <svg className="w-5 h-5 text-foreground-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+    </svg>
+  )
+}
+
+function CloseIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  )
+}
 
 function ChevronIcon({ className = '' }: { className?: string }) {
   return (
-    <svg
-      className={`w-4 h-4 text-foreground-muted pointer-events-none ${className}`}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
+    <svg className={`w-4 h-4 text-foreground-muted pointer-events-none ${className}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
     </svg>
   )
@@ -31,11 +41,43 @@ function ChevronIcon({ className = '' }: { className?: string }) {
 // ── Helpers ──
 
 function toSlug(name: string) {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
 }
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+// ── Typewriter animation sequences ──
+// Each sequence is an array of steps: { text, pauseAfter }
+// A "correction" is: type the wrong thing, pause, delete back, type the right thing
+
+type AnimStep = { text: string; pauseAfter: number }
+
+const SEQUENCES: AnimStep[][] = [
+  // "2025 BMW Sup" → delete → "2025 Toyota Supra"
+  [
+    { text: '2025 BMW Sup', pauseAfter: 600 },
+    { text: '2025 Toyota Supra', pauseAfter: 2500 },
+  ],
+  // Normal
+  [
+    { text: '2024 Porsche 911 Turbo', pauseAfter: 2500 },
+  ],
+  // "2025 Subaru GR86" → delete → "2025 Toyota GR86"
+  [
+    { text: '2025 Subaru GR86', pauseAfter: 600 },
+    { text: '2025 Toyota GR86', pauseAfter: 2500 },
+  ],
+  // Normal
+  [
+    { text: '2025 Mercedes AMG GT', pauseAfter: 2500 },
+  ],
+  // Normal
+  [
+    { text: '2024 Tesla Model S', pauseAfter: 2500 },
+  ],
+]
 
 // ── Component ──
 
@@ -60,6 +102,12 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
   // UI state
   const [showPricing, setShowPricing] = useState(false)
   const [isLoadingModels, setIsLoadingModels] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
+
+  // Typewriter state
+  const [placeholder, setPlaceholder] = useState('')
+  const searchBarRef = useRef<HTMLDivElement>(null)
+  const cancelledRef = useRef(false)
 
   // Load makes + meta on mount
   useEffect(() => {
@@ -71,6 +119,92 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
       setMeta(metaData)
     })
   }, [])
+
+  // Typewriter animation
+  useEffect(() => {
+    let cancelled = false
+    cancelledRef.current = false
+
+    async function typeOut(text: string) {
+      for (let i = 1; i <= text.length; i++) {
+        if (cancelled) return
+        setPlaceholder(text.slice(0, i))
+        await sleep(60)
+      }
+    }
+
+    async function deleteBack(from: string, to: number) {
+      for (let i = from.length - 1; i >= to; i--) {
+        if (cancelled) return
+        setPlaceholder(from.slice(0, i))
+        await sleep(30)
+      }
+    }
+
+    async function typewriterLoop() {
+      while (!cancelled) {
+        for (const sequence of SEQUENCES) {
+          if (cancelled) return
+
+          // Check visibility
+          if (searchBarRef.current) {
+            const rect = searchBarRef.current.getBoundingClientRect()
+            const isVisible = rect.top < window.innerHeight && rect.bottom > 0
+            if (!isVisible) {
+              await sleep(1000)
+              continue
+            }
+          }
+
+          if (modalOpen) {
+            await sleep(1000)
+            continue
+          }
+
+          // Play each step in the sequence
+          for (let s = 0; s < sequence.length; s++) {
+            const step = sequence[s]
+            if (cancelled) return
+
+            if (s === 0) {
+              // First step: type from empty
+              await typeOut(step.text)
+            } else {
+              // Correction step: find common prefix, delete back to it, type new
+              const prev = sequence[s - 1].text
+              let common = 0
+              while (common < prev.length && common < step.text.length && prev[common] === step.text[common]) {
+                common++
+              }
+              await deleteBack(prev, common)
+              // Type the rest from the common prefix
+              for (let i = common + 1; i <= step.text.length; i++) {
+                if (cancelled) return
+                setPlaceholder(step.text.slice(0, i))
+                await sleep(60)
+              }
+            }
+
+            await sleep(step.pauseAfter)
+          }
+
+          // Delete everything
+          const lastText = sequence[sequence.length - 1].text
+          await deleteBack(lastText, 0)
+          await sleep(400)
+        }
+
+        // Wait 15 seconds before replaying
+        await sleep(15000)
+      }
+    }
+
+    typewriterLoop()
+    return () => {
+      cancelled = true
+      cancelledRef.current = true
+    }
+  }, [modalOpen])
 
   // Load models when make changes
   const loadModels = useCallback(async (makeName: string) => {
@@ -90,13 +224,13 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
   }, [])
 
   // Compute surcharge
-  const surcharge =
-    bodyStylePricing.find((b) => b.body_style === bodyStyle)?.surcharge ?? 0
+  const surcharge = bodyStylePricing.find((b) => b.body_style === bodyStyle)?.surcharge ?? 0
 
   const canSeePricing = year && make && model && bodyStyle && color
 
   const handleSeePricing = () => {
     if (!canSeePricing) return
+    setModalOpen(false)
     setShowPricing(true)
     setTimeout(() => {
       document.getElementById('pricing-results')?.scrollIntoView({ behavior: 'smooth' })
@@ -119,140 +253,156 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
 
   return (
     <div>
-      {/* ── Vehicle Selection Card ── */}
-      <div className="max-w-3xl mx-auto">
-        <div className="bg-surface-widget border border-dark-grey/15 rounded-3xl p-8 md:p-10 shadow-[0_4px_40px_rgba(0,0,0,0.08)]">
-          <p className="text-xs font-semibold tracking-[1.5px] uppercase text-foreground-muted mb-1 text-center">
-            Instant Quote
-          </p>
-          <h3 className="text-lg font-semibold text-foreground mb-6 text-center">
-            Enter your vehicle details
-          </h3>
-
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-3">
-            {/* Year */}
-            <div className="relative">
-              <select
-                value={year}
-                onChange={(e) => {
-                  setYear(e.target.value)
-                  setShowPricing(false)
-                }}
-                className={selectClass}
-              >
-                <option value="">Year</option>
-                {meta?.years.map((y) => (
-                  <option key={y} value={String(y)}>
-                    {y}
-                  </option>
-                ))}
-              </select>
-              <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
-            </div>
-
-            {/* Make */}
-            <div className="relative">
-              <select
-                value={make}
-                onChange={(e) => {
-                  setMake(e.target.value)
-                  setModel('')
-                  setModels([])
-                  setShowPricing(false)
-                  if (e.target.value) loadModels(e.target.value)
-                }}
-                className={selectClass}
-                disabled={!year}
-              >
-                <option value="">Make</option>
-                {makes.map((m) => (
-                  <option key={m} value={m}>
-                    {m}
-                  </option>
-                ))}
-              </select>
-              <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
-            </div>
-
-            {/* Model */}
-            <div className="relative">
-              <select
-                value={model}
-                onChange={(e) => {
-                  setModel(e.target.value)
-                  setShowPricing(false)
-                }}
-                className={selectClass}
-                disabled={!make || isLoadingModels}
-              >
-                <option value="">
-                  {isLoadingModels ? 'Loading...' : 'Model'}
-                </option>
-                {models.map((m) => (
-                  <option key={m} value={m}>
-                    {m}
-                  </option>
-                ))}
-              </select>
-              <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
-            </div>
-
-            {/* Body Style */}
-            <div className="relative">
-              <select
-                value={bodyStyle}
-                onChange={(e) => {
-                  setBodyStyle(e.target.value as BodyStyle)
-                  setShowPricing(false)
-                }}
-                className={selectClass}
-                disabled={!model}
-              >
-                <option value="">Body Style</option>
-                {meta?.bodyStyles.map((bs) => {
-                  const bsSurcharge =
-                    bodyStylePricing.find((b) => b.body_style === bs)?.surcharge ?? 0
-                  return (
-                    <option key={bs} value={bs}>
-                      {bs}
-                      {bsSurcharge > 0 ? ` (+$${bsSurcharge})` : ''}
-                    </option>
-                  )
-                })}
-              </select>
-              <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
-            </div>
-
-            {/* Color */}
-            <div className="relative">
-              <select
-                value={color}
-                onChange={(e) => setColor(e.target.value)}
-                className={selectClass}
-              >
-                <option value="">Color</option>
-                {meta?.colors.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-              <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
-            </div>
-          </div>
-
-          {/* CTA */}
-          <button
-            onClick={handleSeePricing}
-            disabled={!canSeePricing}
-            className="w-full h-[50px] rounded-full text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
-          >
-            {canSeePricing
-              ? `See pricing for ${year} ${make} ${model}`
-              : 'See My Price'}
-          </button>
-        </div>
+      {/* ── Search Bar ── */}
+      <div className="max-w-lg mx-auto" ref={searchBarRef}>
+        <button
+          onClick={() => setModalOpen(true)}
+          className="w-full h-14 px-5 bg-surface-widget border border-dark-grey/20 rounded-2xl inline-flex items-center gap-3 hover:border-dark-grey/40 transition-all cursor-text group"
+        >
+          <SearchIcon />
+          <span className="flex-1 text-left text-base text-foreground-muted">
+            {placeholder || 'Search...'}
+            <span className="inline-block w-[2px] h-[1.1em] bg-foreground-muted/50 ml-[1px] align-middle animate-pulse" />
+          </span>
+        </button>
       </div>
+
+      {/* ── Vehicle Selection Modal ── */}
+      {modalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          {/* Backdrop — click anywhere to close */}
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setModalOpen(false)}
+          />
+
+          {/* Modal */}
+          <div className="relative w-full max-w-3xl bg-surface-widget border border-dark-grey/15 rounded-3xl p-8 md:p-10 shadow-[0_4px_60px_rgba(0,0,0,0.3)] animate-in fade-in zoom-in-95 duration-200">
+            {/* Close button */}
+            <button
+              onClick={() => setModalOpen(false)}
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-surface-widget-hover flex items-center justify-center text-foreground-muted hover:text-foreground transition-colors"
+            >
+              <CloseIcon />
+            </button>
+
+            <p className="text-xs font-semibold tracking-[1.5px] uppercase text-foreground-muted mb-1 text-center">
+              Instant Quote
+            </p>
+            <h3 className="text-lg font-semibold text-foreground mb-6 text-center">
+              Enter your vehicle details
+            </h3>
+
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-3">
+              {/* Year */}
+              <div className="relative">
+                <select
+                  value={year}
+                  onChange={(e) => {
+                    setYear(e.target.value)
+                    setShowPricing(false)
+                  }}
+                  className={selectClass}
+                >
+                  <option value="">Year</option>
+                  {meta?.years.map((y) => (
+                    <option key={y} value={String(y)}>{y}</option>
+                  ))}
+                </select>
+                <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
+              </div>
+
+              {/* Make */}
+              <div className="relative">
+                <select
+                  value={make}
+                  onChange={(e) => {
+                    setMake(e.target.value)
+                    setModel('')
+                    setModels([])
+                    setShowPricing(false)
+                    if (e.target.value) loadModels(e.target.value)
+                  }}
+                  className={selectClass}
+                  disabled={!year}
+                >
+                  <option value="">Make</option>
+                  {makes.map((m) => (
+                    <option key={m} value={m}>{m}</option>
+                  ))}
+                </select>
+                <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
+              </div>
+
+              {/* Model */}
+              <div className="relative">
+                <select
+                  value={model}
+                  onChange={(e) => {
+                    setModel(e.target.value)
+                    setShowPricing(false)
+                  }}
+                  className={selectClass}
+                  disabled={!make || isLoadingModels}
+                >
+                  <option value="">
+                    {isLoadingModels ? 'Loading...' : 'Model'}
+                  </option>
+                  {models.map((m) => (
+                    <option key={m} value={m}>{m}</option>
+                  ))}
+                </select>
+                <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
+              </div>
+
+              {/* Body Style */}
+              <div className="relative">
+                <select
+                  value={bodyStyle}
+                  onChange={(e) => {
+                    setBodyStyle(e.target.value as BodyStyle)
+                    setShowPricing(false)
+                  }}
+                  className={selectClass}
+                  disabled={!model}
+                >
+                  <option value="">Body Style</option>
+                  {meta?.bodyStyles.map((bs) => (
+                    <option key={bs} value={bs}>{bs}</option>
+                  ))}
+                </select>
+                <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
+              </div>
+
+              {/* Color */}
+              <div className="relative">
+                <select
+                  value={color}
+                  onChange={(e) => setColor(e.target.value)}
+                  className={selectClass}
+                >
+                  <option value="">Color</option>
+                  {meta?.colors.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+                <ChevronIcon className="absolute right-4 top-1/2 -translate-y-1/2" />
+              </div>
+            </div>
+
+            {/* CTA */}
+            <button
+              onClick={handleSeePricing}
+              disabled={!canSeePricing}
+              className="w-full h-[50px] rounded-full text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
+            >
+              {canSeePricing
+                ? `See pricing for ${year} ${make} ${model}`
+                : 'See My Price'}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ── Pricing Results ── */}
       {showPricing && (
@@ -260,11 +410,6 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
           <div className="text-center mb-12">
             <p className="text-xs font-semibold tracking-[1.5px] uppercase text-foreground-muted mb-3">
               Pricing for your {year} {make} {model}
-              {surcharge > 0 && (
-                <span className="text-accent-blue-400 ml-2">
-                  ({bodyStyle} +${surcharge})
-                </span>
-              )}
             </p>
             <h2 className="text-[32px] font-bold tracking-[-0.5px] text-foreground mb-3">
               Choose your package
@@ -305,11 +450,6 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                       <span className="text-4xl font-bold text-foreground">
                         ${total}
                       </span>
-                      {surcharge > 0 && (
-                        <span className="text-sm text-foreground-muted line-through">
-                          ${service.base_price}
-                        </span>
-                      )}
                       <span className="text-xs text-foreground-muted ml-auto">
                         {service.estimated_duration_hours} Hours
                       </span>

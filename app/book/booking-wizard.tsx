@@ -144,7 +144,6 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
   }
 
   // For authenticated users: when they advance past Details, create booking automatically
-  const detailsStepIndex = steps.indexOf('Details')
   const needsBookingCreation =
     userAuthenticated &&
     !bookingId &&

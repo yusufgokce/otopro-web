@@ -4,6 +4,7 @@ import { NavServer } from './components/nav-server'
 import { Footer } from './components/footer'
 import { HeroPriceCalculator } from './components/hero-price-calculator'
 import { OtoAccordion } from './components/ui/oto-accordion'
+import { TrustBadges } from './components/trust-badges'
 
 // ── Static data ──
 
@@ -131,22 +132,14 @@ export default async function Home() {
   ])
 
   return (
-    <main className="min-h-screen bg-surface-primary text-foreground">
+    <>
+      <main className="relative z-10 min-h-screen bg-surface-primary text-foreground rounded-b-[32px] shadow-[0_4px_40px_rgba(0,0,0,0.15)]">
       <NavServer />
 
       {/* ── Hero ── */}
       <section className="max-w-6xl mx-auto px-6 pt-24 md:pt-32 pb-20 text-center">
-        {/* Trust badges */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-10">
-          {['Certified Detailers', 'Fully Insured', 'Satisfaction Guaranteed', 'Mobile Service'].map(
-            (badge) => (
-              <span key={badge} className="flex items-center gap-2 text-foreground-muted text-xs tracking-[0.5px] uppercase font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent-blue-500" />
-                {badge}
-              </span>
-            ),
-          )}
-        </div>
+        {/* Trust badges — notification bar style */}
+        <TrustBadges />
 
         {/* Headline */}
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-6">
@@ -155,8 +148,8 @@ export default async function Home() {
           <span className="text-accent-blue-500">detailing</span>, delivered.
         </h1>
 
-        <p className="text-lg md:text-xl text-foreground-muted max-w-xl mx-auto mb-14 leading-relaxed">
-          Enter your vehicle to get an instant price. Book in under a minute, we bring everything to you.
+        <p className="text-lg md:text-xl text-foreground-muted max-w-xl mx-auto mb-10 leading-relaxed">
+          Enter your vehicle info, get an instant quote!
         </p>
 
         {/* Price Calculator */}
@@ -311,7 +304,7 @@ export default async function Home() {
       {/* ── CTA ── */}
       <section className="py-28 md:py-32">
         <div className="max-w-4xl mx-auto px-6">
-          <div className="bg-accent-blue-800/20 border border-accent-blue-700/20 rounded-3xl p-12 md:p-16 text-center">
+          <div className="rounded-3xl p-12 md:p-16 text-center" style={{ background: 'var(--cta-bg)', border: '1px solid var(--cta-border)' }}>
             <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-5">
               Ready for a cleaner ride?
             </h2>
@@ -328,7 +321,8 @@ export default async function Home() {
         </div>
       </section>
 
+      </main>
       <Footer />
-    </main>
+    </>
   )
 }

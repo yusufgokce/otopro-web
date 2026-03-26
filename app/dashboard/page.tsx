@@ -61,7 +61,8 @@ export default async function DashboardPage() {
   ]
 
   return (
-    <main className="min-h-screen bg-surface-primary text-foreground">
+    <>
+    <main className="relative z-10 min-h-screen bg-surface-primary text-foreground rounded-b-[32px] shadow-[0_4px_40px_rgba(0,0,0,0.15)]">
       <NavServer />
 
       <section className="max-w-6xl mx-auto px-6 py-28">
@@ -123,7 +124,8 @@ export default async function DashboardPage() {
         </div>
       </section>
 
-      <Footer />
     </main>
+    <Footer />
+    </>
   )
 }

@@ -1,38 +1,59 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { ThemeToggle } from './theme-toggle'
 import { UserMenu } from './user-menu'
 
+const NAV_LINKS = [
+  { href: '/', label: 'otopro' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/guides', label: 'Guides' },
+  { href: '/faq', label: 'FAQ' },
+]
+
 function TypewriterLogo() {
-  const fullText = 'otopro'
   const [displayed, setDisplayed] = useState('')
   const [showCursor, setShowCursor] = useState(true)
 
   useEffect(() => {
-    let i = 0
-    const interval = setInterval(() => {
-      i++
-      setDisplayed(fullText.slice(0, i))
-      if (i >= fullText.length) {
-        clearInterval(interval)
-        setTimeout(() => setShowCursor(false), 1500)
+    const full = 'otopro.ca'
+    const final = 'otopro'
+    let cancelled = false
+
+    async function animate() {
+      // Phase 1: type out "otopro.ca"
+      for (let i = 1; i <= full.length; i++) {
+        if (cancelled) return
+        setDisplayed(full.slice(0, i))
+        await sleep(120)
       }
-    }, 120)
-    return () => clearInterval(interval)
+
+      // Phase 2: pause on "otopro.ca"
+      await sleep(1000)
+
+      // Phase 3: delete back to "otopro"
+      for (let i = full.length - 1; i >= final.length; i--) {
+        if (cancelled) return
+        setDisplayed(full.slice(0, i))
+        await sleep(80)
+      }
+
+      // Phase 4: cursor blinks then fades
+      await sleep(1500)
+      if (!cancelled) setShowCursor(false)
+    }
+
+    animate()
+    return () => { cancelled = true }
   }, [])
 
   return (
-    <span className="inline-flex items-center text-2xl font-bold tracking-tight">
-      <span className="glass-text">
-        <span className="glass-text-inner">{displayed.slice(0, 3)}</span>
-      </span>
-      <span className="glass-text glass-text-accent">
-        <span className="glass-text-inner">{displayed.slice(3)}</span>
-      </span>
+    <span className="inline-flex items-center text-2xl font-bold tracking-tight text-foreground" style={{ fontFamily: "Satoshi, sans-serif" }}>
+      {displayed}
       <span
-        className={`inline-block w-[2px] h-[1.1em] bg-accent-blue-500 ml-[2px] align-middle transition-opacity duration-100 ${
+        className={`inline-block w-[2px] h-[1.1em] bg-foreground ml-[2px] align-middle transition-opacity duration-100 ${
           showCursor ? 'opacity-100 animate-pulse' : 'opacity-0'
         }`}
       />
@@ -40,11 +61,16 @@ function TypewriterLogo() {
   )
 }
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 interface NavProps {
   user?: { name: string; email: string } | null
 }
 
 export function Nav({ user }: NavProps) {
+  const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -54,6 +80,9 @@ export function Nav({ user }: NavProps) {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const isActive = (href: string) =>
+    href === '/' ? pathname === '/' : pathname.startsWith(href)
+
   return (
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 ${
@@ -62,31 +91,38 @@ export function Nav({ user }: NavProps) {
           : 'bg-transparent'
       }`}
     >
-      <div className="flex items-center justify-between px-6 py-5 max-w-6xl mx-auto">
+      <div className="relative flex items-center justify-between px-6 py-5 max-w-6xl mx-auto">
         <Link href="/" className="text-xl font-bold tracking-tight text-foreground">
           <TypewriterLogo />
         </Link>
 
-        {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-8">
-          <Link
-            href="/pricing"
-            className="text-sm text-foreground-muted hover:text-foreground transition-colors"
-          >
-            Pricing
-          </Link>
-          <Link
-            href="/guides"
-            className="text-sm text-foreground-muted hover:text-foreground transition-colors"
-          >
-            Guides
-          </Link>
-          <Link
-            href="/faq"
-            className="text-sm text-foreground-muted hover:text-foreground transition-colors"
-          >
-            FAQ
-          </Link>
+        {/* Desktop links — tab style with bottom-aligned indicators */}
+        <div className="hidden md:flex items-center gap-6">
+          {NAV_LINKS.filter(l => l.href !== '/').map(link => {
+            const active = isActive(link.href)
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="relative pb-5 -mb-5 group"
+              >
+                <span
+                  className={`text-sm font-medium tracking-normal transition-colors ${
+                    active ? 'text-foreground' : 'text-foreground-muted hover:text-foreground'
+                  }`}
+                >
+                  {link.label}
+                </span>
+                <span
+                  className={`absolute bottom-0 left-0 right-0 h-[3px] rounded-t transition-all ${
+                    active
+                      ? 'bg-accent-blue-500'
+                      : 'opacity-0 group-hover:opacity-100 bg-foreground-muted/40'
+                  }`}
+                />
+              </Link>
+            )
+          })}
           <ThemeToggle />
           {user ? (
             <UserMenu userName={user.name} userEmail={user.email} />
@@ -129,27 +165,24 @@ export function Nav({ user }: NavProps) {
       {/* Mobile menu */}
       {open && (
         <div className="md:hidden px-6 pb-6 space-y-1 bg-surface-primary animate-in fade-in slide-in-from-top-2 duration-200">
-          <Link
-            href="/pricing"
-            onClick={() => setOpen(false)}
-            className="block py-3 text-sm text-foreground-muted hover:text-foreground transition-colors"
-          >
-            Pricing
-          </Link>
-          <Link
-            href="/guides"
-            onClick={() => setOpen(false)}
-            className="block py-3 text-sm text-foreground-muted hover:text-foreground transition-colors"
-          >
-            Guides
-          </Link>
-          <Link
-            href="/faq"
-            onClick={() => setOpen(false)}
-            className="block py-3 text-sm text-foreground-muted hover:text-foreground transition-colors"
-          >
-            FAQ
-          </Link>
+          {NAV_LINKS.filter(l => l.href !== '/').map(link => {
+            const active = isActive(link.href)
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className={`block py-3 text-sm font-medium tracking-normal transition-colors ${
+                  active ? 'text-foreground' : 'text-foreground-muted hover:text-foreground'
+                }`}
+              >
+                <span className="flex items-center gap-3">
+                  {active && <span className="w-[3px] h-4 bg-accent-blue-500 rounded-full" />}
+                  {link.label}
+                </span>
+              </Link>
+            )
+          })}
           {user && (
             <>
               <div className="border-t border-dark-grey/30 my-2" />

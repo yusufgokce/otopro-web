@@ -189,7 +189,7 @@ export function PaymentStep({
                   colorText: '#FFFFFF',
                   colorTextSecondary: '#a9a6a4',
                   colorDanger: 'rgb(232, 107, 89)',
-                  fontFamily: 'Jost, sans-serif',
+                  fontFamily: 'Satoshi, sans-serif',
                   borderRadius: '12px',
                   spacingUnit: '4px',
                 },
