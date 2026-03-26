@@ -21,9 +21,12 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [makes, setMakes] = useState<string[]>([])
   const [models, setModels] = useState<string[]>([])
+  const [allModelsData, setAllModelsData] = useState<Record<string, string[]>>({})
   const [years, setYears] = useState<number[]>([])
   const [colors, setColors] = useState<string[]>([])
   const [loadingModels, setLoadingModels] = useState(false)
+  const [availableBodyStyles, setAvailableBodyStyles] = useState<string[]>([...BODY_STYLES])
+  const [loadingBodyStyles, setLoadingBodyStyles] = useState(false)
 
   useEffect(() => {
     fetch(`${DATA_BASE}/meta.json`)
@@ -40,9 +43,11 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
       .catch(() => {})
   }, [])
 
+  // Load models data when make changes
   useEffect(() => {
     if (!state.vehicleMake) {
       setModels([])
+      setAllModelsData({})
       return
     }
 
@@ -55,17 +60,69 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
     fetch(`${DATA_BASE}/models/${slug}.json`)
       .then((r) => r.json())
       .then((data) => {
-        setModels(data)
+        if (Array.isArray(data)) {
+          // Legacy flat array format
+          setAllModelsData({})
+          setModels(data)
+        } else {
+          // Year-indexed format: { "2025": ["Camry", ...], ... }
+          setAllModelsData(data)
+          setModels([]) // Will be filtered by year effect below
+        }
         setLoadingModels(false)
       })
       .catch(() => {
         setModels([])
+        setAllModelsData({})
         setLoadingModels(false)
       })
   }, [state.vehicleMake])
 
+  // Filter models by year when year-indexed data is available
+  useEffect(() => {
+    if (Object.keys(allModelsData).length === 0) return
+    const y = state.vehicleYear
+    if (y && allModelsData[y]) {
+      setModels(allModelsData[y])
+    } else if (y) {
+      // Year not in data — show all as fallback
+      const all = Array.from(new Set(Object.values(allModelsData).flat())).sort()
+      setModels(all)
+    }
+  }, [state.vehicleYear, allModelsData])
+
+  // Fetch valid body styles when model is selected
+  useEffect(() => {
+    if (!state.vehicleYear || !state.vehicleMake || !state.vehicleModel) {
+      setAvailableBodyStyles([...BODY_STYLES])
+      return
+    }
+
+    setLoadingBodyStyles(true)
+    const params = new URLSearchParams({
+      year: state.vehicleYear,
+      make: state.vehicleMake,
+      model: state.vehicleModel,
+    })
+
+    fetch(`/api/vehicles/body-styles?${params}`)
+      .then((r) => r.json())
+      .then((data: string[]) => {
+        setAvailableBodyStyles(data.length > 0 ? data : [...BODY_STYLES])
+        // Auto-select if only one body style
+        if (data.length === 1) {
+          dispatch({ type: 'SET_VEHICLE', payload: { bodyStyle: data[0] as BodyStyle } })
+        }
+        setLoadingBodyStyles(false)
+      })
+      .catch(() => {
+        setAvailableBodyStyles([...BODY_STYLES])
+        setLoadingBodyStyles(false)
+      })
+  }, [state.vehicleYear, state.vehicleMake, state.vehicleModel, dispatch])
+
   function handleMakeChange(make: string) {
-    dispatch({ type: 'SET_VEHICLE', payload: { vehicleMake: make, vehicleModel: '' } })
+    dispatch({ type: 'SET_VEHICLE', payload: { vehicleMake: make, vehicleModel: '', bodyStyle: '' as BodyStyle } })
   }
 
   function validate(): boolean {
@@ -188,16 +245,21 @@ export function VehicleStep({ state, dispatch, bodyStylePricing }: Props) {
           </div>
 
           <div>
-            <label className={labelClass}>Body Style</label>
+            <label className={labelClass}>
+              Body Style
+              {loadingBodyStyles && (
+                <span className="ml-2 text-xs text-foreground-muted animate-pulse">detecting...</span>
+              )}
+            </label>
             <div className="grid grid-cols-3 gap-2">
-              {BODY_STYLES.map((bs) => {
+              {availableBodyStyles.map((bs) => {
                 const selected = state.bodyStyle === bs
                 return (
                   <button
                     key={bs}
                     type="button"
                     onClick={() =>
-                      dispatch({ type: 'SET_VEHICLE', payload: { bodyStyle: bs } })
+                      dispatch({ type: 'SET_VEHICLE', payload: { bodyStyle: bs as BodyStyle } })
                     }
                     className={`py-2.5 px-3 rounded-xl text-sm border transition-colors ${
                       selected

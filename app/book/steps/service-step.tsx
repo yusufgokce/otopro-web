@@ -42,22 +42,22 @@ export function ServiceStep({ services, state, dispatch, surcharge }: Props) {
                   dispatch({ type: 'SELECT_SERVICE', payload: s })
                   setError('')
                 }}
-                className={`text-left p-6 rounded-2xl border transition-all ${
+                className={`text-left p-6 rounded-2xl border transition-all flex flex-col ${
                   selected
                     ? 'bg-accent-blue-500/10 border-accent-blue-500'
                     : 'bg-surface-widget border-dark-grey hover:border-accent-blue-500/40'
                 }`}
               >
-                <div className="flex items-start justify-between mb-3">
+                <div className="flex items-start justify-between mb-2">
                   <h3 className="font-semibold text-lg">{s.name}</h3>
                   {selected && (
                     <span className="text-accent-blue-500 text-lg">&#10003;</span>
                   )}
                 </div>
-                <p className="text-dark-silver text-sm leading-relaxed mb-4">
+                <p className="text-dark-silver text-sm leading-relaxed mb-4 flex-1">
                   {s.description?.replace(/^-\s*/gm, '').replace(/\n-\s*/g, ', ')}
                 </p>
-                <div className="flex items-end justify-between">
+                <div className="flex items-end justify-between mt-auto pt-2 border-t border-dark-grey/20">
                   <span className="text-2xl font-bold text-accent-blue-500">
                     ${displayPrice}
                   </span>

@@ -127,7 +127,7 @@ export default function PricingPage() {
                 className={`block text-center py-3 rounded-xl text-sm font-semibold transition-colors ${
                   pkg.tag
                     ? 'bg-accent-blue-500 hover:bg-accent-blue-600 text-white'
-                    : 'bg-dark-grey hover:bg-grey border border-dark-grey text-foreground'
+                    : 'bg-surface-widget-hover hover:bg-foreground-muted/20 border border-dark-grey/30 text-foreground'
                 }`}
               >
                 Book Now
@@ -142,7 +142,7 @@ export default function PricingPage() {
         <div className="bg-surface-widget border border-dark-grey rounded-2xl overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-surface-widget">
+              <tr className="border-b border-dark-grey/15">
                 <th className="text-left p-4 text-grey font-medium">Service</th>
                 {PACKAGES.map((p) => (
                   <th key={p.name} className="p-4 text-center font-semibold">
@@ -155,7 +155,7 @@ export default function PricingPage() {
               {SERVICE_NAMES.map((service, i) => (
                 <tr
                   key={service}
-                  className={i < SERVICE_NAMES.length - 1 ? 'border-b border-surface-widget/50' : ''}
+                  className={i < SERVICE_NAMES.length - 1 ? 'border-b border-dark-grey/15' : ''}
                 >
                   <td className="p-4 text-dark-silver">{service}</td>
                   {PACKAGES.map((pkg) => (
@@ -184,11 +184,11 @@ export default function PricingPage() {
             <div
               key={s.style}
               className={`flex items-center justify-between p-4 text-sm ${
-                i < SURCHARGES.length - 1 ? 'border-b border-surface-widget/50' : ''
+                i < SURCHARGES.length - 1 ? 'border-b border-dark-grey/15' : ''
               }`}
             >
-              <span className="text-silver">{s.style}</span>
-              <span className={s.surcharge === '$0' ? 'text-dark-grey' : 'text-accent-blue-300 font-medium'}>
+              <span className="text-foreground-muted">{s.style}</span>
+              <span className={s.surcharge === '$0' ? 'text-foreground-muted/60' : 'text-accent-blue-500 font-medium'}>
                 {s.surcharge}
               </span>
             </div>

@@ -198,6 +198,12 @@ export function DetailsStep({ state, dispatch }: Props) {
   function handleContinue() {
     if (validate()) {
       dispatch({ type: 'NEXT_STEP' })
+    } else {
+      if (!state.selectedDate || !state.selectedTime) {
+        document.getElementById('schedule-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      } else if (!state.streetAddress.trim() || !state.city.trim() || !state.province) {
+        document.getElementById('location-section')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
     }
   }
 
@@ -205,7 +211,7 @@ export function DetailsStep({ state, dispatch }: Props) {
     <div className="flex flex-col h-full">
       <div className="flex-1 space-y-8">
         {/* ═══════ SCHEDULE SECTION ═══════ */}
-        <div>
+        <div id="schedule-section">
           <h1 className="text-3xl font-bold text-center mb-2">Schedule &amp; location</h1>
           <p className="text-dark-silver text-center mb-8">
             Choose when and where you&apos;d like us to come
@@ -258,10 +264,10 @@ export function DetailsStep({ state, dispatch }: Props) {
                     onClick={() => dispatch({ type: 'SET_DATE', payload: dateStr })}
                     className={`h-10 rounded-lg text-sm transition-colors relative ${
                       disabled
-                        ? 'text-dark-grey cursor-not-allowed'
+                        ? 'text-foreground-muted/30 cursor-not-allowed'
                         : selected
                           ? 'bg-accent-blue-500 text-white font-semibold'
-                          : 'hover:bg-surface-widget-hover text-silver'
+                          : 'hover:bg-surface-widget-hover text-foreground'
                     }`}
                   >
                     {day}
@@ -298,7 +304,7 @@ export function DetailsStep({ state, dispatch }: Props) {
         </div>
 
         {/* ═══════ LOCATION SECTION ═══════ */}
-        <div>
+        <div id="location-section">
           <h2 className="text-xl font-bold mb-4">Service location</h2>
 
           {/* Search address */}

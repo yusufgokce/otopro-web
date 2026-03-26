@@ -13,11 +13,13 @@ const NAV_LINKS = [
   { href: '/faq', label: 'FAQ' },
 ]
 
-function TypewriterLogo() {
-  const [displayed, setDisplayed] = useState('')
-  const [showCursor, setShowCursor] = useState(true)
+function TypewriterLogo({ animate: shouldAnimate }: { animate: boolean }) {
+  const [displayed, setDisplayed] = useState(shouldAnimate ? '' : 'otopro')
+  const [showCursor, setShowCursor] = useState(shouldAnimate)
 
   useEffect(() => {
+    if (!shouldAnimate) return
+
     const full = 'otopro.ca'
     const final = 'otopro'
     let cancelled = false
@@ -47,16 +49,16 @@ function TypewriterLogo() {
 
     animate()
     return () => { cancelled = true }
-  }, [])
+  }, [shouldAnimate])
 
   return (
     <span className="inline-flex items-center text-2xl font-bold tracking-tight text-foreground" style={{ fontFamily: "Satoshi, sans-serif" }}>
       {displayed}
-      <span
-        className={`inline-block w-[2px] h-[1.1em] bg-foreground ml-[2px] align-middle transition-opacity duration-100 ${
-          showCursor ? 'opacity-100 animate-pulse' : 'opacity-0'
-        }`}
-      />
+      {showCursor && (
+        <span
+          className="inline-block w-[2px] h-[1.1em] bg-foreground ml-[2px] align-middle opacity-100 animate-pulse"
+        />
+      )}
     </span>
   )
 }
@@ -87,24 +89,32 @@ export function Nav({ user }: NavProps) {
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-surface-primary/40 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.03)]'
+          ? 'bg-surface-primary/65 backdrop-blur-xl shadow-[0_1px_0_0_rgba(255,255,255,0.03)]'
           : 'bg-transparent'
       }`}
     >
-      <div className="relative flex items-center justify-between px-6 py-5 max-w-6xl mx-auto">
-        <Link href="/" className="text-xl font-bold tracking-tight text-foreground">
-          <TypewriterLogo />
+      <div className="relative flex items-end px-6 pb-0 pt-5 max-w-6xl mx-auto">
+        {/* Left: Logo as a tab link with indicator */}
+        <Link href="/" className="relative pb-4 group mr-auto">
+          <TypewriterLogo animate={pathname === '/'} />
+          <span
+            className={`absolute bottom-0 left-0 right-0 h-[3px] rounded-t transition-all ${
+              isActive('/')
+                ? 'bg-accent-blue-500'
+                : 'opacity-0 group-hover:opacity-100 bg-foreground-muted/40'
+            }`}
+          />
         </Link>
 
-        {/* Desktop links — tab style with bottom-aligned indicators */}
-        <div className="hidden md:flex items-center gap-6">
+        {/* Desktop links — tab style, bottom-aligned with header */}
+        <div className="hidden md:flex items-end gap-6">
           {NAV_LINKS.filter(l => l.href !== '/').map(link => {
             const active = isActive(link.href)
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className="relative pb-5 -mb-5 group"
+                className="relative pb-4 group"
               >
                 <span
                   className={`text-sm font-medium tracking-normal transition-colors ${
@@ -123,16 +133,19 @@ export function Nav({ user }: NavProps) {
               </Link>
             )
           })}
-          <ThemeToggle />
+          {/* Center these with the tab link text (offset by half of pb-4 = pb-2) */}
+          <div className="pb-[9px]"><ThemeToggle /></div>
           {user ? (
-            <UserMenu userName={user.name} userEmail={user.email} />
+            <div className="pb-2"><UserMenu userName={user.name} userEmail={user.email} /></div>
           ) : (
-            <Link
-              href="/book"
-              className="bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
-            >
-              Book
-            </Link>
+            <div className="pb-[16px]">
+              <Link
+                href="/book"
+                className="bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
+              >
+                Book
+              </Link>
+            </div>
           )}
         </div>
 

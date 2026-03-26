@@ -98,10 +98,12 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
   const [meta, setMeta] = useState<Meta | null>(null)
   const [makes, setMakes] = useState<string[]>([])
   const [models, setModels] = useState<string[]>([])
+  const [availableBodyStyles, setAvailableBodyStyles] = useState<string[]>([])
 
   // UI state
   const [showPricing, setShowPricing] = useState(false)
   const [isLoadingModels, setIsLoadingModels] = useState(false)
+  const [isLoadingBodyStyles, setIsLoadingBodyStyles] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
 
   // Typewriter state
@@ -206,22 +208,67 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
     }
   }, [modalOpen])
 
-  // Load models when make changes
+  // All models data for current make: { "2025": ["Camry", ...], "2024": [...] }
+  const [allModelsData, setAllModelsData] = useState<Record<string, string[]>>({})
+
+  // Load models from static JSON, then filter by year client-side
   const loadModels = useCallback(async (makeName: string) => {
     if (!makeName) {
       setModels([])
+      setAllModelsData({})
       return
     }
     setIsLoadingModels(true)
     try {
       const res = await fetch(`/data/vehicles/models/${toSlug(makeName)}.json`)
-      const data: string[] = await res.json()
-      setModels(data)
+      const data = await res.json()
+      // Support both formats: year-indexed object or flat array (legacy)
+      if (Array.isArray(data)) {
+        setAllModelsData({})
+        setModels(data)
+      } else {
+        setAllModelsData(data)
+        // Don't set models yet — will be filtered when year is set/changed
+        setModels([])
+      }
     } catch {
       setModels([])
+      setAllModelsData({})
     }
     setIsLoadingModels(false)
   }, [])
+
+  // Filter models by year whenever year or allModelsData changes
+  useEffect(() => {
+    if (Object.keys(allModelsData).length === 0) return
+    if (year && allModelsData[year]) {
+      setModels(allModelsData[year])
+    } else if (year) {
+      // Year not found — show all models as fallback
+      const all = Array.from(new Set(Object.values(allModelsData).flat())).sort()
+      setModels(all)
+    }
+  }, [year, allModelsData])
+
+  // Load valid body styles when model is selected
+  const loadBodyStyles = useCallback(async (y: string, mk: string, mdl: string) => {
+    if (!y || !mk || !mdl) {
+      setAvailableBodyStyles(meta?.bodyStyles ?? [])
+      return
+    }
+    setIsLoadingBodyStyles(true)
+    try {
+      const params = new URLSearchParams({ year: y, make: mk, model: mdl })
+      const res = await fetch(`/api/vehicles/body-styles?${params}`)
+      const data: string[] = await res.json()
+      setAvailableBodyStyles(data.length > 0 ? data : meta?.bodyStyles ?? [])
+      // Auto-select if only one body style
+      if (data.length === 1) setBodyStyle(data[0] as BodyStyle)
+    } catch {
+      setAvailableBodyStyles(meta?.bodyStyles ?? [])
+    }
+    setIsLoadingBodyStyles(false)
+  }, [meta])
 
   // Compute surcharge
   const surcharge = bodyStylePricing.find((b) => b.body_style === bodyStyle)?.surcharge ?? 0
@@ -300,6 +347,8 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                   value={year}
                   onChange={(e) => {
                     setYear(e.target.value)
+                    setModel('')
+                    setBodyStyle('')
                     setShowPricing(false)
                   }}
                   className={selectClass}
@@ -340,7 +389,9 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                   value={model}
                   onChange={(e) => {
                     setModel(e.target.value)
+                    setBodyStyle('')
                     setShowPricing(false)
+                    if (e.target.value) loadBodyStyles(year, make, e.target.value)
                   }}
                   className={selectClass}
                   disabled={!make || isLoadingModels}
@@ -364,10 +415,12 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
                     setShowPricing(false)
                   }}
                   className={selectClass}
-                  disabled={!model}
+                  disabled={!model || isLoadingBodyStyles}
                 >
-                  <option value="">Body Style</option>
-                  {meta?.bodyStyles.map((bs) => (
+                  <option value="">
+                    {isLoadingBodyStyles ? 'Loading...' : 'Body Style'}
+                  </option>
+                  {availableBodyStyles.map((bs) => (
                     <option key={bs} value={bs}>{bs}</option>
                   ))}
                 </select>

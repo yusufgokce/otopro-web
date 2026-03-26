@@ -74,6 +74,7 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
     const model = searchParams.get('model')
     const body = searchParams.get('body') as BodyStyle | null
     const color = searchParams.get('color')
+    const serviceId = searchParams.get('service')
 
     if (year || make || model || body || color) {
       dispatch({
@@ -87,7 +88,16 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
         },
       })
     }
-  }, [searchParams])
+
+    // If all vehicle params + service are present, pre-select service and skip to Details
+    if (year && make && model && body && color && serviceId) {
+      const matchedService = services.find((s) => s.id === serviceId)
+      if (matchedService) {
+        dispatch({ type: 'SELECT_SERVICE', payload: matchedService })
+        dispatch({ type: 'GO_TO_STEP', payload: 2 })
+      }
+    }
+  }, [searchParams, services])
 
   const surcharge = Number(
     bodyStylePricing.find((b) => b.body_style === state.bodyStyle)?.surcharge ?? 0
@@ -171,7 +181,7 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
               className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold transition-colors ${
                 i <= state.currentStep
                   ? 'bg-accent-blue-500 text-white'
-                  : 'bg-dark-grey text-grey'
+                  : 'bg-surface-widget-hover text-foreground-muted'
               }`}
             >
               {i < state.currentStep ? '\u2713' : i + 1}
@@ -179,7 +189,7 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
             {i < steps.length - 1 && (
               <div
                 className={`w-6 h-px ${
-                  i < state.currentStep ? 'bg-accent-blue-500' : 'bg-dark-grey'
+                  i < state.currentStep ? 'bg-accent-blue-500' : 'bg-surface-widget-hover'
                 }`}
               />
             )}
@@ -188,7 +198,7 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 overflow-y-auto min-h-0 pt-2 md:pt-8">
+      <div className="flex-1 overflow-y-auto min-h-0 pt-2 md:pt-8 scrollbar-hide">
         {currentStepName === 'Vehicle' && (
           <VehicleStep
             state={state}
@@ -246,8 +256,8 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
       </div>
 
       {/* Desktop vertical progress sidebar */}
-      <aside className="hidden md:flex flex-col items-center pt-8 pb-8 w-44 shrink-0">
-        <div className="flex flex-col items-start gap-0 flex-1">
+      <aside className="hidden md:flex flex-col items-center justify-center w-44 shrink-0">
+        <div className="flex flex-col items-start gap-0">
           {steps.map((label, i) => (
             <div key={label} className="flex flex-col items-center">
               <div className="flex items-center gap-3">
@@ -257,7 +267,7 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
                       ? 'bg-accent-blue-500 text-white'
                       : i === state.currentStep
                         ? 'bg-accent-blue-500 text-white ring-2 ring-accent-blue-500/30 ring-offset-2 ring-offset-surface-primary'
-                        : 'bg-dark-grey text-grey'
+                        : 'bg-surface-widget-hover text-foreground-muted'
                   }`}
                 >
                   {i < state.currentStep ? '\u2713' : i + 1}
@@ -278,7 +288,7 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
                 <div className="flex justify-start ml-[17px]">
                   <div
                     className={`w-px h-8 ${
-                      i < state.currentStep ? 'bg-accent-blue-500' : 'bg-dark-grey'
+                      i < state.currentStep ? 'bg-accent-blue-500' : 'bg-surface-widget-hover'
                     }`}
                   />
                 </div>
