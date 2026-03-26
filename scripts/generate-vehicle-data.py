@@ -172,7 +172,7 @@ def main():
         "years": list(range(2026, 1989, -1)),
         "bodyStyles": [
             "Sedan", "SUV", "Truck", "Coupe", "Hatchback",
-            "Convertible", "Van/Minivan", "Wagon", "Crossover",
+            "Convertible", "Van", "Minivan", "Wagon", "Crossover",
         ],
         "colors": [
             "Black", "White", "Silver", "Grey", "Red", "Blue",

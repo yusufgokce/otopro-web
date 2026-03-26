@@ -18,7 +18,8 @@ const CANONICAL_BODY_STYLES = [
   'Coupe',
   'Hatchback',
   'Convertible',
-  'Van/Minivan',
+  'Van',
+  'Minivan',
   'Wagon',
   'Crossover',
 ] as const
