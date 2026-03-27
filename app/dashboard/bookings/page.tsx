@@ -5,6 +5,7 @@ import { Footer } from '../../components/footer'
 import { createClient } from '@/lib/supabase/server'
 import { TIME_SLOT_LABELS, type TimeSlot } from '@/lib/types/booking'
 import { RescheduleModal } from './reschedule-modal'
+import { CancelButton } from './cancel-button'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -17,7 +18,12 @@ const STATUS_STYLES: Record<string, string> = {
   confirmed: 'bg-accent-blue-500/15 text-accent-blue-500',
   completed: 'bg-green-500/15 text-green-500',
   cancelled: 'bg-red-500/15 text-red-500',
+  refunded: 'bg-grey/15 text-grey',
+  payment_failed: 'bg-red-500/15 text-red-500',
 }
+
+// Only these statuses allow reschedule/cancel actions
+const ACTIONABLE_STATUSES = ['confirmed', 'pending']
 
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr + 'T00:00:00')
@@ -83,7 +89,10 @@ export default async function BookingsPage() {
                 ? TIME_SLOT_LABELS[timeKey]
                 : booking.scheduled_time
               const status = booking.current_status || 'pending'
-              const canReschedule = status === 'confirmed' || status === 'pending'
+              const canReschedule = ACTIONABLE_STATUSES.includes(status)
+              // Can cancel within 48 hours of creation
+              const hoursSinceCreation = (Date.now() - new Date(booking.created_at).getTime()) / (1000 * 60 * 60)
+              const canCancel = ACTIONABLE_STATUSES.includes(status) && hoursSinceCreation <= 48
               const serviceTypes = booking.service_types as
                 | { name: string }
                 | { name: string }[]
@@ -145,13 +154,18 @@ export default async function BookingsPage() {
                         ${(booking.total_price ?? 0).toFixed(2)}
                       </p>
                       {canReschedule && (
-                        <RescheduleModal
-                          sessionId={booking.id}
-                          currentDate={booking.scheduled_date}
-                          currentTime={timeKey || '08:00'}
-                          createdAt={booking.created_at}
-                          rescheduleCount={booking.reschedule_count ?? 0}
-                        />
+                        <div className="flex gap-2">
+                          <RescheduleModal
+                            sessionId={booking.id}
+                            currentDate={booking.scheduled_date}
+                            currentTime={timeKey || '08:00'}
+                            createdAt={booking.created_at}
+                            rescheduleCount={booking.reschedule_count ?? 0}
+                          />
+                          {canCancel && (
+                            <CancelButton sessionId={booking.id} />
+                          )}
+                        </div>
                       )}
                     </div>
                   </div>
