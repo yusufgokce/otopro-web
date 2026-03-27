@@ -300,6 +300,83 @@ export async function markDepositPaid(
   return { success: true }
 }
 
+// --------------- Cancel Booking ---------------
+
+const CANCEL_WINDOW_HOURS = 48
+
+interface CancelResult {
+  success: boolean
+  error?: string
+}
+
+export async function cancelBooking(sessionId: string): Promise<CancelResult> {
+  const supabase = await createClient()
+
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    return { success: false, error: 'You must be signed in to cancel a booking.' }
+  }
+
+  // Fetch the booking
+  const { data: booking, error: fetchErr } = await supabase
+    .from('detailing_sessions')
+    .select('id, customer_id, current_status, deposit_paid, stripe_deposit_payment_id, created_at')
+    .eq('id', sessionId)
+    .single()
+
+  if (fetchErr || !booking) {
+    return { success: false, error: 'Booking not found.' }
+  }
+
+  if (booking.customer_id !== user.id) {
+    return { success: false, error: 'You do not own this booking.' }
+  }
+
+  // Only confirmed or pending bookings can be cancelled
+  if (!['confirmed', 'pending'].includes(booking.current_status)) {
+    return { success: false, error: 'This booking cannot be cancelled.' }
+  }
+
+  // Check 48-hour cancellation window from creation
+  const createdAt = new Date(booking.created_at)
+  const now = new Date()
+  const hoursSinceCreation = (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60)
+
+  if (hoursSinceCreation > CANCEL_WINDOW_HOURS) {
+    return {
+      success: false,
+      error: `Free cancellation is only available within the first ${CANCEL_WINDOW_HOURS} hours of booking. Please contact support for assistance.`,
+    }
+  }
+
+  // If deposit was paid, issue a Stripe refund
+  if (booking.deposit_paid && booking.stripe_deposit_payment_id) {
+    try {
+      await stripe.refunds.create({
+        payment_intent: booking.stripe_deposit_payment_id,
+      })
+    } catch (err) {
+      console.error('Stripe refund error:', err)
+      return { success: false, error: 'Failed to process refund. Please contact support.' }
+    }
+  }
+
+  // Update booking status
+  const { error: updateErr } = await supabase
+    .from('detailing_sessions')
+    .update({
+      current_status: 'cancelled',
+    })
+    .eq('id', sessionId)
+    .eq('customer_id', user.id)
+
+  if (updateErr) {
+    return { success: false, error: 'Failed to cancel booking. Please try again.' }
+  }
+
+  return { success: true }
+}
+
 // --------------- Reschedule ---------------
 
 const MAX_RESCHEDULES = 2

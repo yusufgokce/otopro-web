@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback, useRef } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import type { ServiceType, BodyStylePricing, BodyStyle } from '@/lib/types/booking'
 
@@ -10,6 +11,15 @@ interface Meta {
   years: number[]
   bodyStyles: string[]
   colors: string[]
+}
+
+interface GarageVehicle {
+  id: string
+  year: number
+  make: string
+  model: string
+  color: string | null
+  body_style: string | null
 }
 
 // ── Icons ──
@@ -84,9 +94,11 @@ const SEQUENCES: AnimStep[][] = [
 interface Props {
   services: ServiceType[]
   bodyStylePricing: BodyStylePricing[]
+  userVehicles?: GarageVehicle[]
+  isAuthenticated?: boolean
 }
 
-export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
+export function HeroPriceCalculator({ services, bodyStylePricing, userVehicles, isAuthenticated }: Props) {
   // Vehicle state
   const [year, setYear] = useState('')
   const [make, setMake] = useState('')
@@ -106,10 +118,34 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
   const [isLoadingBodyStyles, setIsLoadingBodyStyles] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
 
+  // Garage picker
+  const [showGaragePicker, setShowGaragePicker] = useState(false)
+
   // Typewriter state
   const [placeholder, setPlaceholder] = useState('')
   const searchBarRef = useRef<HTMLDivElement>(null)
   const cancelledRef = useRef(false)
+  const searchParams = useSearchParams()
+  const router = useRouter()
+
+  // Open modal from URL param (?book=true) or custom event
+  useEffect(() => {
+    if (searchParams.get('book') === 'true') {
+      setModalOpen(true)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      // Clean URL without reload
+      router.replace('/', { scroll: false })
+    }
+  }, [searchParams, router])
+
+  useEffect(() => {
+    const handler = () => {
+      setModalOpen(true)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+    window.addEventListener('open-booking', handler)
+    return () => window.removeEventListener('open-booking', handler)
+  }, [])
 
   // Load makes + meta on mount
   useEffect(() => {
@@ -304,7 +340,7 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
       <div className="max-w-lg mx-auto" ref={searchBarRef}>
         <button
           onClick={() => setModalOpen(true)}
-          className="w-full h-14 px-5 bg-surface-widget border border-dark-grey/20 rounded-2xl inline-flex items-center gap-3 hover:border-dark-grey/40 transition-all cursor-text group"
+          className="w-full h-14 px-5 bg-surface-widget border border-dark-grey/20 rounded-2xl inline-flex items-center gap-3 hover:border-dark-grey/40 transition-all cursor-text group pulse-ring"
         >
           <SearchIcon />
           <span className="flex-1 text-left text-base text-foreground-muted">
@@ -333,12 +369,58 @@ export function HeroPriceCalculator({ services, bodyStylePricing }: Props) {
               <CloseIcon />
             </button>
 
-            <p className="text-xs font-semibold tracking-[1.5px] uppercase text-foreground-muted mb-1 text-center">
-              Instant Quote
-            </p>
-            <h3 className="text-lg font-semibold text-foreground mb-6 text-center">
-              Enter your vehicle details
-            </h3>
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <p className="text-xs font-semibold tracking-[1.5px] uppercase text-foreground-muted mb-1">
+                  Instant Quote
+                </p>
+                <h3 className="text-lg font-semibold text-foreground">
+                  Enter your vehicle details
+                </h3>
+              </div>
+              {isAuthenticated && userVehicles && userVehicles.length > 0 && (
+                <button
+                  onClick={() => setShowGaragePicker(!showGaragePicker)}
+                  className="text-xs font-medium text-accent-blue-500 hover:text-accent-blue-400 transition-colors whitespace-nowrap mt-1"
+                >
+                  Choose from my garage
+                </button>
+              )}
+            </div>
+
+            {/* Garage vehicle picker */}
+            {showGaragePicker && userVehicles && userVehicles.length > 0 && (
+              <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {userVehicles.map((v) => (
+                  <button
+                    key={v.id}
+                    onClick={() => {
+                      setYear(String(v.year))
+                      setMake(v.make)
+                      setColor(v.color || '')
+                      if (v.body_style) setBodyStyle(v.body_style as BodyStyle)
+                      setShowGaragePicker(false)
+                      // Load models for this make, then set model
+                      loadModels(v.make).then(() => setModel(v.model))
+                      if (v.body_style) {
+                        setAvailableBodyStyles([v.body_style])
+                      } else {
+                        loadBodyStyles(String(v.year), v.make, v.model)
+                      }
+                    }}
+                    className="flex items-center gap-3 p-3 rounded-xl bg-surface-widget-hover/50 hover:bg-surface-widget-hover border border-dark-grey/10 transition-all text-left"
+                  >
+                    <span className="w-8 h-8 rounded-lg bg-accent-blue-500/10 text-accent-blue-500 flex items-center justify-center text-xs font-bold">
+                      {v.make.charAt(0)}
+                    </span>
+                    <div>
+                      <p className="text-sm font-medium text-foreground">{v.year} {v.make} {v.model}</p>
+                      <p className="text-xs text-foreground-muted">{[v.body_style, v.color].filter(Boolean).join(' · ')}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
 
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-3">
               {/* Year */}

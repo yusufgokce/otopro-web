@@ -2,15 +2,15 @@ import Link from 'next/link'
 
 export function Footer() {
   return (
-    <footer className="sticky bottom-0 z-0 bg-surface-widget h-screen">
-      <div className="relative flex flex-col h-full">
+    <footer className="sticky bottom-0 z-0 bg-surface-widget h-screen rounded-t-[32px]">
+      <div className="relative flex flex-col h-full overflow-hidden">
 
         {/* ── Main footer content ── */}
         <div className="relative z-10 flex flex-col md:flex-row max-w-6xl mx-auto w-full px-8 pt-10 md:pt-20">
           {/* Left side — columns */}
           <div className="flex-1">
-            {/* Columns — compact on mobile (3 cols), spacious on desktop */}
-            <div className="grid grid-cols-3 gap-6 md:gap-16">
+            {/* Columns — stacked on mobile, 3-col on desktop */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-16">
               {/* Services */}
               <div>
                 <h4 className="text-[11px] font-semibold tracking-[2px] uppercase text-foreground-muted mb-3 md:mb-5">
@@ -44,7 +44,7 @@ export function Footer() {
                   <Link href="/faq" className="block text-xs md:text-sm text-foreground-muted hover:text-foreground transition-colors">
                     FAQ
                   </Link>
-                  <Link href="/book" className="block text-xs md:text-sm text-foreground-muted hover:text-foreground transition-colors">
+                  <Link href="/?book=true" className="block text-xs md:text-sm text-foreground-muted hover:text-foreground transition-colors">
                     Book Online
                   </Link>
                 </div>
@@ -79,8 +79,9 @@ export function Footer() {
           </div>
         </div>
 
-        {/* ── Descriptor text + mobile copyright above giant logo ── */}
-        <div className="mt-auto w-full max-w-6xl mx-auto px-8 mb-4">
+        {/* ── Descriptor text + mobile copyright ── */}
+        <div className="flex-1" />
+        <div className="w-full max-w-6xl mx-auto px-8 mb-4">
           <p className="text-foreground-muted text-sm leading-relaxed max-w-[320px]">
             Professional mobile car detailing, delivered to your driveway. No prep needed.
           </p>
@@ -89,19 +90,13 @@ export function Footer() {
           </p>
         </div>
 
-        {/* ── Giant oversized logo — spans full width, always shows exactly 60% ── */}
-        <div
-          className="w-full pointer-events-none select-none overflow-hidden"
-          /*
-            The SVG viewBox is 0 0 600 130 (text fills ~600 wide, ~130 tall).
-            60% of height = 78. So aspect-ratio = 600/78 ≈ 7.69.
-            This makes the container always show exactly 60% of the logo.
-          */
-          style={{ aspectRatio: '429 / 105' }}
+        {/* ── Giant oversized logo — pinned to bottom, 60% visible (40% clipped) ── */}
+        <div className="w-full pointer-events-none select-none shrink-0 overflow-hidden"
+          style={{ height: '25vh', minHeight: '120px' }}
         >
           <svg
             viewBox="85 -37 429 175"
-            className="w-full"
+            className="w-full h-full"
             preserveAspectRatio="xMidYMin meet"
             style={{ display: 'block' }}
             xmlns="http://www.w3.org/2000/svg"
