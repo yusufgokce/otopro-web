@@ -41,7 +41,7 @@ const SECTIONS = [
       },
       {
         q: 'Can I reschedule or cancel my booking?',
-        a: 'Yes. You can reschedule up to 2 times per booking at no charge. Cancellations are free with 24-hour notice.',
+        a: 'Yes. You can reschedule up to 2 times per booking at no charge. Free cancellation is available within 48 hours of booking — your deposit will be fully refunded. After 48 hours, please contact support for cancellation assistance.',
       },
       {
         q: 'What happens if weather interferes with my appointment?',

@@ -137,16 +137,24 @@ export function Nav({ user }: NavProps) {
           <div className="pb-[9px]"><ThemeToggle /></div>
           {user ? (
             <div className="pb-2"><UserMenu userName={user.name} userEmail={user.email} /></div>
-          ) : (
-            <div className="pb-[16px]">
+          ) : null}
+          <div className="pb-[16px]">
+            {pathname === '/' ? (
+              <button
+                onClick={() => window.dispatchEvent(new CustomEvent('open-booking'))}
+                className="bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors cursor-pointer"
+              >
+                Book
+              </button>
+            ) : (
               <Link
-                href="/book"
+                href="/?book=true"
                 className="bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
               >
                 Book
               </Link>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* Mobile toggle */}
@@ -223,13 +231,25 @@ export function Nav({ user }: NavProps) {
             </>
           )}
           <div className="pt-3">
-            <Link
-              href="/book"
-              onClick={() => setOpen(false)}
-              className="block text-center bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-3 rounded-full transition-colors"
-            >
-              Book
-            </Link>
+            {pathname === '/' ? (
+              <button
+                onClick={() => {
+                  setOpen(false)
+                  window.dispatchEvent(new CustomEvent('open-booking'))
+                }}
+                className="block w-full text-center bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-3 rounded-full transition-colors cursor-pointer"
+              >
+                Book
+              </button>
+            ) : (
+              <Link
+                href="/?book=true"
+                onClick={() => setOpen(false)}
+                className="block text-center bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-3 rounded-full transition-colors"
+              >
+                Book
+              </Link>
+            )}
           </div>
         </div>
       )}

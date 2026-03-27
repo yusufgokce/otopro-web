@@ -5,6 +5,7 @@ import { Footer } from './components/footer'
 import { HeroPriceCalculator } from './components/hero-price-calculator'
 import { OtoAccordion } from './components/ui/oto-accordion'
 import { TrustBadges } from './components/trust-badges'
+import { BookButton } from './components/book-button'
 
 // ── Static data ──
 
@@ -37,7 +38,7 @@ const FAQS = [
   },
   {
     q: 'Can I reschedule or cancel?',
-    a: 'Yes. You can reschedule up to 2 times per booking. Cancellations are free with 24-hour notice.',
+    a: 'Yes. You can reschedule up to 2 times per booking. Free cancellation with full deposit refund is available within 48 hours of booking.',
   },
   {
     q: 'Do prices change based on my vehicle?',
@@ -126,10 +127,17 @@ const STEPS = [
 export default async function Home() {
   const supabase = await createClient()
 
-  const [{ data: services }, { data: bodyStylePricing }] = await Promise.all([
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const [{ data: services }, { data: bodyStylePricing }, vehiclesResult] = await Promise.all([
     supabase.from('service_types').select('*').eq('is_active', true).order('base_price'),
     supabase.from('body_style_pricing').select('*').order('surcharge'),
+    user
+      ? supabase.from('vehicles').select('id, year, make, model, color, body_style').eq('user_id', user.id).order('created_at', { ascending: false })
+      : Promise.resolve({ data: null }),
   ])
+
+  const userVehicles = vehiclesResult.data ?? []
 
   return (
     <>
@@ -156,6 +164,8 @@ export default async function Home() {
         <HeroPriceCalculator
           services={services ?? []}
           bodyStylePricing={bodyStylePricing ?? []}
+          userVehicles={userVehicles}
+          isAuthenticated={!!user}
         />
       </section>
 
@@ -311,12 +321,9 @@ export default async function Home() {
             <p className="text-lg text-foreground-muted mb-10 max-w-lg mx-auto">
               Enter your vehicle above or book directly. No commitment, no hidden fees.
             </p>
-            <Link
-              href="/book"
-              className="inline-flex items-center justify-center h-[52px] px-10 rounded-full text-base font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white transition-colors"
-            >
+            <BookButton className="inline-flex items-center justify-center h-[52px] px-10 rounded-full text-base font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white transition-colors cursor-pointer">
               Book a Detail
-            </Link>
+            </BookButton>
           </div>
         </div>
       </section>
