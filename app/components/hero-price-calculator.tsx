@@ -371,9 +371,6 @@ export function HeroPriceCalculator({ services, bodyStylePricing, userVehicles, 
 
             <div className="flex items-start justify-between mb-6">
               <div>
-                <p className="text-xs font-semibold tracking-[1.5px] uppercase text-foreground-muted mb-1">
-                  Instant Quote
-                </p>
                 <h3 className="text-lg font-semibold text-foreground">
                   Enter your vehicle details
                 </h3>
@@ -529,7 +526,7 @@ export function HeroPriceCalculator({ services, bodyStylePricing, userVehicles, 
             <button
               onClick={handleSeePricing}
               disabled={!canSeePricing}
-              className="w-full h-[50px] rounded-full text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer"
+              className="w-full h-[50px] rounded-full text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all cursor-pointer pulse-ring"
             >
               {canSeePricing
                 ? `See pricing for ${year} ${make} ${model}`

@@ -90,13 +90,14 @@ export function Footer() {
           </p>
         </div>
 
-        {/* ── Giant oversized logo — pinned to bottom, 60% visible (40% clipped) ── */}
-        <div className="w-full pointer-events-none select-none shrink-0 overflow-hidden"
-          style={{ height: '25vh', minHeight: '120px' }}
+        {/* ── Giant oversized logo — full width, 60% visible (40% clipped at bottom) ── */}
+        <div
+          className="w-full pointer-events-none select-none overflow-hidden shrink-0"
+          style={{ aspectRatio: '600 / 78' }}
         >
           <svg
-            viewBox="85 -37 429 175"
-            className="w-full h-full"
+            viewBox="0 0 600 130"
+            className="w-full"
             preserveAspectRatio="xMidYMin meet"
             style={{ display: 'block' }}
             xmlns="http://www.w3.org/2000/svg"

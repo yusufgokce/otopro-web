@@ -53,6 +53,7 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
   const [bookingError, setBookingError] = useState('')
   const [isCreatingBooking, startBookingTransition] = useTransition()
   const prefilled = useRef(false)
+  const hasRestored = useRef(false)
   const bookingCreationStarted = useRef(false)
 
   // Build dynamic step list
@@ -66,7 +67,9 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
   const paymentStepIndex = steps.indexOf('Payment')
 
   // Persist wizard state to sessionStorage on every change
+  // IMPORTANT: only persist AFTER initial restore to avoid overwriting saved state
   useEffect(() => {
+    if (!hasRestored.current) return
     sessionStorage.setItem('otopro-wizard', JSON.stringify(state))
   }, [state])
 
@@ -134,6 +137,7 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
           if (parsed.currentStep > 0) {
             dispatch({ type: 'GO_TO_STEP', payload: parsed.currentStep })
           }
+          hasRestored.current = true
           return
         }
       } catch {
@@ -162,6 +166,8 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
         dispatch({ type: 'GO_TO_STEP', payload: 2 })
       }
     }
+
+    hasRestored.current = true
   }, [searchParams, services])
 
   const surcharge = Number(
