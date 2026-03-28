@@ -4,8 +4,9 @@
     {
       "name": "otopro-web",
       "runtimeExecutable": "/bin/sh",
-      "runtimeArgs": ["-c", "cd /Users/yusuf/Desktop/otopro-web && node_modules/.bin/next dev -p 3000"],
-      "port": 3000
+      "runtimeArgs": ["-c", "cd /Users/yusuf/Desktop/otopro-web && node_modules/.bin/next dev"],
+      "port": 3000,
+      "autoPort": true
     }
   ]
 }

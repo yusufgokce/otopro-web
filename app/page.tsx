@@ -151,9 +151,9 @@ export default async function Home() {
 
         {/* Headline */}
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-6">
-          Professional car
+          Get your car looking new.
           <br />
-          <span className="text-accent-blue-500">detailing</span>, delivered.
+          <span className="text-accent-blue-500">From your couch.</span>
         </h1>
 
         <p className="text-lg md:text-xl text-foreground-muted max-w-xl mx-auto mb-10 leading-relaxed">
