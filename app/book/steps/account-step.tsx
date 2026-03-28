@@ -78,17 +78,20 @@ export function AccountStep({ dispatch, onAuthenticated, onGuest }: Props) {
             We sent a verification link to <strong className="text-foreground">{email}</strong>
           </p>
           <p className="text-dark-silver text-center mb-10 text-sm">
-            Click the link in your email, then come back here and tap the button below.
+            Click the link in your email — you&apos;ll be brought back here automatically to complete your booking.
           </p>
 
           <div className="space-y-3 max-w-md mx-auto">
             {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+            <p className="text-[11px] text-grey text-center">
+              Didn&apos;t get the email? Check your spam folder, or try again below.
+            </p>
             <button
               onClick={handleCheckVerification}
               disabled={isPending}
-              className="w-full py-3.5 rounded-full text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-50 transition-colors"
+              className="w-full py-3.5 rounded-full text-sm font-medium text-foreground-muted border border-dark-grey hover:bg-surface-widget transition-colors"
             >
-              {isPending ? 'Checking...' : 'I\'ve verified my email'}
+              {isPending ? 'Checking...' : 'I\'ve already verified'}
             </button>
             <button
               onClick={() => { setMode('choose'); setError('') }}

@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { ThemeToggle } from './theme-toggle'
 import { UserMenu } from './user-menu'
 
@@ -13,7 +13,7 @@ const NAV_LINKS = [
   { href: '/faq', label: 'FAQ' },
 ]
 
-function TypewriterLogo({ animate: shouldAnimate }: { animate: boolean }) {
+function TypewriterLogo({ animate: shouldAnimate, onComplete }: { animate: boolean; onComplete?: () => void }) {
   const [displayed, setDisplayed] = useState(shouldAnimate ? '' : 'otopro')
   const [showCursor, setShowCursor] = useState(shouldAnimate)
 
@@ -44,12 +44,15 @@ function TypewriterLogo({ animate: shouldAnimate }: { animate: boolean }) {
 
       // Phase 4: cursor blinks then fades
       await sleep(1500)
-      if (!cancelled) setShowCursor(false)
+      if (!cancelled) {
+        setShowCursor(false)
+        onComplete?.()
+      }
     }
 
     animate()
     return () => { cancelled = true }
-  }, [shouldAnimate])
+  }, [shouldAnimate, onComplete])
 
   return (
     <span className="inline-flex items-center text-2xl font-bold tracking-tight text-foreground" style={{ fontFamily: "Satoshi, sans-serif" }}>
@@ -75,6 +78,9 @@ export function Nav({ user }: NavProps) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const isHome = pathname === '/'
+  const [animDone, setAnimDone] = useState(!isHome)
+  const onAnimComplete = useCallback(() => setAnimDone(true), [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -96,12 +102,14 @@ export function Nav({ user }: NavProps) {
       <div className="relative flex items-end px-6 pb-0 pt-5 max-w-6xl mx-auto">
         {/* Left: Logo as a tab link with indicator */}
         <Link href="/" className="relative pb-4 group mr-auto">
-          <TypewriterLogo animate={pathname === '/'} />
+          <TypewriterLogo animate={isHome} onComplete={onAnimComplete} />
           <span
-            className={`absolute bottom-0 left-0 right-0 h-[3px] rounded-t transition-all ${
-              isActive('/')
-                ? 'bg-accent-blue-500'
-                : 'opacity-0 group-hover:opacity-100 bg-foreground-muted/40'
+            className={`absolute bottom-0 left-0 right-0 h-[3px] rounded-t transition-all duration-500 ${
+              !animDone
+                ? 'opacity-0'
+                : isActive('/')
+                  ? 'bg-accent-blue-500'
+                  : 'opacity-0 group-hover:opacity-100 bg-foreground-muted/40'
             }`}
           />
         </Link>
