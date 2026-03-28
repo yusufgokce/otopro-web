@@ -143,11 +143,10 @@ export default async function Home() {
     <>
       <main className="relative z-10 min-h-screen bg-surface-primary text-foreground rounded-b-[32px] shadow-[0_4px_40px_rgba(0,0,0,0.15)]">
       <NavServer />
+      <TrustBadges />
 
       {/* ── Hero ── */}
       <section className="max-w-6xl mx-auto px-6 pt-24 md:pt-32 pb-20 text-center">
-        {/* Trust badges — notification bar style */}
-        <TrustBadges />
 
         {/* Headline */}
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight mb-6">
