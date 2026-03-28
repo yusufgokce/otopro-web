@@ -2,11 +2,11 @@ import Link from 'next/link'
 
 export function Footer() {
   return (
-    <footer className="sticky bottom-0 z-0 bg-surface-widget h-screen rounded-t-[32px]">
-      <div className="relative flex flex-col h-full overflow-hidden">
+    <footer className="sticky bottom-0 z-0 bg-surface-widget h-screen rounded-t-[32px] overflow-hidden">
+      <div className="relative h-full">
 
         {/* ── Main footer content ── */}
-        <div className="relative z-10 flex flex-col md:flex-row max-w-6xl mx-auto w-full px-8 pt-10 md:pt-20">
+        <div className="flex flex-col md:flex-row max-w-6xl mx-auto w-full px-8 pt-10 md:pt-20">
           {/* Left side — columns */}
           <div className="flex-1">
             {/* Columns — stacked on mobile, 3-col on desktop */}
@@ -79,24 +79,23 @@ export function Footer() {
           </div>
         </div>
 
-        {/* ── Descriptor text + mobile copyright ── */}
-        <div className="flex-1" />
-        <div className="w-full max-w-6xl mx-auto px-8 mb-4">
+        {/* ── Descriptor text + mobile copyright — tight below columns ── */}
+        <div className="max-w-6xl mx-auto px-8 mt-6 md:mt-8">
           <p className="text-foreground-muted text-sm leading-relaxed max-w-[320px]">
-            Professional mobile car detailing, delivered to your driveway. No prep needed.
+            Get your car looking new. From your couch.
           </p>
           <p className="md:hidden text-foreground-muted/50 text-[10px] tracking-[0.5px] mt-2">
             &copy; {new Date().getFullYear()} otopro. All rights reserved.
           </p>
         </div>
 
-        {/* ── Giant oversized logo — full width, 60% visible (40% clipped at bottom) ── */}
+        {/* ── Giant oversized logo — pinned to absolute bottom, spans full width ── */}
         <div
-          className="w-full pointer-events-none select-none overflow-hidden shrink-0"
-          style={{ aspectRatio: '600 / 78' }}
+          className="absolute bottom-0 left-0 right-0 w-full pointer-events-none select-none overflow-hidden"
+          style={{ aspectRatio: '429 / 105' }}
         >
           <svg
-            viewBox="0 0 600 130"
+            viewBox="85 -37 429 175"
             className="w-full"
             preserveAspectRatio="xMidYMin meet"
             style={{ display: 'block' }}
