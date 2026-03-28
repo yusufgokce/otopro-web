@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react'
 
-const BADGES = ['certified detailers', 'fully insured', 'satisfaction guaranteed', 'mobile service']
+const BADGES = ['certified detailers', 'fully insured', 'satisfaction guaranteed', 'mobile service', 'canadian owned', 'based in markham']
 
 export function TrustBadges() {
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -74,7 +74,7 @@ export function TrustBadges() {
         {items.map((badge, i) => (
           <span
             key={i}
-            className="text-foreground-muted/60 text-[10px] md:text-[11px] tracking-[0.5px] font-medium shrink-0 px-5"
+            className="text-foreground-muted/60 text-[10px] md:text-[11px] tracking-[0.5px] font-medium shrink-0 px-8 md:px-12"
           >
             {badge}
           </span>
