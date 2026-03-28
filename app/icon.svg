@@ -1,0 +1,7 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    text { fill: black; }
+    @media (prefers-color-scheme: dark) { text { fill: white; } }
+  </style>
+  <text x="32" y="54" text-anchor="middle" style="font-family:Satoshi,system-ui,sans-serif;font-size:64px;font-weight:900;letter-spacing:-0.03em">o</text>
+</svg>

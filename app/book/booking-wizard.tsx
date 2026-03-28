@@ -221,7 +221,7 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
     !bookingId &&
     !isCreatingBooking &&
     !bookingError &&
-    state.currentStep === paymentStepIndex
+    Math.min(state.currentStep, steps.length - 1) === paymentStepIndex
 
   useEffect(() => {
     if (needsBookingCreation && !bookingCreationStarted.current) {
@@ -230,8 +230,10 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [needsBookingCreation])
 
-  const showPayment = state.currentStep === paymentStepIndex && bookingId
-  const currentStepName = steps[state.currentStep] ?? 'Vehicle'
+  // Clamp currentStep to valid range (steps array can shrink when user authenticates mid-wizard)
+  const clampedStep = Math.min(state.currentStep, steps.length - 1)
+  const showPayment = clampedStep === paymentStepIndex && bookingId
+  const currentStepName = steps[clampedStep] ?? 'Vehicle'
 
   // Confirmation screen (after all hooks)
   if (paymentComplete) {
@@ -254,17 +256,17 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
           <div key={label} className="flex items-center gap-1.5">
             <div
               className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold transition-colors ${
-                i <= state.currentStep
+                i <= clampedStep
                   ? 'bg-accent-blue-500 text-white'
                   : 'bg-surface-widget-hover text-foreground-muted'
               }`}
             >
-              {i < state.currentStep ? '\u2713' : i + 1}
+              {i < clampedStep ? '\u2713' : i + 1}
             </div>
             {i < steps.length - 1 && (
               <div
                 className={`w-6 h-px ${
-                  i < state.currentStep ? 'bg-accent-blue-500' : 'bg-surface-widget-hover'
+                  i < clampedStep ? 'bg-accent-blue-500' : 'bg-surface-widget-hover'
                 }`}
               />
             )}
@@ -296,10 +298,13 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
           <AccountStep
             dispatch={dispatch}
             onAuthenticated={() => {
+              // User just logged in mid-wizard. Steps will recompute (Account removed).
+              // currentStep is currently at the Account index. After removing Account,
+              // that same index now points to Payment. We need to:
+              // 1. Create the booking
+              // 2. NOT change currentStep — it naturally lands on Payment after recompute
               setUserAuthenticated(true)
-              // Directly trigger booking creation — don't rely solely on the effect.
-              // setTimeout lets state settle (steps array recomputes) before we act.
-              setTimeout(() => handleCreateBookingAndPay(), 0)
+              handleCreateBookingAndPay()
             }}
             onGuest={(email) => {
               setGuestEmail(email)
@@ -337,20 +342,20 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
               <div className="flex items-center gap-3">
                 <div
                   className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-colors ${
-                    i < state.currentStep
+                    i < clampedStep
                       ? 'bg-accent-blue-500 text-white'
                       : i === state.currentStep
                         ? 'bg-accent-blue-500 text-white ring-2 ring-accent-blue-500/30 ring-offset-2 ring-offset-surface-primary'
                         : 'bg-surface-widget-hover text-foreground-muted'
                   }`}
                 >
-                  {i < state.currentStep ? '\u2713' : i + 1}
+                  {i < clampedStep ? '\u2713' : i + 1}
                 </div>
                 <span
                   className={`text-sm transition-colors ${
                     i === state.currentStep
                       ? 'text-foreground font-semibold'
-                      : i < state.currentStep
+                      : i < clampedStep
                         ? 'text-silver'
                         : 'text-grey'
                   }`}
@@ -362,7 +367,7 @@ export function BookingWizard({ services, bodyStylePricing, isAuthenticated }: P
                 <div className="flex justify-start ml-[17px]">
                   <div
                     className={`w-px h-8 ${
-                      i < state.currentStep ? 'bg-accent-blue-500' : 'bg-surface-widget-hover'
+                      i < clampedStep ? 'bg-accent-blue-500' : 'bg-surface-widget-hover'
                     }`}
                   />
                 </div>
@@ -389,7 +394,7 @@ function wizardReducer(state: WizardState, action: WizardAction): WizardState {
     case 'SET_ADDRESS':
       return { ...state, ...action.payload }
     case 'NEXT_STEP':
-      return { ...state, currentStep: state.currentStep + 1 }
+      return { ...state, currentStep: state.currentStep + 1, editingFromReview: false }
     case 'PREV_STEP':
       return { ...state, currentStep: Math.max(state.currentStep - 1, 0) }
     case 'EDIT_FROM_REVIEW':
