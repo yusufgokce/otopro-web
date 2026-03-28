@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react'
 import { signIn, signUp } from '@/lib/actions/auth'
 import type { WizardAction } from '@/lib/types/booking'
 
-type Mode = 'choose' | 'login' | 'signup' | 'guest'
+type Mode = 'choose' | 'login' | 'signup' | 'guest' | 'verify-email'
 
 interface Props {
   dispatch: React.Dispatch<WizardAction>
@@ -40,6 +40,8 @@ export function AccountStep({ dispatch, onAuthenticated, onGuest }: Props) {
       const result = await signUp(email, password, fullName)
       if (result.success) {
         onAuthenticated()
+      } else if (result.needsVerification) {
+        setMode('verify-email')
       } else {
         setError(result.error || 'Sign up failed')
       }
@@ -52,6 +54,52 @@ export function AccountStep({ dispatch, onAuthenticated, onGuest }: Props) {
       return
     }
     onGuest(guestEmail)
+  }
+
+  function handleCheckVerification() {
+    setError('')
+    startTransition(async () => {
+      const result = await signIn(email, password)
+      if (result.success) {
+        onAuthenticated()
+      } else {
+        setError('Email not verified yet. Please check your inbox and click the confirmation link.')
+      }
+    })
+  }
+
+  // ─── Verify email ───
+  if (mode === 'verify-email') {
+    return (
+      <div className="flex flex-col h-full">
+        <div className="flex-1">
+          <h1 className="text-3xl font-bold text-center mb-2">Check your email</h1>
+          <p className="text-dark-silver text-center mb-6">
+            We sent a verification link to <strong className="text-foreground">{email}</strong>
+          </p>
+          <p className="text-dark-silver text-center mb-10 text-sm">
+            Click the link in your email, then come back here and tap the button below.
+          </p>
+
+          <div className="space-y-3 max-w-md mx-auto">
+            {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+            <button
+              onClick={handleCheckVerification}
+              disabled={isPending}
+              className="w-full py-3.5 rounded-full text-sm font-semibold bg-accent-blue-500 hover:bg-accent-blue-600 text-white disabled:opacity-50 transition-colors"
+            >
+              {isPending ? 'Checking...' : 'I\'ve verified my email'}
+            </button>
+            <button
+              onClick={() => { setMode('choose'); setError('') }}
+              className="w-full py-3.5 rounded-full text-sm font-medium text-foreground-muted border border-dark-grey hover:bg-surface-widget transition-colors"
+            >
+              Back
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   // ─── Choose mode ───

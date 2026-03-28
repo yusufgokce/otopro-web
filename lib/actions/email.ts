@@ -2,7 +2,11 @@
 
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let _resend: Resend | null = null
+function getResend() {
+  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY)
+  return _resend
+}
 
 export interface BookingEmailDetails {
   bookingId: string
@@ -34,8 +38,8 @@ export async function sendBookingConfirmation(
       year: 'numeric',
     })
 
-    const { error } = await resend.emails.send({
-      from: 'otopro <noreply@otopro.ca>',
+    const { error } = await getResend().emails.send({
+      from: 'otopro <hello@otopro.ca>',
       to: details.email,
       subject: `Your otopro booking is confirmed — ${details.serviceName}`,
       html: `
