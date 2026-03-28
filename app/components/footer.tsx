@@ -82,7 +82,7 @@ export function Footer() {
         {/* ── Descriptor text + mobile copyright — tight below columns ── */}
         <div className="max-w-6xl mx-auto px-8 mt-6 md:mt-8">
           <p className="text-foreground-muted text-sm leading-relaxed max-w-[320px]">
-            Get your car looking new. From your couch.
+            Professional mobile car detailing, delivered to your driveway. No prep needed.
           </p>
           <p className="md:hidden text-foreground-muted/50 text-[10px] tracking-[0.5px] mt-2">
             &copy; {new Date().getFullYear()} otopro. All rights reserved.

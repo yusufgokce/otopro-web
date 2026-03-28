@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { sendBookingConfirmation, type BookingEmailDetails } from '@/lib/actions/email'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -13,7 +13,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
  * stripe_deposit_payment_id is back-filled on the row.
  */
 async function findSessionByPaymentIntent(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: ReturnType<typeof createServiceClient>,
   paymentIntentId: string,
   metadata: Stripe.Metadata,
 ) {
@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  const supabase = await createClient()
+  const supabase = createServiceClient()
 
   switch (event.type) {
     case 'payment_intent.succeeded': {
@@ -171,14 +171,27 @@ export async function POST(request: NextRequest) {
         let recipientEmail: string | null = null
 
         if (fullBooking?.customer_id) {
-          const { data: user } = await supabase
+          // Authenticated user — look up from public users table
+          const { data: userRow } = await supabase
             .from('users')
             .select('email')
             .eq('id', fullBooking.customer_id)
             .single()
-          recipientEmail = user?.email ?? null
+          recipientEmail = userRow?.email ?? null
+
+          // Fallback: use Supabase Admin API if public table lookup fails
+          if (!recipientEmail) {
+            const { data: { user: authUser } } = await supabase.auth.admin.getUserById(fullBooking.customer_id)
+            recipientEmail = authUser?.email ?? null
+          }
         } else {
+          // Guest user — email stored directly on the booking row
           recipientEmail = fullBooking?.guest_email ?? null
+        }
+
+        // Last resort: Stripe receipt_email
+        if (!recipientEmail) {
+          recipientEmail = paymentIntent.receipt_email ?? null
         }
 
         if (recipientEmail && fullBooking) {
