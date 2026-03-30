@@ -9,8 +9,9 @@ import { CancelButton } from './cancel-button'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'My Bookings | otopro',
+  title: 'My Bookings',
   description: 'View and manage your detailing sessions.',
+  robots: { index: false, follow: false },
 }
 
 const STATUS_STYLES: Record<string, string> = {

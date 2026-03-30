@@ -5,9 +5,10 @@ import { NavServer } from '../components/nav-server'
 import { Footer } from '../components/footer'
 
 export const metadata: Metadata = {
-  title: 'Car Detailing Guides & Tips | otopro',
+  title: 'Car Detailing Guides & Tips',
   description:
     'Expert guides on ceramic coating, paint protection, and car care for Canadian drivers. Learn how to protect your vehicle from road salt, harsh winters, and UV damage.',
+  alternates: { canonical: 'https://otopro.ca/guides' },
 }
 
 const categoryOrder: Article['category'][] = ['canada', 'ceramic', 'general']

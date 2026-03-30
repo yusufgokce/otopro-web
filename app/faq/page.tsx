@@ -5,8 +5,9 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'FAQ | otopro',
-  description: 'Frequently asked questions about otopro mobile car detailing services.',
+  title: 'Frequently Asked Questions',
+  description: 'Frequently asked questions about otopro mobile car detailing services. Booking, pricing, cancellation, vehicle care and more.',
+  alternates: { canonical: 'https://otopro.ca/faq' },
 }
 
 export default function FaqPage() {

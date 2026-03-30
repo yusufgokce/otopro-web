@@ -6,8 +6,9 @@ import { createClient } from '@/lib/supabase/server'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Dashboard | otopro',
+  title: 'Dashboard',
   description: 'Your otopro dashboard — bookings, vehicles, and more.',
+  robots: { index: false, follow: false },
 }
 
 export default async function DashboardPage() {

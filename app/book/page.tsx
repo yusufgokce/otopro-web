@@ -5,8 +5,9 @@ import { NavServer } from '../components/nav-server'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Book a Detail | otopro',
-  description: 'Book professional car detailing at your location in under a minute.',
+  title: 'Book a Detail',
+  description: 'Book professional mobile car detailing at your location in under 2 minutes. Choose your service, pick a date, and pay securely online.',
+  robots: { index: false, follow: true },
 }
 
 export default async function BookPage() {

@@ -18,8 +18,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = getArticle(slug)
   if (!article) return {}
   return {
-    title: `${article.title} | otopro Guides`,
+    title: article.title,
     description: article.description,
+    alternates: { canonical: `https://otopro.ca/guides/${slug}` },
     openGraph: {
       title: article.title,
       description: article.description,

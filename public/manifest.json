@@ -1,0 +1,16 @@
+{
+  "name": "otopro | Premium Mobile Car Detailing",
+  "short_name": "otopro",
+  "description": "Book professional car detailing at your location. Interior, exterior, ceramic coating and more.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#3A82FF",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

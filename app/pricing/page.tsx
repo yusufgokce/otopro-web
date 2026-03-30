@@ -4,8 +4,9 @@ import { Footer } from '../components/footer'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Pricing | otopro',
-  description: 'Transparent pricing for professional mobile car detailing. No hidden fees.',
+  title: 'Pricing',
+  description: 'Transparent pricing for professional mobile car detailing in the GTA. No hidden fees. Body-style adjusted pricing for sedans, SUVs, trucks and more.',
+  alternates: { canonical: 'https://otopro.ca/pricing' },
 }
 
 const PACKAGES = [
