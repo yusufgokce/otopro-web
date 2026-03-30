@@ -99,9 +99,9 @@ export function Nav({ user }: NavProps) {
           : 'bg-transparent'
       }`}
     >
-      <div className="relative flex items-end px-6 pb-0 pt-5 max-w-6xl mx-auto">
-        {/* Left: Logo as a tab link with indicator */}
-        <Link href="/" className="relative pb-4 group mr-auto">
+      <div className="relative flex items-center px-6 pt-5 pb-0 max-w-6xl mx-auto">
+        {/* Left: Logo as a tab link with underline indicator */}
+        <Link href="/" className="relative pb-4 group mr-auto flex items-center">
           <TypewriterLogo animate={isHome} onComplete={onAnimComplete} />
           <span
             className={`absolute bottom-0 left-0 right-0 h-[3px] rounded-t transition-all duration-500 ${
@@ -114,15 +114,15 @@ export function Nav({ user }: NavProps) {
           />
         </Link>
 
-        {/* Desktop links — tab style, bottom-aligned with header */}
-        <div className="hidden md:flex items-end gap-6">
+        {/* Desktop links + actions — all vertically centered */}
+        <div className="hidden md:flex items-center gap-6">
           {NAV_LINKS.filter(l => l.href !== '/').map(link => {
             const active = isActive(link.href)
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className="relative pb-4 group"
+                className="relative pb-4 group flex items-center"
               >
                 <span
                   className={`text-sm font-medium tracking-normal transition-colors ${
@@ -141,31 +141,28 @@ export function Nav({ user }: NavProps) {
               </Link>
             )
           })}
-          {/* Center these with the tab link text (offset by half of pb-4 = pb-2) */}
-          <div className="pb-[9px]"><ThemeToggle /></div>
+          <ThemeToggle />
           {user ? (
-            <div className="pb-2"><UserMenu userName={user.name} userEmail={user.email} /></div>
+            <UserMenu userName={user.name} userEmail={user.email} />
           ) : null}
-          <div className="pb-[16px]">
-            {pathname === '/' ? (
-              <button
-                onClick={() => window.dispatchEvent(new CustomEvent('open-booking'))}
-                className="bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors cursor-pointer"
-              >
-                Book
-              </button>
-            ) : (
-              <Link
-                href="/?book=true"
-                className="bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
-              >
-                Book
-              </Link>
-            )}
-          </div>
+          {pathname === '/' ? (
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('open-booking'))}
+              className="bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors cursor-pointer"
+            >
+              Book
+            </button>
+          ) : (
+            <Link
+              href="/?book=true"
+              className="bg-accent-blue-500 hover:bg-accent-blue-600 text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-colors"
+            >
+              Book
+            </Link>
+          )}
         </div>
 
-        {/* Mobile toggle */}
+        {/* Mobile: theme toggle + hamburger, vertically centered with logo */}
         <div className="flex items-center gap-3 md:hidden">
           <ThemeToggle />
           <button
