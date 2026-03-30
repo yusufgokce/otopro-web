@@ -6,6 +6,10 @@ import { HeroPriceCalculator } from './components/hero-price-calculator'
 import { OtoAccordion } from './components/ui/oto-accordion'
 import { TrustBadges } from './components/trust-badges'
 import { BookButton } from './components/book-button'
+import { ReviewsSection } from './components/reviews-section'
+import { PhotoGallery } from './components/photo-gallery'
+import { getReviews } from '@/lib/actions/reviews'
+import { getPhotos } from '@/lib/actions/photos'
 
 // ── Static data ──
 
@@ -129,12 +133,14 @@ export default async function Home() {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  const [{ data: services }, { data: bodyStylePricing }, vehiclesResult] = await Promise.all([
+  const [{ data: services }, { data: bodyStylePricing }, vehiclesResult, reviews, photos] = await Promise.all([
     supabase.from('service_types').select('*').eq('is_active', true).order('base_price'),
     supabase.from('body_style_pricing').select('*').order('surcharge'),
     user
       ? supabase.from('vehicles').select('id, year, make, model, color, body_style').eq('user_id', user.id).order('created_at', { ascending: false })
       : Promise.resolve({ data: null }),
+    getReviews(),
+    getPhotos(),
   ])
 
   const userVehicles = vehiclesResult.data ?? []
@@ -201,6 +207,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── Reviews ── */}
+      <ReviewsSection reviews={reviews} />
 
       {/* ── Why otopro vs traditional ── */}
       <section className="py-28 md:py-32">
@@ -284,6 +293,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── Photo Gallery ── */}
+      <PhotoGallery photos={photos} />
 
       {/* ── FAQ ── */}
       <section className="py-28 md:py-32">
