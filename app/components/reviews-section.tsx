@@ -83,7 +83,7 @@ export function ReviewsSection({ reviews }: { reviews: GoogleReview[] }) {
         <p className="text-foreground-muted text-center mb-14 max-w-md mx-auto">
           Real reviews from real customers on{' '}
           <a
-            href="https://maps.google.com/?cid=18030313609357106475"
+            href="https://maps.app.goo.gl/axe6J7DpXYptynhR8"
             target="_blank"
             rel="noopener noreferrer"
             className="text-accent-blue-400 hover:text-accent-blue-300 transition-colors"
