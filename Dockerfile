@@ -9,6 +9,9 @@ RUN npm ci
 FROM node:22-alpine AS builder
 WORKDIR /app
 
+ARG BUILD_COMMIT_SHA
+ENV BUILD_COMMIT_SHA=$BUILD_COMMIT_SHA
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
@@ -19,6 +22,9 @@ FROM node:22-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+
+ARG BUILD_COMMIT_SHA
+ENV BUILD_COMMIT_SHA=$BUILD_COMMIT_SHA
 
 # Non-root user — mirrors innera's appuser pattern
 RUN addgroup --system --gid 1001 appuser && \

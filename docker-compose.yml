@@ -1,6 +1,9 @@
 services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        BUILD_COMMIT_SHA: ${BUILD_COMMIT_SHA:-}
     container_name: otopro-web
     restart: unless-stopped
     env_file:
