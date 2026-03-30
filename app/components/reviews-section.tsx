@@ -83,7 +83,7 @@ export function ReviewsSection({ reviews }: { reviews: GoogleReview[] }) {
         <p className="text-foreground-muted text-center mb-14 max-w-md mx-auto">
           Real reviews from real customers on{' '}
           <a
-            href="https://www.google.com/maps/place/OTOPRO+Automotive+Cosmetics+Inc./@43.5759194,-79.5230566,17z/data=!4m6!3m5!1s0x6c20521e7f926c0b:0xf6d478ad234a25f7"
+            href="https://maps.google.com/?cid=18030313609357106475"
             target="_blank"
             rel="noopener noreferrer"
             className="text-accent-blue-400 hover:text-accent-blue-300 transition-colors"
